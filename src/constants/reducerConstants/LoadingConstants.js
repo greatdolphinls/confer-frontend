@@ -1,0 +1,3 @@
+export default {
+	SET_LOADING_STATUS: 'SET_LOADING_STATUS'
+}

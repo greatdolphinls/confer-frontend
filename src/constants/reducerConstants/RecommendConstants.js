@@ -1,0 +1,3 @@
+export default {
+	SET_USER_RECOMMENDS: 'SET_USER_RECOMMENDS'
+}
