@@ -6,6 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { sendResetLink, clearErrors, setLoadingStatus } from '../../../actions';
+import { pageLinks } from '../../../constants/links';
 import { ForgotPasswordLayout } from '../Shared';
 import { useInput } from '../../../utils/hooks';
 import notifications from '../../../constants/notifications';
@@ -25,7 +26,7 @@ const styles = theme => {
   };
 };
 
-const ForgotPassword = ({ classes, sendResetLink, clearErrors, setLoadingStatus }) => {
+const ForgotPassword = ({ classes, sendResetLink, clearErrors, setLoadingStatus, history }) => {
   const email = useInput('');
 
   const submitHandler = () => {
@@ -51,6 +52,7 @@ const ForgotPassword = ({ classes, sendResetLink, clearErrors, setLoadingStatus 
 
   const errorCallback = (response, message) => {
     setLoadingStatus({ loading: false });
+    history.push(pageLinks.SignUp.url);
     toast.error(message || notifications.NO_RESPONSE, {
       position: toast.POSITION.BOTTOM_RIGHT
     });
@@ -70,7 +72,10 @@ const ForgotPassword = ({ classes, sendResetLink, clearErrors, setLoadingStatus 
           onChange={email.onChange}
           validators={['isEmail', 'required']}
           errorMessages={['Email is not valid', 'Email cannot be empty']} />
-        <PrimaryButton fullWidth classes={{ root: classes.button }} type='submit'>
+        <PrimaryButton
+          fullWidth
+          classes={{ root: classes.button }}
+          type='submit'>
           RESET PASSWORD
         </PrimaryButton>
       </ValidatorForm>

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { pageLinks, defaultAvatarLink } from '../../constants/links'
 import { hasValidToken } from '../../utils/utility';
 import { Avatar } from '../index';
+import { logoutUser } from '../../actions';
 import LogoImage from '../../assets/img/logo.png';
 
 const styles = theme => {
@@ -24,13 +26,25 @@ const styles = theme => {
     },
     logoImage: {
       width: 80
+    },
+    item: {
+      width: 106,
+      margin: `0 ${theme.spacing(3)}`,
+      fontSize: 14,
+      fontWeight: 'normal',
+      opacity: 0.6
     }
   };
 };
 
 const NavBar = ({ classes, SignOffItems, SignOnItems }) => {
-
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth, []);
   const items = hasValidToken ? SignOnItems : SignOffItems;
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+  }
 
   return (
     <AppBar
@@ -48,11 +62,24 @@ const NavBar = ({ classes, SignOffItems, SignOnItems }) => {
             alt='main logo' />
         </Link>
         {items.map((item, index) => (
-          <Button key={index} href={item.url}>
+          <Button
+            key={index}
+            href={item.url}
+            className={classes.item}>
             {item.title}
           </Button>
         ))}
-        {hasValidToken && <Avatar src={defaultAvatarLink} size={48} isBorder />}
+        {
+          (hasValidToken && !!user) &&
+          <div onClick={logoutHandler}>
+            <Avatar
+              src={user.avatar || defaultAvatarLink}
+              size={48}
+              isBorder
+              onClick={logoutHandler}
+            />
+          </div>
+        }
       </Toolbar>
     </AppBar>
   );

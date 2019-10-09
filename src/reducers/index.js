@@ -7,6 +7,7 @@ import errorReducer from './errorReducer';
 import expertiseReducer from './expertiseReducer';
 import recommendReducer from './recommendReducer';
 import locationReducer from './locationReducer';
+import relationshipReducer from './relationshipReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   expertise: expertiseReducer,
   recommend: recommendReducer,
   location: locationReducer,
+  relationship: relationshipReducer
 });

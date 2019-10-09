@@ -31,7 +31,7 @@ export const registerUser = (
                     errorCallback(false, data.message);
                 } else {
                     dispatch(setErrors(error.response.data));
-                    errorCallback(true, data.message);
+                    errorCallback(true, data.message, error.response.status);
                 }
             } else {
                 errorCallback(false);
@@ -50,7 +50,7 @@ export const loginUser = (user, history, successCallback, errorCallback) => disp
             const userInfo = jwt_decode(token);
             dispatch(setCurrentUser(userInfo));
 
-            history.push(pageLinks.GroundRules.url);
+            history.push(pageLinks.RecommendCount.url);
             successCallback && successCallback(response);
         })
         .catch(error => {

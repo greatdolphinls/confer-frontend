@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-import { setExpertises } from '../../../actions';
+import { setExpertises, setRelationships } from '../../../actions';
 import {
   CustomSelectValidator,
   CustomTagSelect,
@@ -35,6 +35,13 @@ const styles = theme => {
         width: '100%'
       }
     },
+    linkedInInput: {
+      width: '50%',
+      marginBottom: theme.spacing(0.5),
+      [theme.breakpoints.down('sm')]: {
+        width: '100%'
+      }
+    },
     fullInput: {
       marginBottom: theme.spacing(3),
     },
@@ -55,16 +62,17 @@ const styles = theme => {
     },
     explain: {
       fontSize: 12,
-      margin: `${theme.spacing(1.5)}px ${theme.spacing(5)}px`,
+      width: 538,
       [theme.breakpoints.down('sm')]: {
-        margin: theme.spacing(2),
+        width: '100%'
       }
     }
   };
 };
 
-const RecommendForm = ({ classes, relationships, history }) => {
+const RecommendForm = ({ classes, history }) => {
   const expertises = useSelector(state => state.expertise.data, []);
+  const relationships = useSelector(state => state.relationship.data, []);
   const { user } = useSelector(state => state.auth, []);
   const dispatch = useDispatch();
 
@@ -75,13 +83,14 @@ const RecommendForm = ({ classes, relationships, history }) => {
   const howYouKnow = useInput('');
   const email = useInput('');
   const linkedInURL = useInput('');
-  const [relationship, setRelationship] = useState(relationships[0]);
+  const [relationship, setRelationship] = useState('');
   const [selectedSubExpertises, setSelectedSubExpertises] = useState([]);
   const [selectedStep, setSelectedStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(setExpertises());
+    dispatch(setRelationships());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -89,12 +98,16 @@ const RecommendForm = ({ classes, relationships, history }) => {
     if (!expertise.value && expertises.length !== 0) {
       expertise.onChange(expertises[0].name);
     }
+    if (!relationship.value && relationships.length !== 0) {
+      setRelationship(relationships[0].name);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertises]);
+  }, [expertises, relationships]);
 
   const expertiseItems = expertises.map(({ name }) => ({ label: name, value: name }));
   const selectedExpertise = expertises.find(({ name }) => (name === expertise.value));
   const subExpertises = selectedExpertise ? selectedExpertise.subExpertises : [];
+  const relationshipList = relationships.map(({ name }) => name);
 
   const relationshipSelectHandler = (value) => () => {
     setRelationship(value);
@@ -112,6 +125,10 @@ const RecommendForm = ({ classes, relationships, history }) => {
   const comfirmModalHandler = () => {
     setShowModal(false);
     history.push(pageLinks.RecommendCount.url);
+  }
+
+  const setStepHandler = (step) => {
+    setSelectedStep(step);
   }
 
   const stepOneHandler = () => {
@@ -200,7 +217,7 @@ const RecommendForm = ({ classes, relationships, history }) => {
             label='What is / was your working relationship? The person is / was your...'
             value={relationship}
             changed={relationshipSelectHandler}
-            items={relationships} />
+            items={relationshipList} />
           <TextValidator
             name='howYouKnow'
             label='How do you know this person?'
@@ -208,6 +225,7 @@ const RecommendForm = ({ classes, relationships, history }) => {
             value={howYouKnow.value}
             onChange={howYouKnow.onChange}
             validators={['required']}
+            placeholder='We worked together for 3 years at...'
             errorMessages={['This field cannot be empty']} />
           <PrimaryButton classes={{ root: classes.button }} type='submit'>
             Next
@@ -231,7 +249,8 @@ const RecommendForm = ({ classes, relationships, history }) => {
             rows={5}
             rowsMax={5}
             name='whyGreat'
-            label='Why is this person in the top 5 people you have worked with?'
+            label='Why is this person among the best people you have worked with?'
+            placeholder='Best salesperson, had 2x higher conversion rate than anyone else, but was a strong team player. Personally sourced, hired and managed 20 salespeople in one year.'
             className={classes.fullInput}
             value={whyGreat.value}
             onChange={whyGreat.onChange}
@@ -248,7 +267,7 @@ const RecommendForm = ({ classes, relationships, history }) => {
           <TextValidator
             name='linkedInURL'
             label='LinkedIn URL'
-            className={classes.halfInput}
+            className={classes.linkedInInput}
             value={linkedInURL.value}
             onChange={linkedInURL.onChange} />
           <Typography className={classes.linkedIn}>
@@ -275,7 +294,11 @@ const RecommendForm = ({ classes, relationships, history }) => {
   }
 
   return (
-    <RecommendLayout selectedStep={selectedStep}>
+    <RecommendLayout
+      selectedStep={selectedStep}
+      onSetStep={setStepHandler}
+      history={history}
+    >
       {renderStepOne()}
       {renderStepTwo()}
       {showModal &&
@@ -289,14 +312,6 @@ const RecommendForm = ({ classes, relationships, history }) => {
 
 RecommendForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  expertises: PropTypes.array,
-  relationships: PropTypes.array
-};
-
-RecommendForm.defaultProps = {
-  relationships: [
-    'Direct Report', 'Manager', 'Peer / Co-worker', 'Client'
-  ]
 };
 
 export default withStyles(styles)(RecommendForm);

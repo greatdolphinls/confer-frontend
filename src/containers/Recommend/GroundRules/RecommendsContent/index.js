@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
-import { CandidateInfo, BoxLayout } from '../../../../components';
+import { RecommendInfo, BoxLayout } from '../../../../components';
+import CandidateAvatar from '../../../../assets/img/users/jan_doe.jpg'
+import ReferrerAvatar from '../../../../assets/img/users/mark_geoson.jpg'
 
 const styles = theme => {
   return {
@@ -23,38 +25,23 @@ const styles = theme => {
       fontSize: 10,
       marginBottom: theme.spacing(1)
     },
-    firstBox: {
+    box: {
       position: 'inherit',
-      left: 150,
-      width: 600
-    },
-    secondBox: {
-      position: 'inherit',
-      margin: theme.spacing(6),
-      left: 250,
+      left: 90,
       width: 600
     }
   };
 };
 
-const RecommendsContent = ({ classes, recommends }) => {
+const RecommendsContent = ({ classes, recommend }) => {
 
   return (
     <main className={classes.root}>
       <Typography className={classes.title}>
         A sneak peak
       </Typography>
-      <BoxLayout classes={{ root: classes.firstBox }}>
-        <CandidateInfo
-          showReferrer
-          candidate={recommends[0].candidate}
-          referrer={recommends[0].referrer} />
-      </BoxLayout>
-      <BoxLayout classes={{ root: classes.secondBox }}>
-        <CandidateInfo
-          showReferrer
-          candidate={recommends[1].candidate}
-          referrer={recommends[1].referrer} />
+      <BoxLayout classes={{ root: classes.box }}>
+        <RecommendInfo recommend={recommend} />
       </BoxLayout>
     </main>
   );
@@ -66,48 +53,36 @@ RecommendsContent.propTypes = {
 };
 
 RecommendsContent.defaultProps = {
-  recommends: [
-    {
-      candidate: {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        avatar: 'https://images.unsplash.com/photo-1550639524-39ef65e52515?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        location: 'New York City, NY',
-        currentEmployment: {
+  recommend: {
+    expertiseArea: 'Product management',
+    subExpertises: ['consumer'],
+    howYouKnow: 'Worked with Jane for 2 years at Voray',
+    whyGreat: 'Jane designed our MVP in two weeks and led a product team of 10 people to get it built in half the time I budgeted.',
+    candidate: {
+      firstName: 'Jane',
+      lastName: 'Doe',
+      avatar: CandidateAvatar,
+      location: 'Greater New York City Area',
+      linkedInURL: 'https://www.linkedin.com/in/elizabethdelliott/',
+      yearsOfExperience: 11,
+      employmentHistories: [
+        {
           companyName: 'Airbnb',
-          title: 'Senior Product Manager'
-        },
-      },
-      referrer: {
-        firstName: 'Mark',
-        lastName: 'Gerson',
-        currentEmployment: {
-          companyName: 'GLG',
-          title: 'founder'
-        },
-      }
+          title: 'Senior Product Manager',
+          startYear: '2017',
+          startMonth: 'Dec',
+          currentlyWorks: true
+        }
+      ]
     },
-    {
-      candidate: {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        avatar: 'https://images.unsplash.com/photo-1554627004-d682864b6195?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        location: 'New York City, NY',
-        currentEmployment: {
-          companyName: 'Airbnb',
-          title: 'Senior Product Manager'
-        }
-      },
-      referrer: {
-        firstName: 'Mark',
-        lastName: 'Gerson',
-        currentEmployment: {
-          companyName: 'GLG',
-          title: 'founder'
-        }
-      }
+    referrer: {
+      firstName: 'Mark',
+      lastName: 'Gerson',
+      avatar: ReferrerAvatar,
+      linkedInURL: 'https://www.linkedin.com/in/elizabethdelliott/',
+      shortDescription: 'Founder of GLG'
     }
-  ]
+  }
 };
 
 export default withStyles(styles)(RecommendsContent);

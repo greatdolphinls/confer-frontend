@@ -57,6 +57,15 @@ const removeItemWithSlice = (items, index) => {
     return [...items.slice(0, index), ...items.slice(index + 1)]
 };
 
+const getCurrentEmployment = (employments) => {
+    const currentEmployment = employments.find((employment) => (employment.currentlyWorks));
+    if (!!currentEmployment) {
+        return currentEmployment;
+    } else {
+        return employments[employments.length - 1];
+    }
+}
+
 export {
     isEmpty,
     hasValidToken,
@@ -65,5 +74,6 @@ export {
     getAPIToken,
     compareObject,
     dateTimeToUTCString,
-    removeItemWithSlice
+    removeItemWithSlice,
+    getCurrentEmployment
 };

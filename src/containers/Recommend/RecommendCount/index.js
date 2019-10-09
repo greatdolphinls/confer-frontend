@@ -34,7 +34,7 @@ const styles = theme => {
     },
     recommendButton: {
       width: 275,
-      margin: `${theme.spacing(5)}px 0`,
+      marginBottom: theme.spacing(1),
       [theme.breakpoints.down('xs')]: {
         width: '100%'
       }
@@ -51,6 +51,12 @@ const styles = theme => {
       [theme.breakpoints.down('xs')]: {
         width: '100%'
       }
+    },
+    groundButton: {
+      fontSize: 12,
+      textAlign: 'center',
+      cursor: 'pointer',
+      marginBottom: theme.spacing(5),
     }
   };
 };
@@ -71,12 +77,8 @@ const RecommendCount = ({ classes, minCandidates, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recommends]);
 
-  const recommendButtonHandler = () => {
-    history.push(pageLinks.RecommendForm.url);
-  }
-
-  const discoverButtonHandler = () => {
-    history.push(pageLinks.RecommendForm.url);
+  const buttonHandler = (url) => () => {
+    history.push(url);
   }
 
   const isComplete = names.length >= minCandidates;
@@ -86,7 +88,7 @@ const RecommendCount = ({ classes, minCandidates, history }) => {
       return (
         <PrimaryButton
           classes={{ root: classes.discoverButton }}
-          onClick={discoverButtonHandler}>
+          onClick={buttonHandler(pageLinks.Discover.url)}>
           discover top talent
         </PrimaryButton>
       );
@@ -108,17 +110,23 @@ const RecommendCount = ({ classes, minCandidates, history }) => {
           away from accessing the shared talent network`
         }
       </Typography>
-      {[...Array(minCandidates)].map((e, i) => (
-        <CandidateNameItem key={i} name={names[i]} />
-      ))}
+      {names.map((name, index) =>
+        <CandidateNameItem key={index} name={name} />
+      )}
       <PrimaryButton
         classes={{ root: classes.recommendButton }}
-        onClick={recommendButtonHandler}>
+        onClick={buttonHandler(pageLinks.RecommendForm.url)}>
         {isComplete ?
           'Keep Recommending' :
           'Recommend Someone Great'
         }
       </PrimaryButton>
+      <Typography
+        className={classes.groundButton}
+        onClick={buttonHandler(pageLinks.GroundRules.url)}
+      >
+        See the ground rules
+      </Typography>
     </main>
   );
 };

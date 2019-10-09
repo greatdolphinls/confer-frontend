@@ -1,3 +1,3 @@
 module.exports = {
-    proxyUrl: 'https://confer-backend.herokuapp.com'
+    proxyUrl: 'http://localhost:3002'
 };

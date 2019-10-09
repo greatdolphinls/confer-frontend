@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -57,16 +58,17 @@ const ContactEmailModal = ({ classes, opened, candidateName, referrerName, onClo
       classes={{ paper: classes.paper }}
       open={opened}
       aria-labelledby='form-dialog-title'>
-
+      <DialogTitle>
+        {onClose ? (
+          <IconButton className={classes.closeButton} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </DialogTitle>
       <DialogContent className={classes.content}>
         <Typography className={classes.title}>
           We’ll email {candidateName} directly with your note below.
           If she’s interested in connecting, we’ll put both of you in touch!
-          {onClose ? (
-            <IconButton className={classes.closeButton} onClick={onClose}>
-              <CloseIcon />
-            </IconButton>
-          ) : null}
         </Typography>
         <Typography className={classes.description}>
           Hi {candidateName} -

@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import { setExpertises, setLocations } from '../../actions';
+import { setExpertises, setLocations, setDiscoverRecommends } from '../../actions';
 import { CustomSelect, PrimaryButton } from '../../components';
-import { CandidateProfile, ContactEmailModal } from './Shared';
+import { CandidateProfile, ContactEmailModal, ExceptProfile } from './Shared';
 import { useInput } from '../../utils/hooks';
 import years from '../../constants/years';
 
@@ -52,8 +52,7 @@ const styles = theme => {
       }
     },
     arrowButton: {
-      width: 101,
-      backgroundColor: theme.palette.subButtonColor1
+      width: 101
     }
   };
 };
@@ -62,6 +61,7 @@ const styles = theme => {
 const Discover = ({ classes }) => {
   const expertises = useSelector(state => state.expertise.data, []);
   const locations = useSelector(state => state.location.data, []);
+  const recommends = useSelector(state => state.recommend.discover, []);
   const dispatch = useDispatch();
 
   const expertise = useInput('default');
@@ -77,9 +77,37 @@ const Discover = ({ classes }) => {
   }, []);
 
   useEffect(() => {
-    console.log(expertise.value, experiencedYear.value, location.value, step);
+    const filter = {
+      expertiseArea: expertise.value,
+      experiencedYear: parseInt(experiencedYear.value),
+      location: location.value,
+      step: 0
+    };
+
+    dispatch(setDiscoverRecommends(true, filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertise.value, experiencedYear.value, location.value, step]);
+  }, [expertise.value, experiencedYear.value, location.value]);
+
+  useEffect(() => {
+    if (step === recommends.length) {
+      const filter = {
+        expertiseArea: expertise.value,
+        experiencedYear: parseInt(experiencedYear.value),
+        location: location.value,
+        step: step
+      };
+
+      dispatch(setDiscoverRecommends(false, filter));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
+
+  const onInit = () => {
+    expertise.onChange('default');
+    experiencedYear.onChange(years[0].value);
+    location.onChange('default');
+    setStep(0);
+  }
 
   let expertiseOptions = expertises.map(({ name }) => ({ label: name, value: name }));
   expertiseOptions = [{ label: 'all experises', value: 'default' }, ...expertiseOptions];
@@ -133,31 +161,37 @@ const Discover = ({ classes }) => {
         Tell us about the role you are looking to fill:
       </Typography>
       {renderFilter()}
-      <CandidateProfile />
-      <div className={classes.buttonContainer}>
-        <PrimaryButton
-          onClick={stepButtonHandler(step - 1)}
-          disabled={step === 0}
-          classes={{ root: classes.arrowButton }}>
-          Previous
-        </PrimaryButton>
-        <PrimaryButton
-          onClick={submitHandler}
-          classes={{ root: classes.contactButton }}>
-          contact
-        </PrimaryButton>
-        <PrimaryButton
-          onClick={stepButtonHandler(step + 1)}
-          disabled={step === 10}
-          classes={{ root: classes.arrowButton }}>
-          Next
-        </PrimaryButton>
-      </div>
+      {recommends.length === 0 || step === recommends.length
+        ? <ExceptProfile onInit={onInit} />
+        : <CandidateProfile
+          recommend={recommends[step]} />
+      }
+      {
+        step < recommends.length &&
+        <div className={classes.buttonContainer}>
+          <PrimaryButton
+            onClick={stepButtonHandler(step - 1)}
+            disabled={step === 0}
+            classes={{ root: classes.arrowButton }}>
+            Previous
+          </PrimaryButton>
+          <PrimaryButton
+            onClick={submitHandler}
+            classes={{ root: classes.contactButton }}>
+            contact
+          </PrimaryButton>
+          <PrimaryButton
+            onClick={stepButtonHandler(step + 1)}
+            classes={{ root: classes.arrowButton }}>
+            Next
+          </PrimaryButton>
+        </div>
+      }
       {showModal &&
         <ContactEmailModal
           opened={showModal}
-          candidateName={'Jane'}
-          referrerName={'Mark Gosh'}
+          candidateName={recommends[step].candidate.firstName}
+          referrerName={`${recommends[step].referrer.firstName} ${recommends[step].referrer.lastName}`}
           onClose={closeModalHandler}
           onConfirm={comfirmModalHandler} />
       }

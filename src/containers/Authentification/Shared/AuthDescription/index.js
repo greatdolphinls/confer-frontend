@@ -4,12 +4,16 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
 import { AuthAvatar } from '../index';
+import MarkGeosonImage from '../../../../assets/img/users/mark_geoson.jpg';
+import AmandaFreemanImage from '../../../../assets/img/users/amanda_freeman.jpg';
+import TaliRapaportImage from '../../../../assets/img/users/tali_rapaport.jpg';
+import AniqRahmanImage from '../../../../assets/img/users/aniq_rahman.jpg';
 
 const styles = theme => {
   return {
     root: {
-      width: 514,
-      marginRight: theme.spacing(3),
+      width: 548,
+      marginRight: theme.spacing(2),
       color: theme.palette.mainForeColor,
       [theme.breakpoints.down('sm')]: {
         width: '100%'
@@ -17,16 +21,19 @@ const styles = theme => {
     },
     title: {
       fontSize: 34,
-      marginBottom: theme.spacing(5)
+      marginBottom: theme.spacing(3)
     },
     description: {
-      fontSize: 20,
-      marginBottom: theme.spacing(5)
+      fontSize: 17,
+      marginBottom: theme.spacing(3)
+    },
+    subDescription: {
+      fontSize: 24
     },
     referrers: {
       display: 'flex',
       flexFlow: 'wrap',
-      justifyContent: 'space-between',
+      justifyContent: 'space-around',
       marginBottom: theme.spacing(5)
     }
   };
@@ -36,16 +43,18 @@ const AuthDescription = ({ classes, referrers }) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>
-        Discover top talent, together.
+        Hire the best by paying it forward.
       </Typography>
       <Typography className={classes.description}>
-        Share three people who are <i>the best</i> at what they do. Then access all
-        recommendations in your network so you can hire faster with more confidence.
+        Recommend three people who are the best at what they do.
+        Once they’re approved, you’ll get access to all
+        recommendations in your collective so you can hire
+        with confidence. Forget expensive search firms;
+        identify great talent through people you trust at no cost.
       </Typography>
-      <Typography className={classes.description}>
-        We don’t ask just anyone to recommend. Join our existing contributors:
+      <Typography className={classes.subDescription}>
+        We don’t ask just anyone to recommend. Join our current members:
       </Typography>
-
       <div className={classes.referrers}>
         {referrers.map((referrer, index) => (
           <AuthAvatar key={index} referrer={referrer} />
@@ -60,26 +69,26 @@ AuthDescription.defaultProps = {
     {
       firstName: 'Mark',
       lastName: 'Gerson',
-      avatar: 'https://images.unsplash.com/photo-1563170423-18f482d82cc8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-      role: 'Co-founder GLG'
-    },
-    {
-      firstName: 'Andy',
-      lastName: 'Dunn',
-      avatar: 'https://images.unsplash.com/photo-1557612083-4b87d90dd7c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-      role: 'Co-founder Bonobos'
+      avatar: MarkGeosonImage,
+      shortDescription: 'Co-founder GLG'
     },
     {
       firstName: 'Amanda',
-      lastName: '',
-      avatar: 'https://images.unsplash.com/photo-1554741995-7e71ded4ae1c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-      role: 'CEO of SLT'
+      lastName: 'Freeman',
+      avatar: AmandaFreemanImage,
+      shortDescription: 'Founder & CEO, SLT'
     },
     {
-      firstName: 'Mia',
-      lastName: '',
-      avatar: 'https://images.unsplash.com/photo-1549907319-f028c3db04e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-      role: 'CEO of Recruit'
+      firstName: 'Tali',
+      lastName: 'Rapaport',
+      avatar: TaliRapaportImage,
+      shortDescription: 'VP Product, Lyft'
+    },
+    {
+      firstName: 'Aniq',
+      lastName: 'Rahman',
+      avatar: AniqRahmanImage,
+      shortDescription: 'Co-founder, Moat'
     }
   ]
 };

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import AliceCarousel from 'react-alice-carousel';
@@ -22,14 +21,15 @@ const styles = theme => {
   return {
     root: {
       width: '100%',
-      marginBottom: theme.spacing(8)
+      marginBottom: theme.spacing(6)
     },
     description: {
       marginBottom: theme.spacing(1),
-      color: theme.palette.subForeColor,
+      opacity: 0.6,
       textAlign: 'center'
     },
     groupLogo: {
+      width: '100%',
       height: 38
     }
   };
@@ -39,7 +39,8 @@ const GroupCarousel = ({ classes, groups, responsive }) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.description}>
-        Recommenders and recommendees come from a wide range of Fortune 500 companies and startups
+        Members in our collective come from Fortune 500 companies and
+        startups - they’re all looking to hire or be hired!
       </Typography>
       <AliceCarousel
         mouseDragEnabled
@@ -50,9 +51,11 @@ const GroupCarousel = ({ classes, groups, responsive }) => {
         dotsDisabled={true}
         buttonsDisabled={true} >
         {groups.map((group, index) => (
-          <Link key={index} to={group.url} className={classes.link}>
-            <img src={group.img} className={classes.groupLogo} alt='' />
-          </Link>
+          <img
+            key={index}
+            src={group}
+            className={classes.groupLogo}
+            alt='' />
         ))}
       </AliceCarousel>
     </div>
@@ -67,46 +70,16 @@ GroupCarousel.propTypes = {
 
 GroupCarousel.defaultProps = {
   groups: [
-    {
-      img: WeworkLogo,
-      url: '/wework'
-    },
-    {
-      img: McKinseyLogo,
-      url: '/mckinsey'
-    },
-    {
-      img: BonobosLogo,
-      url: '/bonobos'
-    },
-    {
-      img: SeamlessLogo,
-      url: '/seamless'
-    },
-    {
-      img: BCGLogo,
-      url: '/bcg'
-    },
-    {
-      img: LYALogo,
-      url: '/lya'
-    },
-    {
-      img: CADRELogo,
-      url: '/cadre'
-    },
-    {
-      img: GLGLogo,
-      url: '/glg'
-    },
-    {
-      img: TechForAmericaLogo,
-      url: '/techforamerica'
-    },
-    {
-      img: GoldmanSachsLogo,
-      url: '/goldmansachs'
-    }
+    WeworkLogo,
+    McKinseyLogo,
+    BonobosLogo,
+    SeamlessLogo,
+    BCGLogo,
+    LYALogo,
+    CADRELogo,
+    GLGLogo,
+    TechForAmericaLogo,
+    GoldmanSachsLogo,
   ],
   responsive: {
     0: { items: 3 },

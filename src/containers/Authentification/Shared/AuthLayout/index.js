@@ -24,7 +24,7 @@ const styles = theme => {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      margin: `${theme.spacing(6)}px 0`,
+      marginBottom: theme.spacing(6),
       [theme.breakpoints.down('sm')]: {
         width: `100%`,
       }
@@ -52,7 +52,7 @@ const styles = theme => {
       borderBottom: `2px solid ${theme.palette.buttonColor}`
     },
     container: {
-      padding: `${theme.spacing(7)}px ${theme.spacing(4)}px ${theme.spacing(1)}px `
+      padding: `${theme.spacing(3.5)}px ${theme.spacing(4)}px ${theme.spacing(1)}px `
     },
     title: {
       fontSize: 20,
@@ -91,7 +91,7 @@ const AuthLayout = ({ classes, selectedTab, tabs, children }) => {
           </div>
           <div className={classes.container}>
             <Typography className={classes.title}>
-              {isSignIn ? 'Sign back in' : 'Sign up with email'}
+              {isSignIn ? 'Sign in' : 'Sign up with email'}
             </Typography>
             {children}
             <Typography className={classes.termAndPrivacy}>

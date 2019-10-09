@@ -12,20 +12,15 @@ import { PrimaryButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
-import LogoImage from '../../../assets/img/logo.png';
 
 const styles = theme => {
   return {
     root: {
       width: '100%',
       display: 'flex',
-      marginTop: 36,
+      marginTop: 105,
       flexDirection: 'column',
       alignItems: 'center'
-    },
-    logoImage: {
-      width: 161,
-      marginBottom: 19
     },
     input: {
       marginBottom: theme.spacing(3),
@@ -85,7 +80,6 @@ const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) 
 
   return (
     <main className={classes.root}>
-      <img src={LogoImage} alt='logo' className={classes.logoImage} />
       <AuthLayout>
         <ValidatorForm
           onSubmit={submitHandler}

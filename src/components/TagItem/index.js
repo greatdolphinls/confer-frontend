@@ -11,7 +11,11 @@ const styles = theme => {
       fontSize: 14,
       margin: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px 0`,
       [theme.breakpoints.down('xs')]: {
-        minWidth: 96,
+        minWidth: 96
+      },
+      '&:focus': {
+        backgroundColor: theme.palette.subBackColor3,
+        color: theme.palette.buttonColor
       }
     },
     selected: {

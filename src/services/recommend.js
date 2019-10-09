@@ -1,7 +1,11 @@
 import axios from 'axios';
 import urlJoin from "url-join";
 
-import { getRecommendUrl, getRecommendsByReferrerUrl } from './endpoints';
+import {
+    getRecommendUrl,
+    getRecommendsByReferrerUrl,
+    getRecommendsByFilterUrl
+} from './endpoints';
 
 const getRecommends = async () => {
     const url = getRecommendUrl();
@@ -35,11 +39,17 @@ const getRecommendsByReferrerId = async (referrerId) => {
     return result;
 };
 
+const getRecommendsByFilter = async data => {
+    const url = getRecommendsByFilterUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
 
 export {
     getRecommends,
     editRecommend,
     removeRecommend,
     addRecommend,
-    getRecommendsByReferrerId
+    getRecommendsByReferrerId,
+    getRecommendsByFilter
 };

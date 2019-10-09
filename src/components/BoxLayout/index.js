@@ -8,9 +8,9 @@ const styles = theme => {
   return {
     root: {
       background: theme.palette.subBackColor1,
-      boxShadow: '0px 19px 38px rgba(0, 0, 0, 0.3), 0px 15px 12px rgba(0, 0, 0, 0.22)',
+      boxShadow: '0px 8px 12px rgba(0, 0, 0, 0.3)',
       borderRadius: 2,
-      padding: theme.spacing(3.5)
+      padding: theme.spacing(2.5)
     }
   };
 };

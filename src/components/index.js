@@ -4,6 +4,7 @@ export { default as Avatar } from './Avatar';
 export { default as GroupCarousel } from './GroupCarousel';
 export { default as CandidateInfo } from './CandidateInfo';
 export { default as ReferrerInfo } from './ReferrerInfo';
+export { default as RecommendInfo } from './RecommendInfo';
 export { default as BoxLayout } from './BoxLayout';
 export { default as CustomSelectValidator } from './CustomSelectValidator';
 export { default as CustomTagSelect } from './CustomTagSelect';

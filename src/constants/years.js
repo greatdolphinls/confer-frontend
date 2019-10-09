@@ -17,6 +17,6 @@ module.exports = [
   },
   {
     value: 8,
-    label: '> 8 years'
+    label: ' > 8 years'
   }
 ];

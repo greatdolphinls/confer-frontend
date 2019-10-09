@@ -8,12 +8,11 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginBottom: theme.spacing(1)
+      marginTop: theme.spacing(1)
     },
     description: {
       fontSize: 20,
       fontWeight: 500,
-      marginBottom: theme.spacing(0.5)
     },
     footer: {
       opacity: 0.6

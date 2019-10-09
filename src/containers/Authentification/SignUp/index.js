@@ -18,13 +18,14 @@ const styles = theme => {
     root: {
       width: '100%',
       display: 'flex',
-      marginTop: 36,
+      marginTop: theme.spacing(3),
       flexDirection: 'column',
       alignItems: 'center'
     },
     groupImage: {
       width: 161,
-      marginBottom: 19
+      height: 49,
+      marginBottom: theme.spacing(4)
     },
     input: {
       marginBottom: theme.spacing(3),
@@ -72,8 +73,11 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
     });
   };
 
-  const errorCallback = (response, message) => {
+  const errorCallback = (response, message, status) => {
     setLoadingStatus({ loading: false });
+    if (status === 402) {
+      history.replace(pageLinks.SignIn.url);
+    }
     toast.error(message || notifications.NO_RESPONSE, {
       position: toast.POSITION.BOTTOM_RIGHT
     });

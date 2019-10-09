@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import { Avatar } from '../index';
-import LinkedInImage from '../../assets/img/linkedIn.svg';
+import LinkedInImage from '../../assets/img/icons/linkedIn.svg';
 
 const styles = theme => {
   return {
@@ -22,29 +22,50 @@ const styles = theme => {
         paddingLeft: 0,
       }
     },
-    name: {
-      fontSize: 24,
+    headerContainer: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between'
     },
-    whyGreat: {
-      fontSize: 14,
-      marginBottom: theme.spacing(1.5)
+    name: {
+      fontSize: 24
+    },
+    shortDescription: {
+      fontSize: 20
     },
     howYouKnow: {
-      fontSize: 20,
       marginBottom: theme.spacing(0.5)
+    },
+    whyGreat: {
+      opacity: 0.6
     }
   };
 };
 
-const ReferrerInfo = ({ classes, recommend, showLinkedIn }) => {
+const ReferrerInfo = ({ classes, recommend }) => {
   const { referrer, howYouKnow, whyGreat } = recommend;
 
   return (
     <div className={classes.root}>
       <Avatar src={referrer.avatar} size={158} />
       <div className={classes.infoContent}>
-        <Typography className={classes.name}>
-          {`${referrer.firstName} ${referrer.lastName}`}
+        <div className={classes.headerContainer}>
+          <Typography className={classes.name}>
+            {`${referrer.firstName} ${referrer.lastName}`}
+          </Typography>
+          {
+            !!referrer.linkedInURL &&
+            <a
+              target='_blank'
+              rel='noreferrer noopener'
+              href={referrer.linkedInURL}
+              className={classes.logoContainer}>
+              <img src={LinkedInImage} alt='linkedIn' />
+            </a>
+          }
+        </div>
+        <Typography className={classes.shortDescription}>
+          {referrer.shortDescription}
         </Typography>
         <Typography className={classes.howYouKnow}>
           {howYouKnow}
@@ -52,9 +73,6 @@ const ReferrerInfo = ({ classes, recommend, showLinkedIn }) => {
         <Typography className={classes.whyGreat}>
           {`“${whyGreat}”`}
         </Typography>
-        {showLinkedIn &&
-          <img src={LinkedInImage} alt='linkedIn' />
-        }
       </div>
     </div>
   );
@@ -62,10 +80,7 @@ const ReferrerInfo = ({ classes, recommend, showLinkedIn }) => {
 
 ReferrerInfo.propTypes = {
   classes: PropTypes.object.isRequired,
-};
-
-ReferrerInfo.defaultProps = {
-  showLinkedIn: false
+  recommend: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(ReferrerInfo);

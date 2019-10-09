@@ -92,7 +92,7 @@ SuccessRecommendModal.defaultProps = {
   },
   passContent: {
     title: 'Thank you!',
-    description: 'Thanks for submitting your three recommendations. You can now start searching for talent. You can add more recommendations at any time, up to 5 total!',
+    description: 'Thanks for submitting your three recommendations. As soon as we’re done reviewing your recommendations, you’ll get to start discovering talenet. We’ll be in touch shortly!',
     confirm: 'Discover Talent'
   }
 };
