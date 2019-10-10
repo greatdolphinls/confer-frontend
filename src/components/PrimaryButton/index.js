@@ -9,6 +9,9 @@ const styles = theme => {
     root: {
       color: theme.palette.mainBackColor,
       backgroundColor: theme.palette.buttonColor,
+      '&:hover': {
+        backgroundColor: theme.palette.buttonHoverColor,
+      }
     },
     disabled: {
       backgroundColor: theme.palette.subButtonColor1
@@ -20,7 +23,7 @@ const PrimaryButton = ({ classes, children, disabled = false, ...props }) => {
   return (
     <Button
       disabled={disabled}
-      className={classNames(classes.root, {[classes.disabled]: disabled})}
+      className={classNames(classes.root, { [classes.disabled]: disabled })}
       {...props}>
       {children}
     </Button>

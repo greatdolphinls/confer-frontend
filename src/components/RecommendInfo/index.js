@@ -7,7 +7,9 @@ import { CandidateInfo, ReferrerInfo } from '../index';
 
 const styles = theme => {
   return {
-    root: {},
+    root: {
+      width: '100%'
+    },
     infoContainer: {
       padding: `${theme.spacing(1)}px 0`,
     },

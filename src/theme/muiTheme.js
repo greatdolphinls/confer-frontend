@@ -14,6 +14,7 @@ const theme = createMuiTheme({
         buttonColor: '#2196F3',
         subButtonColor: '#6FCF97',
         subButtonColor1: '#C2C2C2',
+        buttonHoverColor: '#2150f3',
         mainForeColor: '#000000',
         subForeColor: '#5E5E5E',
         lineColor: 'lightgrey',

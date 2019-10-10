@@ -16,6 +16,7 @@ const styles = theme => {
       }
     },
     infoContent: {
+      width: '100%',
       paddingLeft: theme.spacing(3.5),
       [theme.breakpoints.down('xs')]: {
         marginTop: theme.spacing(2),

@@ -22,7 +22,13 @@ export const registerUser = (
     axios
         .post(url, user)
         .then(response => {
-            successCallback();
+            const { token } = response.data;
+            localStorage.setItem(jwtTokenKey, token);
+            setAuthToken(token);
+            const userInfo = jwt_decode(token);
+            dispatch(setCurrentUser(userInfo));
+
+            successCallback && successCallback(response);
         })
         .catch(error => {
             if (error.response) {

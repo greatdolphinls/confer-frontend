@@ -67,7 +67,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
 
   const successCallback = () => {
     setLoadingStatus({ loading: false });
-    history.replace(pageLinks.SignIn.url);
+    history.replace(pageLinks.GroundRules.url);
     toast.info(notifications.SIGN_UP_SUCCESS, {
       position: toast.POSITION.BOTTOM_RIGHT
     });
