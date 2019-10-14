@@ -8,9 +8,13 @@ import expertiseReducer from './expertiseReducer';
 import recommendReducer from './recommendReducer';
 import locationReducer from './locationReducer';
 import relationshipReducer from './relationshipReducer';
+import userReducer from './userReducer';
+import groupReducer from './groupReducer';
 
 export default combineReducers({
   auth: authReducer,
+  user: userReducer,
+  group: groupReducer,
   loading: loadingReducer,
   errors: errorReducer,
   expertise: expertiseReducer,

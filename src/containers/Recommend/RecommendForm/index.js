@@ -18,7 +18,6 @@ import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 import { useInput } from '../../../utils/hooks';
 import { removeItemWithSlice } from '../../../utils/utility';
-import { addUser } from '../../../services/user';
 import { addRecommend } from '../../../services/recommend';
 
 const styles = theme => {
@@ -73,7 +72,6 @@ const styles = theme => {
 const RecommendForm = ({ classes, history }) => {
   const expertises = useSelector(state => state.expertise.data, []);
   const relationships = useSelector(state => state.relationship.data, []);
-  const { user } = useSelector(state => state.auth, []);
   const dispatch = useDispatch();
 
   const firstName = useInput('');
@@ -142,22 +140,13 @@ const RecommendForm = ({ classes, history }) => {
   }
 
   const stepTwoHandler = async () => {
-    let data = {
-      user: {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        linkedInURL: linkedInURL.value,
-        isCandidate: true
-      }
-    };
-
     try {
-      const response = await addUser(data);
-      data = {
+      const data = {
         recommend: {
-          referrerId: user.id,
-          candidateId: response.data._id,
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          linkedInURL: linkedInURL.value,
           expertiseArea: expertise.value,
           subExpertises: selectedSubExpertises,
           howYouKnow: howYouKnow.value,

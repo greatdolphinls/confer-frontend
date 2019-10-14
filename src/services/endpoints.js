@@ -14,6 +14,7 @@ const locationsPrefix = 'api/locations';
 const recommendsByReferrerUrl = '/api/recommendsByReferrerId';
 const recommendsByFilterUrl = '/api/recommendsByFilter';
 const relationshipsPrefix = '/api/relationships';
+const groupsPrefix = '/api/groups';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -59,6 +60,10 @@ const getLocationUrl = () => {
     return urlJoin(config.proxyUrl, locationsPrefix);
 };
 
+const getGroupUrl = () => {
+    return urlJoin(config.proxyUrl, groupsPrefix);
+};
+
 export {
     getResetPasswordUrl,
     getForgotPasswordUrl,
@@ -70,5 +75,6 @@ export {
     getRecommendsByFilterUrl,
     getExpertiseUrl,
     getLocationUrl,
-    getRelationshipUrl
+    getRelationshipUrl,
+    getGroupUrl
 };

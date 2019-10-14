@@ -8,6 +8,7 @@ import {
     getResetPasswordUrl,
 } from '../services/endpoints';
 import { jwtTokenKey, pageLinks } from '../constants/links';
+import roles from '../constants/roles';
 import AuthConstants from '../constants/reducerConstants/AuthConstants';
 import { setErrors, clearErrors } from './error';
 import setAuthToken from '../services/security/setAuthToken';
@@ -56,7 +57,11 @@ export const loginUser = (user, history, successCallback, errorCallback) => disp
             const userInfo = jwt_decode(token);
             dispatch(setCurrentUser(userInfo));
 
-            history.push(pageLinks.RecommendCount.url);
+            if (userInfo.role === roles.ADMIN_ROLE) {
+                history.push(pageLinks.AdminUserList.url);
+            } else {
+                history.push(pageLinks.RecommendCount.url);
+            }
             successCallback && successCallback(response);
         })
         .catch(error => {

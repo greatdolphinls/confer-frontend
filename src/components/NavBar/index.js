@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
 import { pageLinks, defaultAvatarLink } from '../../constants/links'
+import roles from '../../constants/roles';
 import { hasValidToken } from '../../utils/utility';
 import { Avatar } from '../index';
 import { logoutUser } from '../../actions';
@@ -37,10 +38,26 @@ const styles = theme => {
   };
 };
 
-const NavBar = ({ classes, SignOffItems, SignOnItems }) => {
+const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth, []);
-  const items = hasValidToken ? SignOnItems : SignOffItems;
+  let items = [];
+
+  if (hasValidToken()) {
+    switch (user.role) {
+      case roles.ADMIN_ROLE:
+        items = AdminItems;
+        break;
+      case roles.REFERRER_ROLE:
+        items = ReferrerItems;
+        break;
+      default:
+        items = ReferrerItems;
+        break;
+    }
+  } else {
+    items = SignOffItems;
+  }
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -101,7 +118,21 @@ NavBar.defaultProps = {
       url: pageLinks.SignIn.url
     }
   ],
-  SignOnItems: [
+  AdminItems: [
+    {
+      title: pageLinks.AdminUserList.title,
+      url: pageLinks.AdminUserList.url
+    },
+    {
+      title: pageLinks.Discover.title,
+      url: pageLinks.Discover.url
+    },
+    {
+      title: pageLinks.FAQ.title,
+      url: pageLinks.FAQ.url
+    }
+  ],
+  ReferrerItems: [
     {
       title: pageLinks.Discover.title,
       url: pageLinks.Discover.url

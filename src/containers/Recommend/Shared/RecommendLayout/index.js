@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography, Chip } from '@material-ui/core';
-import { ChevronLeft } from '@material-ui/icons';
 
 import { pageLinks } from '../../../../constants/links';
+import { BackButton } from '../../../../components';
 
 const styles = theme => {
   return {
@@ -32,10 +32,8 @@ const styles = theme => {
     back: {
       left: 15,
       top: 15,
-      opacity: 0.6,
       display: 'flex',
-      position: 'absolute',
-      cursor: 'pointer'
+      position: 'absolute'
     },
     stepTag: {
       width: 156,
@@ -67,14 +65,14 @@ const RecommendLayout = ({ classes, selectedStep, steps, onSetStep, history, chi
   return (
     <div className={classes.root}>
       <div className={classes.formContainer}>
-        <Typography
-          className={classes.back}
-          onClick={backHandler}
-        >
-          <ChevronLeft />
-          {back}
-        </Typography>
-        <Chip label={`Step ${selectedStep} of 2`} className={classes.stepTag} />
+        <BackButton
+          label={back}
+          onBack={backHandler}
+          classes={{ root: classes.back }}
+        />
+        <Chip
+          label={`Step ${selectedStep} of 2`}
+          className={classes.stepTag} />
         <Typography className={classes.title}>
           {title}
         </Typography>

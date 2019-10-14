@@ -10,6 +10,7 @@ const theme = createMuiTheme({
         subBackColor3: '#E3F2FD',
         subBackColor4: '#ECF9F3',
         subBackColor5: '#FFF4D5',
+        subBackColor6: '#F7F4F4',
         iconColor: '#FFFFFF',
         buttonColor: '#2196F3',
         subButtonColor: '#6FCF97',
@@ -25,6 +26,23 @@ const theme = createMuiTheme({
         useNextVariants: true,
         primary: {
             color: 'rgba(0, 0, 0, 0.87)'
+        }
+    },
+    overrides: {
+        MUIDataTable: {
+            root: {
+                backgroundColor: '#FF000'
+            },
+            paper: {
+                boxShadow: 'none',
+            }
+        },
+        MUIDataTableHeadCell: {
+            root: {
+                '&:last-child': {
+                    width: 70
+                }
+            }
         }
     }
 });

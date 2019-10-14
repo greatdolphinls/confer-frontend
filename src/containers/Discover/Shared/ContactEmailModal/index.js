@@ -7,10 +7,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
-import { PrimaryButton } from '../../../../components';
+import { PrimaryButton, CloseIconButton } from '../../../../components';
 
 const styles = theme => {
   return {
@@ -59,11 +57,12 @@ const ContactEmailModal = ({ classes, opened, candidateName, referrerName, onClo
       open={opened}
       aria-labelledby='form-dialog-title'>
       <DialogTitle>
-        {onClose ? (
-          <IconButton className={classes.closeButton} onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        ) : null}
+        {onClose &&
+          <CloseIconButton
+            classes={{ root: classes.closeButton }}
+            onClick={onClose}
+          />
+        }
       </DialogTitle>
       <DialogContent className={classes.content}>
         <Typography className={classes.title}>
@@ -75,8 +74,8 @@ const ContactEmailModal = ({ classes, opened, candidateName, referrerName, onClo
           <br /> <br /> <br />
           I’m {`${firstName} ${lastName}`} and I’m looking to add a new person to our team.
           I love your background and you come highly recommended by {referrerName},
-          so I thought I’d reach out to see if you’d like to hear more about
-          what we’re working on here.
+              so I thought I’d reach out to see if you’d like to hear more about
+              what we’re working on here.
           <br /> <br />
           Best,
           <br />

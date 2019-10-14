@@ -6,7 +6,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import theme from './theme/muiTheme';
 import Layout from './hoc/layout';
-import { pageLinks } from './constants/links';
 import {
   SignUp,
   SignIn,
@@ -19,13 +18,13 @@ import ContactUs from './containers/ContactUs';
 import TermsOfUse from './containers/TermsOfUse';
 import PrivacyPolicy from './containers/PrivacyPolicy';
 import FAQ from './containers/FAQ';
-import { GroundRules, RecommendForm, RecommendCount } from './containers/Recommend';
-import Discover from './containers/Discover';
-import { hasValidToken } from './utils/utility';
+import { pageLinks } from './constants/links';
+import { authRoutes } from './constants/routes';
+import { hasValidToken, validateRoleAccess } from './utils/utility';
 
 class App extends Component {
   render() {
-    const { loadingStatus } = this.props;
+    const { loadingStatus, loggedInUser } = this.props;
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -57,14 +56,22 @@ class App extends Component {
               <Route path={pageLinks.FAQ.url} component={FAQ} />
               <Route
                 render={() =>
-                  hasValidToken() ? (
-                    <Switch>
-                      <Route path={pageLinks.GroundRules.url} exact component={GroundRules} />
-                      <Route path={pageLinks.RecommendForm.url} exact component={RecommendForm} />
-                      <Route path={pageLinks.RecommendCount.url} exact component={RecommendCount} />
-                      <Route path={pageLinks.Discover.url} exact component={Discover} />
-                    </Switch>
-                  ) : (
+                  hasValidToken()
+                    ? (
+                      <Switch>
+                        {authRoutes.filter(authRoute => validateRoleAccess(authRoute.roles, loggedInUser))
+                          .map(authRoute => (
+                            <Route
+                              key={authRoute.url}
+                              exact
+                              path={authRoute.url}
+                              component={authRoute.component}
+                            />
+                          ))
+                        }
+                      </Switch>
+                    )
+                    : (
                       <Redirect to={pageLinks.SignIn.url} />
                     )
                 }

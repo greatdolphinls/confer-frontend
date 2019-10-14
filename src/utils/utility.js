@@ -1,6 +1,7 @@
 // TODO: replace all hardcoded theme.spacing.unit with this
 import jwt_decode from 'jwt-decode';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 const getFontUnit = theme => theme.spacing.unit * 1.25;
 
@@ -24,6 +25,14 @@ const hasValidToken = () => {
         return false;
     }
     return true;
+};
+
+const validateRoleAccess = (pageRoles, loggedInUser) => {
+    let valid = false;
+    if (pageRoles.includes(loggedInUser.role)) {
+        valid = true;
+    }
+    return valid;
 };
 
 const getMomentTime = (date, timeFormat) => {
@@ -66,14 +75,29 @@ const getCurrentEmployment = (employments) => {
     }
 }
 
+const showErrorToast = message => {
+    toast.error(message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+    });
+};
+
+const showInfoToast = message => {
+    toast.info(message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+    });
+};
+
 export {
     isEmpty,
     hasValidToken,
+    validateRoleAccess,
     getFontUnit,
     getMomentTime,
     getAPIToken,
     compareObject,
     dateTimeToUTCString,
     removeItemWithSlice,
-    getCurrentEmployment
+    getCurrentEmployment,
+    showErrorToast,
+    showInfoToast
 };
