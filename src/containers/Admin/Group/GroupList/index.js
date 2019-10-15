@@ -18,6 +18,7 @@ import {
 import { commonMUITableOptions } from '../../../../utils/styles';
 import { pageLinks } from '../../../../constants/links';
 import { showErrorToast } from '../../../../utils/utility';
+import DefaultLogo from '../../../../assets/img/defaultLogo.jpg';
 
 const styles = theme => {
   return {
@@ -37,8 +38,7 @@ const styles = theme => {
       width: 100,
       height: 40,
       objectFit: 'cover',
-      borderRadius: 2,
-      border: '1px solid grey'
+      borderRadius: 2
     },
     actions: {
       display: 'flex'
@@ -46,6 +46,7 @@ const styles = theme => {
     addButton: {
       color: theme.palette.subButtonColor,
       backgroundColor: theme.palette.subBackColor4,
+      boxShadow: `0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12)`,
     }
   };
 };
@@ -68,7 +69,7 @@ const AdminGroupList = ({ classes, history }) => {
       const row = [
         name,
         viewPassword,
-        logo,
+        logo || DefaultLogo,
         _id
       ];
       return row;

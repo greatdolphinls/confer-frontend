@@ -1,16 +1,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 
 import * as GROUP_SERVICE from '../../../../services/group';
-import { setGroups, removeGroup } from '../../../../actions';
+import { setGroups, removeGroup, addEditGroup } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
-import { AccordionLayout, ConfirmDialog } from '../../../../components';
+import notifications from '../../../../constants/notifications';
+import {
+  AccordionLayout,
+  ConfirmDialog,
+  EditableInput,
+  EditableImage
+} from '../../../../components';
 import { showErrorToast } from '../../../../utils/utility';
+import { useInput } from '../../../../utils/hooks';
 
 const styles = theme => {
   return {
@@ -25,6 +31,9 @@ const AdminEditGroup = ({ classes, match, history }) => {
   const groups = useSelector(state => state.group.data, []);
   const dispatch = useDispatch();
 
+  const name = useInput('');
+  const password = useInput('');
+  const logo = useInput('');
   const [expanded, setExpanded] = useState('profilePanel');
   const [editPanel, setEditPanel] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
@@ -42,6 +51,15 @@ const AdminEditGroup = ({ classes, match, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups]);
 
+  useEffect(() => {
+    if (!!group) {
+      name.onSet(group.name);
+      password.onSet(group.viewPassword);
+      logo.onSet(group.logo);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group]);
+
   const expandHandler = panel => {
     setExpanded(panel);
   };
@@ -54,8 +72,30 @@ const AdminEditGroup = ({ classes, match, history }) => {
     history.push(pageLinks.AdminGroupList.url);
   }
 
-  const saveHandler = () => {
-    history.push(pageLinks.AdminGroupList.url);
+  const saveHandler = async () => {
+    if (!name.value || !password.value) {
+      showErrorToast(notifications.FORM_VALODATION_ERROR);
+      return null;
+    }
+
+    try {
+      const groupData = {
+        _id: group._id,
+        name: name.value,
+        password: password.value,
+        viewPassword: password.value,
+        logo: logo.value
+      };
+
+      const { data } = await GROUP_SERVICE.editGroup(groupData);
+      dispatch(addEditGroup(data));
+      history.push(pageLinks.AdminGroupList.url);
+    } catch (error) {
+      if (error.response) {
+        const { message } = error.response.data;
+        showErrorToast(message);
+      }
+    }
   }
 
   const deleteHandler = async () => {
@@ -95,11 +135,25 @@ const AdminEditGroup = ({ classes, match, history }) => {
           onEdit={editHandler}
           onExpand={expandHandler}
           selectedPanel={expanded}>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam. Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-          </Typography>
+          <EditableInput
+            isEdit={'profilePanel' === editPanel}
+            label='Group name'
+            value={name.value}
+            onChange={name.onChange}
+          />
+          <EditableInput
+            isEdit={'profilePanel' === editPanel}
+            label='Group password'
+            value={password.value}
+            onChange={password.onChange}
+          />
+          <EditableImage
+            isAvatar={false}
+            isEdit={'profilePanel' === editPanel}
+            label='Logo'
+            value={logo.value}
+            onChange={logo.onSet}
+          />
         </AccordionLayout>
         {
           showDialog &&
@@ -117,10 +171,6 @@ const AdminEditGroup = ({ classes, match, history }) => {
       </Typography>
     );
   }
-};
-
-AdminEditGroup.propTypes = {
-  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AdminEditGroup);

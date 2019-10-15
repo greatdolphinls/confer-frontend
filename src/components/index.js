@@ -19,3 +19,6 @@ export { default as CloseIconButton } from './CloseIconButton';
 export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as BackButton } from './BackButton';
 export { default as AccordionLayout } from './AccordionLayout';
+export { default as EditableInput } from './EditableInput';
+export { default as EditableImage } from './EditableImage';
+export { default as EditableTextarea } from './EditableTextarea';

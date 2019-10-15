@@ -11,8 +11,13 @@ const useInput = (initialValue) => {
     }
   };
 
+  const handleSetValue = value => {
+    setValue(value);
+  };
+
   return {
     value,
+    onSet: handleSetValue,
     onChange: handleInputChange
   };
 };

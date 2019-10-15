@@ -17,5 +17,7 @@ module.exports = {
   SAME_PASSWORD: 'The passwords are same',
   INVALID_INDICATOR_PARAMS: 'Please input correct parameters for ',
 
-  RECOMMEND_FORM_VALIDATION_ERROR: 'Please select Items in recommend form'
+  RECOMMEND_FORM_VALIDATION_ERROR: 'Please select Items in recommend form',
+
+  FORM_VALODATION_ERROR: 'Please fill inputs'
 }

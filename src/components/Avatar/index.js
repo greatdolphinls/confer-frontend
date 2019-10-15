@@ -24,7 +24,7 @@ const Avatar = ({ src, size, isBorder, classes }) => {
     <div>
       <img
         alt=''
-        src={src}
+        src={src || defaultAvatarLink}
         width={size}
         height={size}
         className={classNames(classes.root, { [classes.border]: isBorder })}
