@@ -7,7 +7,8 @@ import {
   AdminEditUser,
   AdminGroupList,
   AdminAddGroup,
-  AdminEditGroup
+  AdminEditGroup,
+  AdminRecommendList
 } from '../containers/Admin';
 import roles from './roles';
 import { pageLinks } from './links';
@@ -80,6 +81,13 @@ const authRoutes = [
   {
     url: pageLinks.AdminEditGroup.url,
     component: AdminEditGroup,
+    roles: [
+      roles.ADMIN_ROLE
+    ]
+  },
+  {
+    url: pageLinks.AdminRecommendList.url,
+    component: AdminRecommendList,
     roles: [
       roles.ADMIN_ROLE
     ]

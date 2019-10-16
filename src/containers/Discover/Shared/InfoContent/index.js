@@ -8,14 +8,13 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginTop: theme.spacing(1)
+      marginTop: theme.spacing(1.5)
     },
-    description: {
-      fontSize: 20,
-      fontWeight: 500,
-    },
+    description: {},
     footer: {
-      opacity: 0.6
+      fontSize: 12,
+      opacity: 0.6,
+      fontWeight: 500
     }
   };
 };

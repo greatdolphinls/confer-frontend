@@ -43,10 +43,18 @@ const styles = theme => {
 const AdminTabs = ({ classes, selectedValue, tabs, history }) => {
 
   const handleChange = (event, newValue) => {
-    if (newValue === 'users') {
-      history.push(pageLinks.AdminUserList.url);
-    } else {
-      history.push(pageLinks.AdminGroupList.url);
+    switch (newValue) {
+      case 'users':
+        history.push(pageLinks.AdminUserList.url);
+        break
+      case 'groups':
+        history.push(pageLinks.AdminGroupList.url);
+        break
+      case 'recommends':
+        history.push(pageLinks.AdminRecommendList.url);
+        break
+      default:
+        break
     }
   };
 
@@ -79,6 +87,10 @@ AdminTabs.defaultProps = {
       label: 'Groups',
       value: 'groups'
     },
+    {
+      label: 'Recommends',
+      value: 'recommends'
+    }
   ]
 };
 

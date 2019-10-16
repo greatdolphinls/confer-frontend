@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { registerUser, clearErrors, setLoadingStatus } from '../../../actions';
+import * as GROUP_SERVICE from '../../../services/group';
 import { AuthLayout } from '../Shared';
 import { PrimaryButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
@@ -44,9 +45,21 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
   const lastName = useInput('');
   const password = useInput('');
   const groupPassword = useInput('');
+  const groupId = match.params.group;
+  const [group, setGroup] = useState('');
+
+  useEffect(() => {
+    getGroup()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getGroup = async () => {
+    const { data } = await GROUP_SERVICE.getGroup(groupId);
+    setGroup(data);
+    console.log(data)
+  }
 
   const submitHandler = () => {
-    const groupId = match.params.group;
     const data = {
       email: email.value,
       firstName: firstName.value,
@@ -85,8 +98,13 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
 
   return (
     <main className={classes.root}>
-      <img src={GroupImage} alt='group logo' className={classes.groupImage} />
-      <AuthLayout selectedTab='signup' >
+      <img
+        src={group.logo || GroupImage}
+        alt='group logo'
+        className={classes.groupImage} />
+      <AuthLayout
+        selectedTab='signup'
+        groupName={group.name || 'group'}>
         <ValidatorForm
           onSubmit={submitHandler}
           onError={errors => console.log(errors)}>

@@ -11,7 +11,7 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'baseline',
-      margin: `${theme.spacing(1.5)}px 0`
+      marginBottom: theme.spacing(3)
     },
     img: {
       marginRight: theme.spacing(1)

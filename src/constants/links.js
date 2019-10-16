@@ -46,6 +46,14 @@ const pageLinks = {
     title: 'Success Reset Password',
     url: '/success-reset-password'
   },
+  Profile: {
+    title: 'Profile',
+    url: '/profile'
+  },
+  MyAccount: {
+    title: 'Account management',
+    url: '/account-management'
+  },
   GroundRules: {
     title: 'Ground Rules',
     url: '/recommend/ground-rules'
@@ -79,12 +87,24 @@ const pageLinks = {
     url: '/admin/group/list'
   },
   AdminAddGroup: {
-    title: 'Admin',
+    title: 'Add Group',
     url: '/admin/group/add'
   },
   AdminEditGroup: {
-    title: 'Admin',
+    title: 'Edit Group',
     url: '/admin/group/edit/:groupId'
+  },
+  AdminRecommendList: {
+    title: 'Admin Recommend',
+    url: '/admin/recommend/list'
+  },
+  AdminAddRecommend: {
+    title: 'Add Recommend',
+    url: '/admin/recommend/add'
+  },
+  AdminEditRecommend: {
+    title: 'Edit Recommend',
+    url: '/admin/recommend/edit/:recommendId'
   },
 };
 

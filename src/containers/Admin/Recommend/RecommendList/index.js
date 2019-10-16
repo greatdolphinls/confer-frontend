@@ -8,8 +8,8 @@ import VerifyIcon from '@material-ui/icons/Link';
 import UnVerifyIcon from '@material-ui/icons/LinkOff';
 
 import { AdminTabs } from '../../Shared';
-import { setUsers, removeUser, addEditUser } from '../../../../actions';
-import * as USER_SERVICE from '../../../../services/user';
+import { setRecommends, removeRecommend, addEditRecommend } from '../../../../actions';
+import * as RECOMMEND_SERVICE from '../../../../services/recommend';
 import {
   CustomMUIDataTable,
   EditIconButton,
@@ -44,25 +44,24 @@ const styles = theme => {
   };
 };
 
-const AdminUserList = ({ classes, history }) => {
-  const users = useSelector(state => state.user.data, []);
+const AdminRecommendList = ({ classes, history }) => {
+  const recommends = useSelector(state => state.recommend.data, []);
   const dispatch = useDispatch();
 
   const [showDialog, setShowDialog] = useState(false);
-  const [userId, setUserId] = useState();
+  const [recommendId, setRecommendId] = useState();
 
   useEffect(() => {
-    dispatch(setUsers());
+    dispatch(setRecommends());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createTableData = users => {
-    const tableData = users.map(user => {
-      const { firstName, lastName, email, verified, _id } = user;
+  const createTableData = recommends => {
+    const tableData = recommends.map(recommend => {
+      const { referrer, candidate, verified, _id } = recommend;
       const row = [
-        firstName,
-        lastName,
-        email,
+        `${referrer.firstName} ${referrer.lastName}`,
+        `${candidate.firstName} ${candidate.lastName}`,
         verified,
         _id
       ];
@@ -72,9 +71,8 @@ const AdminUserList = ({ classes, history }) => {
   };
 
   const columns = () => [
-    { name: 'First Name' },
-    { name: 'Last Name' },
-    { name: 'Email' },
+    { name: 'Referrer' },
+    { name: 'Candidate' },
     {
       name: 'Access',
       options: {
@@ -91,15 +89,15 @@ const AdminUserList = ({ classes, history }) => {
       options: {
         sort: false,
         customBodyRender: (value, tableMeta) => {
-          const user = users.find(user => user._id === value);
+          const recommend = recommends.find(recommend => recommend._id === value);
 
           return (
             <div className={classes.actions}>
               <CustomSwitchButton
-                flag={user.verified}
+                flag={recommend.verified}
                 trueIcon={<VerifyIcon />}
                 falseIcon={<UnVerifyIcon />}
-                onClick={verifyUserHandler(value)} />
+                onClick={verifyRecommendHandler(value)} />
               <EditIconButton
                 onClick={editButtonHandler(value)} />
               <RemoveIconButton
@@ -118,49 +116,49 @@ const AdminUserList = ({ classes, history }) => {
         <PrimaryButton
           className={classes.addButton}
           onClick={addButtonHandler}>
-          Add User
+          Add Recommend
         </PrimaryButton>
       );
     }
   };
 
-  const editButtonHandler = (userId) => () => {
-    history.push(pageLinks.AdminEditUser.url.replace(':userId', userId));
+  const editButtonHandler = (recommendId) => () => {
+    history.push(pageLinks.AdminEditRecommend.url.replace(':recommendId', recommendId));
   };
 
   const addButtonHandler = () => {
-    history.push(pageLinks.AdminAddUser.url);
+    history.push(pageLinks.AdminAddRecommend.url);
   }
 
   const openConfirmDialogHandler = (opened, removeId) => () => {
-    setUserId(removeId);
+    setRecommendId(removeId);
     setShowDialog(opened);
   }
 
   const closeDialogHandler = () => {
-    setUserId(null);
+    setRecommendId(null);
     setShowDialog(false);
   }
 
   const confirmDialogHandler = async () => {
     try {
-      const { data } = await USER_SERVICE.removeUser(userId);
-      dispatch(removeUser(data));
+      const { data } = await RECOMMEND_SERVICE.removeRecommend(recommendId);
+      dispatch(removeRecommend(data));
     } catch (error) {
       if (error.response) {
         const { message } = error.response.data;
         showErrorToast(message);
       }
     }
-    setUserId(null);
+    setRecommendId(null);
     setShowDialog(false);
   }
 
-  const verifyUserHandler = (userId) => async () => {
+  const verifyRecommendHandler = (recommendId) => async () => {
     try {
-      const response = await USER_SERVICE.verifyUser(userId);
+      const response = await RECOMMEND_SERVICE.verifyRecommend(recommendId);
       const { data } = response;
-      dispatch(addEditUser(data));
+      dispatch(addEditRecommend(data));
     } catch (error) {
       if (error.response) {
         const { message } = error.response.data;
@@ -171,10 +169,10 @@ const AdminUserList = ({ classes, history }) => {
 
   return (
     <main className={classes.root}>
-      <AdminTabs selectedValue='users' history={history} />
+      <AdminTabs selectedValue='recommends' history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
-          data={createTableData(users)}
+          data={createTableData(recommends)}
           columns={columns()}
           options={options} />
       </Paper>
@@ -186,8 +184,8 @@ const AdminUserList = ({ classes, history }) => {
   );
 };
 
-AdminUserList.propTypes = {
+AdminRecommendList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AdminUserList);
+export default withStyles(styles)(AdminRecommendList);

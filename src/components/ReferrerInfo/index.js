@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import { Avatar } from '../index';
+import { Avatar, GroupItem } from '../index';
 import LinkedInImage from '../../assets/img/icons/linkedIn.svg';
 
 const styles = theme => {
@@ -32,13 +32,19 @@ const styles = theme => {
       fontSize: 24
     },
     shortDescription: {
-      fontSize: 20
+      fontSize: 20,
+      marginBottom: theme.spacing(0.5)
     },
     howYouKnow: {
       marginBottom: theme.spacing(0.5)
     },
     whyGreat: {
-      opacity: 0.6
+      fontSize: 14,
+      opacity: 0.6,
+      marginBottom: theme.spacing(0.5)
+    },
+    groupContainer: {
+      display: 'flex'
     }
   };
 };
@@ -74,6 +80,15 @@ const ReferrerInfo = ({ classes, recommend }) => {
         <Typography className={classes.whyGreat}>
           {`“${whyGreat}”`}
         </Typography>
+        {
+          !!referrer.groupObjects &&
+          <div className={classes.groupContainer}>
+            {referrer.groupObjects.map((group, index) => (
+              <GroupItem key={index} name={group.name} />
+            ))}
+          </div>
+        }
+
       </div>
     </div>
   );

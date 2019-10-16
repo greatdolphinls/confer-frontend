@@ -4,15 +4,19 @@ import { Typography } from '@material-ui/core';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 import { InfoContainer, InfoContent } from '../index';
+import { getDiffYearsAndMonths, getMonth } from '../../../../utils/utility';
+import theme from '../../../../theme/muiTheme';
 
 const styles = () => {
   return {
     seeMore: {
       fontSize: 12,
       opacity: 0.6,
+      fontWeight: 500,
       display: 'flex',
       alignItems: 'center',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      marginTop: theme.spacing(0.5)
     }
   };
 };
@@ -25,11 +29,17 @@ const CandidateEmployment = ({ classes, employmentHistories }) => {
   }
 
   const getFooter = (employment) => {
-    const { startMonth, startYear, endMonth, endYear, currentlyWorks } = employment;
+    let { startMonth, startYear, endMonth, endYear, currentlyWorks } = employment;
     const startDate = `${startMonth} ${startYear}`;
     const endDate = currentlyWorks ? 'present' : `${endMonth} ${endYear}`;
-    const duration = (currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10)) - parseInt(startYear, 10);
-    return `${duration} years, ${startDate} - ${endDate}`;
+
+    startYear = parseInt(startYear, 10);
+    startMonth = getMonth(startMonth);
+    endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10);
+    endMonth = currentlyWorks ? (new Date().getMonth() + 1) : getMonth(endMonth);
+
+    const duration = getDiffYearsAndMonths(startYear, startMonth, endYear, endMonth);
+    return `${duration} , ${startDate} - ${endDate}`;
   }
 
   const seeMoreRender = () => {

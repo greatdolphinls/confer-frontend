@@ -4,7 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import { setExpertises, setLocations, setDiscoverRecommends } from '../../actions';
+import {
+  setExpertises,
+  setLocations,
+  setUserRecommends,
+  setDiscoverRecommends
+} from '../../actions';
 import { CustomSelect, PrimaryButton } from '../../components';
 import { CandidateProfile, ContactEmailModal, ExceptProfile } from './Shared';
 import { useInput } from '../../utils/hooks';
@@ -18,7 +23,7 @@ const styles = theme => {
       alignItems: 'center',
       marginTop: theme.spacing(3.5)
     },
-    description: {
+    filterDescription: {
       marginBottom: theme.spacing(1.5)
     },
     filterContainer: {
@@ -52,8 +57,19 @@ const styles = theme => {
       }
     },
     arrowButton: {
-      width: 101
-    }
+      width: 101,
+      backgroundColor: theme.palette.subButtonColor1
+    },
+    footerDescription: {
+      fontSize: 12,
+      fontWeight: 500,
+      width: 706,
+      textAlign: 'center',
+      marginBottom: theme.spacing(2.5),
+      [theme.breakpoints.down('sm')]: {
+        width: '100%'
+      }
+    },
   };
 };
 
@@ -62,6 +78,8 @@ const Discover = ({ classes }) => {
   const expertises = useSelector(state => state.expertise.data, []);
   const locations = useSelector(state => state.location.data, []);
   const recommends = useSelector(state => state.recommend.discover, []);
+  const userRecommends = useSelector(state => state.recommend.user, []);
+  const { user } = useSelector(state => state.auth, []);
   const dispatch = useDispatch();
 
   const expertise = useInput('default');
@@ -73,6 +91,7 @@ const Discover = ({ classes }) => {
   useEffect(() => {
     dispatch(setExpertises());
     dispatch(setLocations());
+    dispatch(setUserRecommends());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -110,9 +129,9 @@ const Discover = ({ classes }) => {
   }
 
   let expertiseOptions = expertises.map(({ name }) => ({ label: name, value: name }));
-  expertiseOptions = [{ label: 'all experises', value: 'default' }, ...expertiseOptions];
+  expertiseOptions = [{ label: 'All experises', value: 'default' }, ...expertiseOptions];
   let locationOptions = locations.map(({ name }) => ({ label: name, value: name }));
-  locationOptions = [{ label: 'all locations', value: 'default' }, ...locationOptions];
+  locationOptions = [{ label: 'All locations', value: 'default' }, ...locationOptions];
 
   const stepButtonHandler = (stepCount) => () => {
     setStep(stepCount);
@@ -128,6 +147,13 @@ const Discover = ({ classes }) => {
 
   const closeModalHandler = () => {
     setShowModal(false);
+  }
+
+  const isNotShowRecommends = () => {
+    return recommends.length === 0
+      || step === recommends.length
+      || userRecommends.length < 3
+      || !user.verified
   }
 
   const renderFilter = () => {
@@ -155,39 +181,68 @@ const Discover = ({ classes }) => {
     );
   }
 
-  return (
-    <main className={classes.root}>
-      <Typography className={classes.description}>
-        Tell us about the role you are looking to fill:
-      </Typography>
-      {renderFilter()}
-      {recommends.length === 0 || step === recommends.length
-        ? <ExceptProfile onInit={onInit} />
-        : <CandidateProfile
-          recommend={recommends[step]} />
-      }
-      {
-        step < recommends.length &&
+  const renderFooterText = () => {
+    return (
+      <>
+        <div className={classes.footerDescription}>
+          You currently have access to all recommendations made by
+          TechAviv members. In the future, you will have an opportuntiy
+          to access recommendations made by other communities. We will
+          notify you when that feature becomes available.
+        </div>
+        <div className={classes.footerDescription}>
+          If you know other leading executives who are outstanding at
+          identifying talent, please share the group link and password
+          with them. We will review their experience and recommendations
+          before granting access.
+        </div>
+      </>
+    )
+  }
+
+  const renderBottons = () => {
+    if (!isNotShowRecommends()) {
+      return (
         <div className={classes.buttonContainer}>
           <PrimaryButton
             onClick={stepButtonHandler(step - 1)}
             disabled={step === 0}
             classes={{ root: classes.arrowButton }}>
             Previous
-          </PrimaryButton>
+        </PrimaryButton>
           <PrimaryButton
             onClick={submitHandler}
             classes={{ root: classes.contactButton }}>
             contact
-          </PrimaryButton>
+        </PrimaryButton>
           <PrimaryButton
             onClick={stepButtonHandler(step + 1)}
             classes={{ root: classes.arrowButton }}>
             Next
-          </PrimaryButton>
+        </PrimaryButton>
         </div>
+      )
+    }
+  }
+  console.log(recommends)
+  return (
+    <main className={classes.root}>
+      <Typography className={classes.filterDescription}>
+        Tell us about the role you are looking to fill:
+      </Typography>
+      {renderFilter()}
+      {
+        isNotShowRecommends()
+          ? <ExceptProfile
+            isNotApproved={userRecommends.length < 3 || !user.verified}
+            onInit={onInit} />
+          : <CandidateProfile
+            recommend={recommends[step]} />
       }
-      {showModal &&
+      {renderBottons()}
+      {renderFooterText()}
+      {
+        showModal &&
         <ContactEmailModal
           opened={showModal}
           candidateName={recommends[step].candidate.firstName}

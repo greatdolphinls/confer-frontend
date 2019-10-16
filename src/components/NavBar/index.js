@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -10,8 +10,7 @@ import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { pageLinks, defaultAvatarLink } from '../../constants/links'
 import roles from '../../constants/roles';
 import { hasValidToken } from '../../utils/utility';
-import { Avatar } from '../index';
-import { logoutUser } from '../../actions';
+import { ProfileDropdown } from '../index';
 import LogoImage from '../../assets/img/logo.png';
 
 const styles = theme => {
@@ -29,17 +28,17 @@ const styles = theme => {
       width: 80
     },
     item: {
-      width: 106,
-      margin: `0 ${theme.spacing(3)}`,
+      minWidth: 'unset',
+      opacity: 0.6,
       fontSize: 14,
       fontWeight: 'normal',
-      opacity: 0.6
+      textTransform: 'unset',
+      marginRight: theme.spacing(3)
     }
   };
 };
 
-const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems }) => {
-  const dispatch = useDispatch();
+const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems, ...props }) => {
   const { user } = useSelector(state => state.auth, []);
   let items = [];
 
@@ -57,10 +56,6 @@ const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems }) => {
     }
   } else {
     items = SignOffItems;
-  }
-
-  const logoutHandler = () => {
-    dispatch(logoutUser());
   }
 
   return (
@@ -88,14 +83,9 @@ const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems }) => {
         ))}
         {
           (hasValidToken && !!user) &&
-          <div onClick={logoutHandler}>
-            <Avatar
-              src={user.avatar || defaultAvatarLink}
-              size={48}
-              isBorder
-              onClick={logoutHandler}
-            />
-          </div>
+          <ProfileDropdown
+            {...props}
+            avatar={user.avatar || defaultAvatarLink} />
         }
       </Toolbar>
     </AppBar>

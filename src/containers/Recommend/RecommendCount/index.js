@@ -53,15 +53,18 @@ const styles = theme => {
       }
     },
     groundButton: {
+      opacity: 0.6,
       fontSize: 12,
-      textAlign: 'center',
       cursor: 'pointer',
+      textAlign: 'center',
       marginBottom: theme.spacing(5),
     }
   };
 };
 
-const RecommendCount = ({ classes, minCandidates, history }) => {
+const RecommendCount = ({
+  classes, minCandidates, maxCandidates, history
+}) => {
   const recommends = useSelector(state => state.recommend.user, []);
   const dispatch = useDispatch();
   const [names, setNames] = useState([]);
@@ -103,28 +106,29 @@ const RecommendCount = ({ classes, minCandidates, history }) => {
       </Typography>
       <RecommendStepper activeStep={names.length} />
       <Typography className={classes.description}>
-        You’ve recommended {names.length} people!
-        {isComplete ?
-          ' You can access the shared talent network' :
-          `You’re just ${minCandidates - names.length} recommendation 
-          away from accessing the shared talent network`
+        {
+          isComplete
+            ? `Thank you for submitting your recommendations! 
+              We are reviewing them and will notify you once 
+              they have been approved so you can start searching 
+              for talent. You can continue submitting up to 5 people.`
+            : `You’ve recommended ${names.length} people! 
+              You’re just ${minCandidates - names.length} more 
+              away from accessing the talent collective.`
         }
       </Typography>
       {names.map((name, index) =>
         <CandidateNameItem key={index} name={name} />
       )}
       <PrimaryButton
+        disabled={maxCandidates <= names.length}
         classes={{ root: classes.recommendButton }}
         onClick={buttonHandler(pageLinks.RecommendForm.url)}>
-        {isComplete ?
-          'Keep Recommending' :
-          'Recommend Someone Great'
-        }
+        Recommend Someone Great
       </PrimaryButton>
       <Typography
         className={classes.groundButton}
-        onClick={buttonHandler(pageLinks.GroundRules.url)}
-      >
+        onClick={buttonHandler(pageLinks.GroundRules.url)} >
         See the ground rules
       </Typography>
     </main>
@@ -133,10 +137,12 @@ const RecommendCount = ({ classes, minCandidates, history }) => {
 
 RecommendCount.propTypes = {
   classes: PropTypes.object.isRequired,
+  maxCandidates: PropTypes.number,
   minCandidates: PropTypes.number
 };
 
 RecommendCount.defaultProps = {
+  maxCandidates: 5,
   minCandidates: 3
 };
 

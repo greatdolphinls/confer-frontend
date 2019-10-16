@@ -30,8 +30,8 @@ const styles = theme => {
       }
     },
     back: {
-      left: 15,
-      top: 15,
+      left: 5,
+      top: 5,
       display: 'flex',
       position: 'absolute'
     },
@@ -46,7 +46,7 @@ const styles = theme => {
     },
     title: {
       fontSize: 24,
-      marginBottom: theme.spacing(3)
+      marginBottom: theme.spacing(1)
     }
   };
 };
@@ -92,7 +92,7 @@ RecommendLayout.defaultProps = {
     {
       number: 1,
       title: 'Let’s start with the basics. Who are you recommending?',
-      back: 'see the ground rules'
+      back: 'see how to recommend'
     },
     {
       number: 2,

@@ -1,7 +1,7 @@
 module.exports = [
   {
     value: -1,
-    label: 'all years'
+    label: 'All years'
   },
   {
     value: 0,

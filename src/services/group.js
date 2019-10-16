@@ -1,12 +1,19 @@
 import axios from 'axios';
+import urlJoin from "url-join";
 
 import { getGroupUrl } from './endpoints';
 
 const getGroups = async () => {
-    const url = getGroupUrl('');
+    const url = getGroupUrl();
     const result = await axios.get(url);
     return result;
 };
+
+const getGroup = async _id => {
+    const url = urlJoin(getGroupUrl(), _id);
+    const result = await axios.get(url);
+    return result;
+}
 
 const addGroup = async data => {
     const url = getGroupUrl();
@@ -30,6 +37,7 @@ const removeGroup = async _id => {
 
 export {
     getGroups,
+    getGroup,
     addGroup,
     editGroup,
     removeGroup

@@ -57,11 +57,10 @@ const styles = theme => {
     },
     description: {
       fontSize: 16,
-      marginBottom: theme.spacing(1.5)
+      marginBottom: theme.spacing(3)
     },
     explain: {
       fontSize: 12,
-      width: 538,
       [theme.breakpoints.down('sm')]: {
         width: '100%'
       }
@@ -130,7 +129,7 @@ const RecommendForm = ({ classes, history }) => {
   }
 
   const stepOneHandler = () => {
-    if (!relationship || selectedSubExpertises.length === 0) {
+    if (!relationship) {
       toast.error(notifications.RECOMMEND_FORM_VALIDATION_ERROR, {
         position: toast.POSITION.BOTTOM_RIGHT
       });
@@ -177,7 +176,7 @@ const RecommendForm = ({ classes, history }) => {
           onError={errors => console.log(errors)}>
           <TextValidator
             name='firstName'
-            label='First Name'
+            label='First Name*'
             className={classes.halfInput}
             value={firstName.value}
             onChange={firstName.onChange}
@@ -185,14 +184,14 @@ const RecommendForm = ({ classes, history }) => {
             errorMessages={['First Name cannot be empty']} />
           <TextValidator
             name='lastName'
-            label='Last Name'
+            label='Last Name*'
             className={classes.halfInput}
             value={lastName.value}
             onChange={lastName.onChange}
             validators={['required']}
             errorMessages={['Last Name cannot be empty']} />
           <CustomSelectValidator
-            label='What best describes their area of expertise?'
+            label='What best describes their area of expertise?*'
             classes={{ root: classes.halfInput }}
             value={expertise.value}
             changed={expertise.onChange}
@@ -203,13 +202,13 @@ const RecommendForm = ({ classes, history }) => {
             changed={subExpertisesSelectHandler}
             items={subExpertises} />
           <CustomTagSelect
-            label='What is / was your working relationship? The person is / was your...'
+            label='What is / was your working relationship?* The person is / was your...'
             value={relationship}
             changed={relationshipSelectHandler}
             items={relationshipList} />
           <TextValidator
             name='howYouKnow'
-            label='How do you know this person?'
+            label='How do you know this person?*'
             className={classes.fullInput}
             value={howYouKnow.value}
             onChange={howYouKnow.onChange}
@@ -239,7 +238,9 @@ const RecommendForm = ({ classes, history }) => {
             rowsMax={5}
             name='whyGreat'
             label='Why is this person among the best people you have worked with?'
-            placeholder='Best salesperson, had 2x higher conversion rate than anyone else, but was a strong team player. Personally sourced, hired and managed 20 salespeople in one year.'
+            placeholder={`Best salesperson, had 2x higher conversion rate than 
+            anyone else, but was a strong team player. Personally 
+            sourced, hired and managed 20 salespeople in one year.`}
             className={classes.fullInput}
             value={whyGreat.value}
             onChange={whyGreat.onChange}
@@ -264,15 +265,18 @@ const RecommendForm = ({ classes, history }) => {
           </Typography>
           <Typography className={classes.description}>
             <b>We’ll invite the person you’ve recommended to opt in to emails and edit their profile. </b>
-            We’ll include your name in our invitation since we believe transparency is important to building trust.
-            Want to give them a heads up? We’ll wait 24 hours before inviting them. Here’s a txt or email
-            you can share with them if you’d like:
+            We’ll include your name in our invitation since we believe
+            transparency is important to building trust. Want to give
+            them a heads up? We’ll wait 24 hours before inviting them.
+            Here’s a txt or email you can share with them if you’d like:
           </Typography>
           <Typography className={classes.explain}>
-            “Hi {`{Name}`} - Just want to give you a heads up that I recommended you for Confer.
-            Confer is sourcing recommendations from professionals for the best people they’ve
-            ever worked with, and you fall into that camp! Confer will reach out so you can
-            learn more what being a part of it entails. Thanks - and congrats!”
+            “Hi {`${firstName.value} ${lastName.value}`} - Just want
+            to give you a heads up that I recommended you for Confer.
+            Confer is sourcing recommendations from professionals for
+            the best people they’ve ever worked with, and you fall
+            into that camp! Confer will reach out so you can learn
+            more what being a part of it entails. Thanks - and congrats!”
           </Typography>
           <PrimaryButton classes={{ root: classes.button }} type='submit'>
             Submit

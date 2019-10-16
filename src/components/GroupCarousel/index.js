@@ -39,7 +39,7 @@ const GroupCarousel = ({ classes, groups, responsive }) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.description}>
-        Members in our collective come from Fortune 500 companies and
+        Our members come from Fortune 500 companies and
         startups - they’re all looking to hire or be hired!
       </Typography>
       <AliceCarousel

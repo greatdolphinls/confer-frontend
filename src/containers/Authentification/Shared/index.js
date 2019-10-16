@@ -1,11 +1,11 @@
 import AuthDescription from './AuthDescription'
 import AuthLayout from './AuthLayout'
-import AuthAvatar from './AuthAvatar'
+import AuthCarousel from './AuthCarousel'
 import ForgotPasswordLayout from './ForgotPasswordLayout'
 
 export {
   AuthDescription,
   AuthLayout,
-  AuthAvatar,
+  AuthCarousel,
   ForgotPasswordLayout
 }

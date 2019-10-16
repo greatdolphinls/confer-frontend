@@ -28,7 +28,7 @@ const styles = theme => {
     box: {
       position: 'inherit',
       left: 90,
-      width: 600
+      width: 550
     }
   };
 };

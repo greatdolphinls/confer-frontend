@@ -4,7 +4,8 @@ import urlJoin from "url-join";
 import {
     getRecommendUrl,
     getRecommendsByReferrerUrl,
-    getRecommendsByFilterUrl
+    getRecommendsByFilterUrl,
+    getVerifyRecommendUrl
 } from './endpoints';
 
 const getRecommends = async () => {
@@ -45,11 +46,18 @@ const getRecommendsByFilter = async data => {
     return result;
 };
 
+const verifyRecommend = async _id => {
+    const url = urlJoin(getVerifyRecommendUrl(), _id);
+    const result = await axios.get(url);
+    return result;
+}
+
 export {
     getRecommends,
     editRecommend,
     removeRecommend,
     addRecommend,
     getRecommendsByReferrerId,
-    getRecommendsByFilter
+    getRecommendsByFilter,
+    verifyRecommend
 };

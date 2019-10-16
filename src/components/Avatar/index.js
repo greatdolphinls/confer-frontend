@@ -14,14 +14,14 @@ const styles = () => {
     },
     border: {
       padding: theme.spacing(0.5),
-      border: `${theme.spacing(0.25)}px solid ${theme.palette.buttonColor}`
+      border: `${theme.spacing(0.15)}px solid ${theme.palette.buttonColor}`
     }
   };
 };
 
-const Avatar = ({ src, size, isBorder, classes }) => {
+const Avatar = ({ src, size, isBorder, classes, ...props }) => {
   return (
-    <div>
+    <div {...props}>
       <img
         alt=''
         src={src || defaultAvatarLink}

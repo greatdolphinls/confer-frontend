@@ -1,13 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
-import { AuthAvatar } from '../index';
-import MarkGeosonImage from '../../../../assets/img/users/mark_geoson.jpg';
-import AmandaFreemanImage from '../../../../assets/img/users/amanda_freeman.jpg';
-import TaliRapaportImage from '../../../../assets/img/users/tali_rapaport.jpg';
-import AniqRahmanImage from '../../../../assets/img/users/aniq_rahman.jpg';
+import { AuthCarousel } from '../index';
 
 const styles = theme => {
   return {
@@ -21,80 +16,46 @@ const styles = theme => {
     },
     title: {
       fontSize: 34,
-      marginBottom: theme.spacing(3)
+      marginBottom: theme.spacing(2.5)
     },
     description: {
-      fontSize: 17,
-      marginBottom: theme.spacing(3)
+      marginBottom: theme.spacing(2.5)
     },
     subDescription: {
       fontSize: 24
-    },
-    referrers: {
-      display: 'flex',
-      flexFlow: 'wrap',
-      justifyContent: 'space-around',
-      marginBottom: theme.spacing(5)
     }
   };
 };
 
-const AuthDescription = ({ classes, referrers }) => {
+const AuthDescription = ({ classes, referrers, selectedTab, groupName }) => {
+  const memberString = selectedTab === 'signin'
+    ? 'your community' : `other ${groupName} members`;
+
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>
-        Hire the best by paying it forward.
+        Hire the best by paying it forward
       </Typography>
       <Typography className={classes.description}>
         Recommend three people who are the best at what they do.
-        Once they’re approved, you’ll get access to all
-        recommendations in your collective so you can hire
-        with confidence. Forget expensive search firms;
-        identify great talent through people you trust at no cost.
+        Once they’re approved, you’ll get access to all recommendations
+        made by {memberString} so you can identify great talent
+        and hire with confidence.
+      </Typography>
+      <Typography className={classes.description}>
+        The purpose: People who have worked together truly know
+        who the best people are -- the salesperson who closed
+        the hardest accounts, the marketer who designed brilliant
+        campaigns, the manager who created order from chaos, etc.
+        Help these unheralded superstars stand out and give your
+        community a better way to hire.
       </Typography>
       <Typography className={classes.subDescription}>
         We don’t ask just anyone to recommend. Join our current members:
       </Typography>
-      <div className={classes.referrers}>
-        {referrers.map((referrer, index) => (
-          <AuthAvatar key={index} referrer={referrer} />
-        ))}
-      </div>
+      <AuthCarousel />
     </div>
   );
-};
-
-AuthDescription.defaultProps = {
-  referrers: [
-    {
-      firstName: 'Mark',
-      lastName: 'Gerson',
-      avatar: MarkGeosonImage,
-      shortDescription: 'Co-founder GLG'
-    },
-    {
-      firstName: 'Amanda',
-      lastName: 'Freeman',
-      avatar: AmandaFreemanImage,
-      shortDescription: 'Founder & CEO, SLT'
-    },
-    {
-      firstName: 'Tali',
-      lastName: 'Rapaport',
-      avatar: TaliRapaportImage,
-      shortDescription: 'VP Product, Lyft'
-    },
-    {
-      firstName: 'Aniq',
-      lastName: 'Rahman',
-      avatar: AniqRahmanImage,
-      shortDescription: 'Co-founder, Moat'
-    }
-  ]
-};
-
-AuthDescription.propTypes = {
-  referrers: PropTypes.array
 };
 
 export default withStyles(styles, { withTheme: true })(AuthDescription);

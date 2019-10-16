@@ -37,10 +37,10 @@ const styles = theme => ({
   }
 });
 
-const Layout = ({ classes, children }) => {
+const Layout = ({ classes, children, ...props }) => {
   return (
     <div className={classes.root}>
-      <NavBar classes={{ toolbar: classes.container }} />
+      <NavBar classes={{ toolbar: classes.container }} {...props} />
       <main className={classNames(classes.container, classes.content)}>
         <ToastContainer />
         <div className={classes.toolbar} />

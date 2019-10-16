@@ -31,30 +31,53 @@ const styles = theme => {
   };
 };
 
-const ExceptProfile = ({ classes, onInit }) => {
+const ExceptProfile = ({ classes, isNotApproved, onInit }) => {
 
+  const renderNotApproved = () => {
+    return (
+      <Typography className={classes.description}>
+        You must make at least 3 recommendations and
+        wait for approval before searching for talent!
+      </Typography>
+    );
+  }
+
+  const renderStartOver = () => {
+    return (
+      <>
+        <Typography className={classes.description}>
+          You’v e seen all of the relevant candidates.
+          Select “start over” to review them again or
+          enter a new search above.
+        </Typography>
+        <PrimaryButton
+          classes={{ root: classes.button }}
+          onClick={onInit}>
+          Start over
+        </PrimaryButton>
+      </>
+    );
+  }
   return (
     <Paper className={classes.root}>
-      <Typography className={classes.description}>
-        You’v e seen all of the relevant candidates.
-        Select “start over” to review them again or
-        enter a new search above.
-      </Typography>
-      <PrimaryButton
-        classes={{ root: classes.button }}
-        onClick={onInit}>
-        Start over
-      </PrimaryButton>
+      {
+        isNotApproved
+          ? renderNotApproved()
+          : renderStartOver()
+      }
+
     </Paper>
   );
 };
 
 ExceptProfile.propTypes = {
   classes: PropTypes.object.isRequired,
+  isNotApproved: PropTypes.bool,
   onInit: PropTypes.func
 };
 
 ExceptProfile.defaultProps = {
+  isNotApproved: false
 };
 
 export default withStyles(styles)(ExceptProfile);

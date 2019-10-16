@@ -71,13 +71,15 @@ const styles = theme => {
   };
 };
 
-const AuthLayout = ({ classes, selectedTab, tabs, children }) => {
+const AuthLayout = ({ classes, groupName, selectedTab, tabs, children }) => {
   const isSignIn = selectedTab === 'signin';
 
   return (
     <Fragment>
       <div className={classes.root}>
-        <AuthDescription />
+        <AuthDescription
+          selectedTab={selectedTab}
+          groupName={groupName} />
         <Paper className={classes.paper}>
           <div className={classes.authTabs}>
             {tabs.map((tab) => (

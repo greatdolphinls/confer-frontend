@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
@@ -7,6 +7,7 @@ import { pageLinks } from '../../../constants/links';
 import { PrimaryButton } from '../../../components';
 import RecommendsContent from './RecommendsContent';
 import RecommendRules from './RecommendRules';
+import InspirationModal from './InspirationModal';
 
 const styles = theme => {
   return {
@@ -18,7 +19,7 @@ const styles = theme => {
     },
     container: {
       display: 'flex',
-      maxWidth: 583,
+      width: 620,
       flexDirection: 'column',
       [theme.breakpoints.down('sm')]: {
         maxWidth: '100%'
@@ -30,7 +31,12 @@ const styles = theme => {
     },
     description: {
       fontSize: 20,
-      marginBottom: theme.spacing(1.5)
+      letterSpacing: 0.15,
+      marginBottom: theme.spacing(2),
+      '& span': {
+        color: theme.palette.buttonColor,
+        cursor: 'pointer'
+      }
     },
     buttonContainer: {
       display: 'flex',
@@ -56,31 +62,47 @@ const styles = theme => {
   };
 };
 
-const GroundRules = ({ classes, rules, history }) => {
+const GroundRules = ({ classes, history }) => {
+  const [showModal, setShowModal] = useState(false);
+
   const buttonHandler = (url) => () => {
     history.push(url);
+  }
+
+  const showModalHandler = () => {
+    setShowModal(true)
+  }
+
+  const closeModalHandler = () => {
+    setShowModal(false)
   }
 
   return (
     <main className={classes.root}>
       <div className={classes.container}>
         <Typography className={classes.title}>
-          First, some ground rules
+          How to recommend
         </Typography>
         <Typography className={classes.description}>
-          By participating, you will be elevating
-          people’s careers and recognizing excellence.
-          You may recommend no more than five people.
-          The people you recommend must be remarkable
-          people who you have personally worked with:
+          By participating, you will be elevating people’s careers
+          and recognizing excellence. You may recommend up to five
+          people. The people you recommend must be remarkable
+          people who you have personally worked with.
         </Typography>
         <RecommendRules />
         <Typography className={classes.description}>
-          Since transparency drives trust in the network,
-          we will notify the people you recommend
-          (you can give them a heads up!) and other members
-          will be able to see who you recommended.
-          Before we connect anyone, both people must opt-in.
+          Since transparency drives trust in the network, we will
+          notify the people you recommend (you can give them a
+          heads up!). All members across our communities will be
+          able to see who recommended a person but not a list of
+          all your recommendations. Before we connect anyone,
+          both people must opt-in.
+        </Typography>
+        <Typography className={classes.description}>
+          {'Want inspiration? '}
+          <span onClick={showModalHandler}>
+            See some examples
+          </span>
         </Typography>
         <div className={classes.buttonContainer}>
           <PrimaryButton
@@ -98,6 +120,13 @@ const GroundRules = ({ classes, rules, history }) => {
         </div>
       </div>
       <RecommendsContent />
+      {
+        showModal &&
+        <InspirationModal
+          opened={showModal}
+          onClose={closeModalHandler}
+        />
+      }
     </main>
   );
 };

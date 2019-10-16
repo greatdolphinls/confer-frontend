@@ -42,10 +42,11 @@ const styles = theme => {
       fontSize: 20,
       marginBottom: theme.spacing(0.5)
     },
-    expertise: {
+    subDescription: {
       fontSize: 14,
       fontWeight: 500,
-      opacity: 0.6
+      opacity: 0.6,
+      marginBottom: theme.spacing(0.5)
     }
   };
 };
@@ -87,10 +88,10 @@ const CandidateInfo = ({ classes, recommend }) => {
             {`${currentEmployment.title} @ ${currentEmployment.companyName}`}
           </Typography>
         }
-        <Typography className={classes.description}>
+        <Typography className={classes.subDescription}>
           {`Total ${candidate.yearsOfExperience} years of experience`}
         </Typography>
-        <Typography className={classes.expertise}>
+        <Typography className={classes.subDescription}>
           {`Expertise in ${expertises}`}
         </Typography>
       </div>
