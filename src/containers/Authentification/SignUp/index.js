@@ -12,7 +12,7 @@ import { PrimaryButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
-import GroupImage from '../../../assets/img/groupLogos/techaviv.svg';
+import GroupImage from '../../../assets/img/groupLogos/create.jpg';
 
 const styles = theme => {
   return {

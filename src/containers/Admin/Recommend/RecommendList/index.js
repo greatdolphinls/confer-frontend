@@ -74,7 +74,7 @@ const AdminRecommendList = ({ classes, history }) => {
     { name: 'Referrer' },
     { name: 'Candidate' },
     {
-      name: 'Access',
+      name: 'Show',
       options: {
         customBodyRender: value => {
           const labels = ['Verified', 'Unverified'];

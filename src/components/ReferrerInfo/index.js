@@ -77,9 +77,12 @@ const ReferrerInfo = ({ classes, recommend }) => {
         <Typography className={classes.howYouKnow}>
           {howYouKnow}
         </Typography>
-        <Typography className={classes.whyGreat}>
-          {`“${whyGreat}”`}
-        </Typography>
+        {
+          !!whyGreat &&
+          <Typography className={classes.whyGreat}>
+            {`“${whyGreat}”`}
+          </Typography>
+        }
         {
           !!referrer.groupObjects &&
           <div className={classes.groupContainer}>
@@ -88,7 +91,6 @@ const ReferrerInfo = ({ classes, recommend }) => {
             ))}
           </div>
         }
-
       </div>
     </div>
   );

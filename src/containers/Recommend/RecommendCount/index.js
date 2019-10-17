@@ -129,7 +129,7 @@ const RecommendCount = ({
       <Typography
         className={classes.groundButton}
         onClick={buttonHandler(pageLinks.GroundRules.url)} >
-        See the ground rules
+        See how to recommend
       </Typography>
     </main>
   );

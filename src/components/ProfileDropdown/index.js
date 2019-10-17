@@ -17,7 +17,9 @@ import { pageLinks } from '../../constants/links'
 
 const styles = theme => {
   return {
-    root: {},
+    root: {
+      marginLeft: theme.spacing(3)
+    },
     avatar: {
       cursor: 'pointer'
     },

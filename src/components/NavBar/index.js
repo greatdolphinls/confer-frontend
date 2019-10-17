@@ -33,7 +33,7 @@ const styles = theme => {
       fontSize: 14,
       fontWeight: 'normal',
       textTransform: 'unset',
-      marginRight: theme.spacing(3)
+      marginLeft: theme.spacing(3)
     }
   };
 };

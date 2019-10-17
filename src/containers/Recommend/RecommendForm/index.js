@@ -237,10 +237,8 @@ const RecommendForm = ({ classes, history }) => {
             rows={5}
             rowsMax={5}
             name='whyGreat'
-            label='Why is this person among the best people you have worked with?'
-            placeholder={`Best salesperson, had 2x higher conversion rate than 
-            anyone else, but was a strong team player. Personally 
-            sourced, hired and managed 20 salespeople in one year.`}
+            label='Why is this person among the best people you have worked with?*'
+            placeholder={`Best salesperson, had 2x higher conversion rate than anyone else, but was a strong team player. Personally sourced, hired and managed 20 salespeople in one year.`}
             className={classes.fullInput}
             value={whyGreat.value}
             onChange={whyGreat.onChange}

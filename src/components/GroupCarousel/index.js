@@ -45,7 +45,7 @@ const GroupCarousel = ({ classes, groups, responsive }) => {
       <AliceCarousel
         mouseDragEnabled
         autoPlay
-        autoPlayInterval={5000}
+        autoPlayInterval={1000}
         fadeOutAnimation
         responsive={responsive}
         dotsDisabled={true}
