@@ -11,7 +11,7 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      marginBottom: theme.spacing(2)
+      marginTop: theme.spacing(1.5)
     },
     label: {
       width: 205,
@@ -31,7 +31,7 @@ const styles = theme => {
   };
 };
 
-const EditableTextarea = ({ classes, isEdit, label, value, onChange }) => {
+const EditableTextarea = ({ classes, rows, isEdit, label, value, placeholder, onChange }) => {
   return (
     <main className={classes.root}>
       <div>
@@ -44,7 +44,7 @@ const EditableTextarea = ({ classes, isEdit, label, value, onChange }) => {
       {
         isEdit ?
           <TextField
-            rows='5'
+            rows={rows}
             multiline
             margin='normal'
             className={classes.textField}
@@ -54,7 +54,7 @@ const EditableTextarea = ({ classes, isEdit, label, value, onChange }) => {
           /> :
           <Typography
             className={classes.value}>
-            {value || 'No Data'}
+            {value || placeholder}
           </Typography>
       }
     </main>
@@ -67,6 +67,8 @@ EditableTextarea.propTypes = {
 };
 
 EditableTextarea.defaultProps = {
+  rows: 2,
+  placeholder: 'No Data',
   isEdit: false,
   label: '',
   value: '',

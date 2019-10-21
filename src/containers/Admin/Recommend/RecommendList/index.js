@@ -21,7 +21,8 @@ import {
 } from '../../../../components';
 import { commonMUITableOptions } from '../../../../utils/styles';
 import { pageLinks } from '../../../../constants/links';
-import { showErrorToast } from '../../../../utils/utility';
+import timeFormats from '../../../../constants/timeFormats';
+import { showErrorToast, getMomentTime } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -58,10 +59,11 @@ const AdminRecommendList = ({ classes, history }) => {
 
   const createTableData = recommends => {
     const tableData = recommends.map(recommend => {
-      const { referrer, candidate, verified, _id } = recommend;
+      const { referrer, candidate, verified, _id, createdAt } = recommend;
       const row = [
         `${referrer.firstName} ${referrer.lastName}`,
         `${candidate.firstName} ${candidate.lastName}`,
+        getMomentTime(createdAt, timeFormats.dayTimeFormat),
         verified,
         _id
       ];
@@ -73,6 +75,7 @@ const AdminRecommendList = ({ classes, history }) => {
   const columns = () => [
     { name: 'Referrer' },
     { name: 'Candidate' },
+    { name: 'Created' },
     {
       name: 'Show',
       options: {

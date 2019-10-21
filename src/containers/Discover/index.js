@@ -58,7 +58,7 @@ const styles = theme => {
     },
     arrowButton: {
       width: 101,
-      backgroundColor: theme.palette.subButtonColor1
+      backgroundColor: theme.palette.darkGreyButtonColor
     },
     footerDescription: {
       fontSize: 12,
@@ -129,7 +129,7 @@ const Discover = ({ classes }) => {
   }
 
   let expertiseOptions = expertises.map(({ name }) => ({ label: name, value: name }));
-  expertiseOptions = [{ label: 'All experises', value: 'default' }, ...expertiseOptions];
+  expertiseOptions = [{ label: 'All expertises', value: 'default' }, ...expertiseOptions];
   let locationOptions = locations.map(({ name }) => ({ label: name, value: name }));
   locationOptions = [{ label: 'All locations', value: 'default' }, ...locationOptions];
 
@@ -182,22 +182,35 @@ const Discover = ({ classes }) => {
   }
 
   const renderFooterText = () => {
-    return (
-      <>
-        <div className={classes.footerDescription}>
-          You currently have access to all recommendations made by
-          TechAviv members. In the future, you will have an opportuntiy
-          to access recommendations made by other communities. We will
-          notify you when that feature becomes available.
-        </div>
-        <div className={classes.footerDescription}>
-          If you know other leading executives who are outstanding at
-          identifying talent, please share the group link and password
-          with them. We will review their experience and recommendations
-          before granting access.
-        </div>
-      </>
-    )
+    if (!isNotShowRecommends()) {
+      const { groupObjects } = user;
+      let groupNames = '';
+
+      groupObjects.map((group, index) => {
+        groupNames = groupNames + ' ' + group.name;
+        if ((index + 1) !== groupObjects.length) {
+          groupNames += ', ';
+        }
+        return null;
+      });
+
+      return (
+        <>
+          <div className={classes.footerDescription}>
+            You currently have access to all recommendations made by
+            {groupNames} members. In the future, you will have an opportuntiy
+            to access recommendations made by other communities. We will
+            notify you when that feature becomes available.
+          </div>
+          <div className={classes.footerDescription}>
+            If you know other leading executives who are outstanding at
+            identifying talent, please share the group link and password
+            with them. We will review their experience and recommendations
+            before granting access.
+          </div>
+        </>
+      )
+    }
   }
 
   const renderBottons = () => {
@@ -209,22 +222,22 @@ const Discover = ({ classes }) => {
             disabled={step === 0}
             classes={{ root: classes.arrowButton }}>
             Previous
-        </PrimaryButton>
+          </PrimaryButton>
           <PrimaryButton
             onClick={submitHandler}
             classes={{ root: classes.contactButton }}>
             contact
-        </PrimaryButton>
+          </PrimaryButton>
           <PrimaryButton
             onClick={stepButtonHandler(step + 1)}
             classes={{ root: classes.arrowButton }}>
             Next
-        </PrimaryButton>
+          </PrimaryButton>
         </div>
       )
     }
   }
-  console.log(recommends)
+
   return (
     <main className={classes.root}>
       <Typography className={classes.filterDescription}>

@@ -4,21 +4,23 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import loadingReducer from './loadingReducer';
 import errorReducer from './errorReducer';
-import expertiseReducer from './expertiseReducer';
+import groupReducer from './groupReducer';
+import userReducer from './userReducer';
 import recommendReducer from './recommendReducer';
+import expertiseReducer from './expertiseReducer';
 import locationReducer from './locationReducer';
 import relationshipReducer from './relationshipReducer';
-import userReducer from './userReducer';
-import groupReducer from './groupReducer';
+import degreeReducer from './degreeReducer';
 
 export default combineReducers({
   auth: authReducer,
-  user: userReducer,
-  group: groupReducer,
   loading: loadingReducer,
   errors: errorReducer,
-  expertise: expertiseReducer,
+  group: groupReducer,
+  user: userReducer,
   recommend: recommendReducer,
+  expertise: expertiseReducer,
   location: locationReducer,
-  relationship: relationshipReducer
+  relationship: relationshipReducer,
+  degree: degreeReducer
 });

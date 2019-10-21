@@ -19,7 +19,7 @@ const styles = theme => {
       position: 'absolute',
       right: theme.spacing(1),
       top: theme.spacing(1),
-      color: theme.palette.subButtonColor1,
+      color: theme.palette.darkGreyButtonColor,
     },
     content: {
       display: 'flex',

@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import { Avatar } from '../index';
-import { getCurrentEmployment } from '../../utils/utility';
+import { getCurrentEmployment, getTotalYears } from '../../utils/utility';
 import LinkedInImage from '../../assets/img/icons/linkedIn.svg';
 
 const styles = theme => {
@@ -59,6 +59,7 @@ const CandidateInfo = ({ classes, recommend }) => {
     + subExpertises.map((subExpertise) => (' ' + subExpertise));
 
   const currentEmployment = getCurrentEmployment(candidate.employmentHistories);
+  const totalYears = getTotalYears(candidate.employmentHistories);
 
   return (
     <div className={classes.root}>
@@ -89,7 +90,7 @@ const CandidateInfo = ({ classes, recommend }) => {
           </Typography>
         }
         <Typography className={classes.subDescription}>
-          {`Total ${candidate.yearsOfExperience} years of experience`}
+          {`Total ${totalYears} years of experience`}
         </Typography>
         <Typography className={classes.subDescription}>
           {`Expertise in ${expertises}`}

@@ -5,7 +5,8 @@ import AdminGroupList from './Group/GroupList'
 import AdminAddGroup from './Group/AddGroup'
 import AdminEditGroup from './Group/EditGroup'
 import AdminRecommendList from './Recommend/RecommendList'
-
+import AdminAddRecommend from './Recommend/AddRecommend'
+import AdminEditRecommend from './Recommend/EditRecommend'
 export {
   AdminUserList,
   AdminAddUser,
@@ -13,5 +14,7 @@ export {
   AdminGroupList,
   AdminAddGroup,
   AdminEditGroup,
-  AdminRecommendList
+  AdminRecommendList,
+  AdminAddRecommend,
+  AdminEditRecommend
 }

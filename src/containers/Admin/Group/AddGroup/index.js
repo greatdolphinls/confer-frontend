@@ -10,12 +10,12 @@ import { pageLinks } from '../../../../constants/links';
 import notifications from '../../../../constants/notifications';
 import {
   AccordionLayout,
+  EditableLayout,
   ConfirmDialog,
   EditableInput,
   EditableImage
 } from '../../../../components';
 import { showErrorToast } from '../../../../utils/utility';
-import { useInput } from '../../../../utils/hooks';
 
 const styles = theme => {
   return {
@@ -26,15 +26,14 @@ const styles = theme => {
   };
 };
 
-const AdminAddGroup = ({ classes, match, history }) => {
+const AdminAddGroup = ({ classes, panel, history }) => {
   const dispatch = useDispatch();
 
-  const name = useInput('');
-  const password = useInput('');
-  const logo = useInput('');
-  const [expanded, setExpanded] = useState('profilePanel');
-  const [editPanel, setEditPanel] = useState('profilePanel');
+  const [expanded, setExpanded] = useState(panel);
+  const [editPanel, setEditPanel] = useState(panel);
   const [showDialog, setShowDialog] = useState(false);
+  const [group, setGroup] = useState({});
+  const isEdit = panel === editPanel;
 
   const expandHandler = panel => {
     setExpanded(panel);
@@ -48,21 +47,29 @@ const AdminAddGroup = ({ classes, match, history }) => {
     history.push(pageLinks.AdminGroupList.url);
   }
 
+  const onFieldChangeHandler = (name) => async (event) => {
+    let data = {
+      ...group,
+      [name]: !!event.target ? event.target.value : event
+    }
+
+    if (name === 'viewPassword') {
+      data = {
+        ...data,
+        password: !!event.target ? event.target.value : event
+      }
+    }
+    setGroup(data);
+  }
+
   const saveHandler = async () => {
-    if (!name.value || !password.value) {
+    if (!group.name || !group.viewPassword) {
       showErrorToast(notifications.FORM_VALODATION_ERROR);
       return null;
     }
 
     try {
-      const groupData = {
-        name: name.value,
-        password: password.value,
-        viewPassword: password.value,
-        logo: logo.value
-      };
-
-      const { data } = await GROUP_SERVICE.addGroup(groupData);
+      const { data } = await GROUP_SERVICE.addGroup(group);
       dispatch(addEditGroup(data));
       history.push(pageLinks.AdminGroupList.url);
     } catch (error) {
@@ -74,15 +81,13 @@ const AdminAddGroup = ({ classes, match, history }) => {
   }
 
   const deleteHandler = () => {
-    name.onSet('');
-    password.onSet('');
-    logo.onSet('');
+    setGroup({});
     setEditPanel(false);
     setShowDialog(false);
   }
 
   const openConfirmDialogHandler = () => {
-    if (!!name.value || !!password.value || !!logo.value) {
+    if (!!group.name.value || !!group.viewPassword || !!group.logo) {
       setShowDialog(true);
     }
   }
@@ -101,30 +106,33 @@ const AdminAddGroup = ({ classes, match, history }) => {
       />
       <AccordionLayout
         title='BASIC PROFILE'
-        panel='profilePanel'
-        isEdit={'profilePanel' === editPanel}
-        onEdit={editHandler}
+        panel={panel}
         onExpand={expandHandler}
         selectedPanel={expanded}>
-        <EditableInput
-          isEdit={'profilePanel' === editPanel}
-          label='Group name'
-          value={name.value}
-          onChange={name.onChange}
-        />
-        <EditableInput
-          isEdit={'profilePanel' === editPanel}
-          label='Group password'
-          value={password.value}
-          onChange={password.onChange}
-        />
-        <EditableImage
-          isAvatar={false}
-          isEdit={'profilePanel' === editPanel}
-          label='Logo'
-          value={logo.value}
-          onChange={logo.onSet}
-        />
+        <EditableLayout
+          panel={panel}
+          isEdit={isEdit}
+          onEdit={editHandler}>
+          <EditableInput
+            isEdit={isEdit}
+            label='Group name'
+            value={group.name}
+            onChange={onFieldChangeHandler('name')}
+          />
+          <EditableInput
+            isEdit={isEdit}
+            label='Group password'
+            value={group.viewPassword}
+            onChange={onFieldChangeHandler('viewPassword')}
+          />
+          <EditableImage
+            isAvatar={false}
+            isEdit={isEdit}
+            label='Logo'
+            value={group.logo}
+            onChange={onFieldChangeHandler('logo')}
+          />
+        </EditableLayout>
       </AccordionLayout>
       {
         showDialog &&
@@ -135,6 +143,10 @@ const AdminAddGroup = ({ classes, match, history }) => {
       }
     </main>
   );
+};
+
+AdminAddGroup.defaultProps = {
+  panel: 'groupPanel'
 };
 
 export default withStyles(styles)(AdminAddGroup);

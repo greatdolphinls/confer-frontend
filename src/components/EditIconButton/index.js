@@ -7,7 +7,8 @@ import EditIcon from '@material-ui/icons/Edit';
 const styles = theme => {
   return {
     root: {
-      color: theme.palette.buttonColor
+      color: theme.palette.buttonColor,
+      width: 'fit-content'
     }
   };
 };

@@ -8,7 +8,8 @@ const styles = theme => {
   return {
     root: {},
     selectMenu: {
-      backgroundColor: theme.palette.mainBackColor
+      backgroundColor: theme.palette.mainBackColor,
+      maxHeight: 250
     }
   };
 };

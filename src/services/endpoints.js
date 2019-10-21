@@ -17,6 +17,7 @@ const relationshipsPrefix = '/api/relationships';
 const groupsPrefix = '/api/groups';
 const verifyUserPrefix = '/api/verifyUser';
 const verifyRecommendPrefix = '/api/verifyRecommend';
+const degreesPrefix = '/api/degrees';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -74,6 +75,10 @@ const getVerifyRecommendUrl = () => {
     return urlJoin(config.proxyUrl, verifyRecommendPrefix)
 }
 
+const getDegreeUrl = () => {
+    return urlJoin(config.proxyUrl, degreesPrefix)
+}
+
 export {
     getResetPasswordUrl,
     getForgotPasswordUrl,
@@ -88,5 +93,6 @@ export {
     getRelationshipUrl,
     getGroupUrl,
     getVerifyUserUrl,
-    getVerifyRecommendUrl
+    getVerifyRecommendUrl,
+    getDegreeUrl
 };

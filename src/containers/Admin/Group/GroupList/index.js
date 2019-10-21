@@ -66,10 +66,12 @@ const AdminGroupList = ({ classes, history }) => {
   const createTableData = groups => {
     const tableData = groups.map(group => {
       const { name, viewPassword, logo, _id } = group;
+      const signupUrl = `${window.location.origin}/signup/${_id}`;
       const row = [
         name,
         viewPassword,
         logo || DefaultLogo,
+        signupUrl,
         _id
       ];
       return row;
@@ -96,6 +98,7 @@ const AdminGroupList = ({ classes, history }) => {
         }
       }
     },
+    { name: 'URL' },
     {
       name: 'Action',
       options: {

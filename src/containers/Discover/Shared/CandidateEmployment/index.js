@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 import { InfoContainer, InfoContent } from '../index';
-import { getDiffYearsAndMonths, getMonth } from '../../../../utils/utility';
+import { getDuration, getDiffYearsAndMonths } from '../../../../utils/utility';
 import theme from '../../../../theme/muiTheme';
 
 const styles = () => {
@@ -30,16 +30,10 @@ const CandidateEmployment = ({ classes, employmentHistories }) => {
 
   const getFooter = (employment) => {
     let { startMonth, startYear, endMonth, endYear, currentlyWorks } = employment;
-    const startDate = `${startMonth} ${startYear}`;
-    const endDate = currentlyWorks ? 'present' : `${endMonth} ${endYear}`;
 
-    startYear = parseInt(startYear, 10);
-    startMonth = getMonth(startMonth);
-    endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10);
-    endMonth = currentlyWorks ? (new Date().getMonth() + 1) : getMonth(endMonth);
-
-    const duration = getDiffYearsAndMonths(startYear, startMonth, endYear, endMonth);
-    return `${duration} , ${startDate} - ${endDate}`;
+    const duration = getDuration(startYear, startMonth, endYear, endMonth, currentlyWorks)
+    const diffYearAndMonth = getDiffYearsAndMonths(startYear, startMonth, endYear, endMonth, currentlyWorks);
+    return `${diffYearAndMonth} , ${duration}`;
   }
 
   const seeMoreRender = () => {

@@ -87,7 +87,12 @@ const showInfoToast = message => {
   });
 };
 
-const getDiffYearsAndMonths = (startYear, startMonth, endYear, endMonth) => {
+const getDiffYearsAndMonths = (startYear, startMonth, endYear, endMonth, currentlyWorks) => {
+  startYear = parseInt(startYear, 10);
+  startMonth = getMonth(startMonth);
+  endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10);
+  endMonth = currentlyWorks ? (new Date().getMonth() + 1) : getMonth(endMonth);
+
   const diffAllMonths = (endYear - startYear) * 12 + endMonth - startMonth;
   const diffYear = Math.floor(diffAllMonths / 12);
   const diffMonth = diffAllMonths % 12;
@@ -118,8 +123,63 @@ const getDiffYearsAndMonths = (startYear, startMonth, endYear, endMonth) => {
   return duration;
 }
 
+const getTotalYears = (employmentHistories) => {
+  let totalYears = 0;
+
+  for (const history of employmentHistories) {
+    let { startYear, startMonth, endYear, endMonth, currentlyWorks } = history;
+
+    startYear = parseInt(startYear, 10);
+    startMonth = getMonth(startMonth);
+    endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10);
+    endMonth = currentlyWorks ? (new Date().getMonth() + 1) : getMonth(endMonth);
+    totalYears += (endYear - startYear) * 12 + endMonth - startMonth;
+  }
+
+  return Math.floor(totalYears / 12);
+}
+
+const getDuration = (startYear, startMonth, endYear, endMonth, currentlyWorks) => {
+  const startDate = `${startMonth} ${startYear}`;
+  const endDate = currentlyWorks ? 'present' : `${endMonth} ${endYear}`;
+
+  return `${startDate} - ${endDate}`;
+}
+
 const getMonth = (monthStr) => {
   return new Date(monthStr + '-1-01').getMonth() + 1
+}
+
+const getYears = () => {
+  const now = new Date();
+  return [...Array(100)].map((e, index) => ({
+    label: now.getFullYear() - index,
+    value: now.getFullYear() - index
+  }));
+}
+
+const addEditArray= (items, data) => {
+  const targetIndex = items.findIndex(item => (
+    item._id === data._id
+  ));
+
+  if (targetIndex >= 0) {
+    items[targetIndex] = data;
+  } else {
+      items = [
+          ...items,
+          data
+      ];
+  }
+  return items;
+}
+
+const removeArray= (items, id) => {
+  const targetIndex = items.findIndex(item => (
+    item._id === id
+  ));
+  
+  return removeItemWithSlice(items, targetIndex);
 }
 
 export {
@@ -136,5 +196,10 @@ export {
   showErrorToast,
   showInfoToast,
   getDiffYearsAndMonths,
-  getMonth
+  getMonth,
+  getTotalYears,
+  getDuration,
+  getYears,
+  addEditArray,
+  removeArray
 };

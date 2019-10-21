@@ -46,7 +46,7 @@ const ExceptProfile = ({ classes, isNotApproved, onInit }) => {
     return (
       <>
         <Typography className={classes.description}>
-          You’v e seen all of the relevant candidates.
+          You’ve seen all of the relevant candidates.
           Select “start over” to review them again or
           enter a new search above.
         </Typography>

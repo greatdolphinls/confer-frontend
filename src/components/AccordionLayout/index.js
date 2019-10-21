@@ -7,7 +7,6 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { EditIconButton, CloseIconButton } from '../';
 
 const styles = theme => {
   return {
@@ -16,7 +15,7 @@ const styles = theme => {
       margin: `${theme.spacing(4)}px 0`
     },
     header: {
-      backgroundColor: theme.palette.subBackColor6
+      backgroundColor: theme.palette.greyBackColor
     },
     heading: {
       width: '100%',
@@ -28,23 +27,14 @@ const styles = theme => {
       flexDirection: 'column',
       position: 'relative',
       padding: `${theme.spacing(3)}px 0`
-    },
-    icon: {
-      position: 'absolute',
-      top: 0,
-      right: 0
     }
   };
 };
 
-const AccordionLayout = ({ classes, title, panel, selectedPanel, isEdit, onExpand, onEdit, children }) => {
+const AccordionLayout = ({ classes, title, panel, selectedPanel, onExpand, children }) => {
 
   const handleChange = (event, isExpanded) => {
     onExpand(isExpanded ? panel : false);
-  }
-
-  const editHandler = () => {
-    onEdit(isEdit ? false : panel);
   }
 
   return (
@@ -60,15 +50,6 @@ const AccordionLayout = ({ classes, title, panel, selectedPanel, isEdit, onExpan
         </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.content}>
-        {
-          isEdit
-            ? <CloseIconButton
-              onClick={editHandler}
-              classes={{ root: classes.icon }} />
-            : <EditIconButton
-              onClick={editHandler}
-              classes={{ root: classes.icon }} />
-        }
         {children}
       </ExpansionPanelDetails>
     </ExpansionPanel>

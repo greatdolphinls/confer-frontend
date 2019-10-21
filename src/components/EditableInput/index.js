@@ -11,7 +11,7 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      marginBottom: theme.spacing(2)
+      marginTop: theme.spacing(1.5)
     },
     label: {
       width: 205,
@@ -21,7 +21,7 @@ const styles = theme => {
       marginBottom: theme.spacing(1)
     },
     textField: {
-      width: 285,
+      width: 325,
       margin: 0
     },
     value: {
@@ -31,7 +31,7 @@ const styles = theme => {
   };
 };
 
-const EditableInput = ({ classes, isEdit, label, value, onChange }) => {
+const EditableInput = ({ classes, isEdit, label, value, placeholder, onChange }) => {
   return (
     <main className={classes.root}>
       <Typography
@@ -50,11 +50,10 @@ const EditableInput = ({ classes, isEdit, label, value, onChange }) => {
           /> :
           <Typography
             className={classes.value}>
-            {value || 'No Data'}
+            {value || placeholder}
           </Typography>
       }
     </main>
-
   );
 };
 
@@ -63,6 +62,7 @@ EditableInput.propTypes = {
 };
 
 EditableInput.defaultProps = {
+  placeholder: 'No Data',
   isEdit: false,
   label: '',
   value: '',

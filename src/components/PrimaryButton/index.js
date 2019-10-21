@@ -16,7 +16,7 @@ const styles = theme => {
       }
     },
     disabled: {
-      backgroundColor: theme.palette.subButtonColor1
+      backgroundColor: theme.palette.darkGreyButtonColor
     }
   };
 };

@@ -112,7 +112,7 @@ const RecommendCount = ({
               We are reviewing them and will notify you once 
               they have been approved so you can start searching 
               for talent. You can continue submitting up to 5 people.`
-            : `You’ve recommended ${names.length} people! 
+            : `You’ve recommended ${names.length} ${names.length === 1 ? 'person' : 'people'}! 
               You’re just ${minCandidates - names.length} more 
               away from accessing the talent collective.`
         }

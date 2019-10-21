@@ -7,7 +7,8 @@ import RemoveIcon from '@material-ui/icons/DeleteOutline';
 const styles = theme => {
   return {
     root: {
-      color: theme.palette.buttonColor
+      color: theme.palette.buttonColor,
+      width: 'fit-content'
     }
   };
 };

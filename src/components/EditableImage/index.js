@@ -12,8 +12,8 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2)
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5)
     },
     label: {
       width: 205,
