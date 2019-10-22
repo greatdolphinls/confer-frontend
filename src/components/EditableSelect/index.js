@@ -50,6 +50,7 @@ const EditableSelect = ({ classes, options, isEdit, label, value, placeholder, o
             onChange={onChange}
             className={classes.select}
           >
+            <option key='default' value='' />
             {options.map(({ value, label }, index) => (
               <option key={index} value={value}>
                 {label}

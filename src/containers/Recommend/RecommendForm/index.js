@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
+import * as RECOMMEND_SERVICE from '../../../services/recommend';
 import { setExpertises, setRelationships } from '../../../actions';
 import {
   CustomSelectValidator,
@@ -18,7 +19,6 @@ import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 import { useInput } from '../../../utils/hooks';
 import { removeItemWithSlice } from '../../../utils/utility';
-import { addRecommend } from '../../../services/recommend';
 
 const styles = theme => {
   return {
@@ -153,7 +153,7 @@ const RecommendForm = ({ classes, history }) => {
           whichCapacity: relationship
         }
       };
-      await addRecommend(data);
+      await RECOMMEND_SERVICE.addRecommendByUser(data);
       setShowModal(true);
     } catch (error) {
       // TODO: axios handling module

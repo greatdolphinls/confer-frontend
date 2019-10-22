@@ -7,7 +7,7 @@ import { Typography } from '@material-ui/core';
 import { setGroups } from '../../../../../actions';
 import { EditableGroup } from '../';
 import { EditableLayout, AddIconButton } from '../../../../../components';
-import { addEditArray, removeArray, isEmpty } from '../../../../../utils/utility';
+import { addEditArray, removeArray } from '../../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -41,17 +41,15 @@ const GroupAccessPanel = ({ classes, groups, onChange }) => {
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(groups)) {
-      const groupIds = groups.map(({ groupId }) => (groupId));
-      const data = groupList.filter(({ _id }) => !groupIds.includes(_id))
-        .map((group) => ({
-          ...group,
-          label: group.name,
-          value: group._id
-        }));
+    const groupIds = groups.map(({ groupId }) => (groupId));
+    const data = groupList.filter(({ _id }) => !groupIds.includes(_id))
+      .map((group) => ({
+        ...group,
+        label: group.name,
+        value: group._id
+      }));
 
-      setGroupOptions(data);
-    }
+    setGroupOptions(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups, groupList]);
 
@@ -119,14 +117,16 @@ const GroupAccessPanel = ({ classes, groups, onChange }) => {
           }
         </div>
       </div>
-
-
     </EditableLayout>
   );
 };
 
 GroupAccessPanel.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+GroupAccessPanel.defaultProps = {
+  groups: []
 };
 
 export default withStyles(styles)(GroupAccessPanel);

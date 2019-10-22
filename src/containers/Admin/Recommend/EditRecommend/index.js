@@ -9,7 +9,8 @@ import {
   removeRecommend,
   addEditRecommend,
   setExpertises,
-  setRelationships
+  setRelationships,
+  setUsers
 } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
@@ -37,6 +38,7 @@ const styles = theme => {
 
 const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const recommends = useSelector(state => state.recommend.data, []);
+  const users = useSelector(state => state.user.data, []);
   const expertises = useSelector(state => state.expertise.data, []);
   const relationships = useSelector(state => state.relationship.data, []);
   const dispatch = useDispatch();
@@ -46,11 +48,13 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [recommend, setRecommend] = useState({});
   const [expertiseOptions, setExpertiseOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
   const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
   const [relationshipOptions, setRelationshipOptions] = useState([]);
 
   useEffect(() => {
     dispatch(setRecommends());
+    dispatch(setUsers());
     dispatch(setExpertises());
     dispatch(setRelationships());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +88,16 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recommend, expertises]);
 
+  useEffect(() => {
+    const data = users.map((user) => ({
+      ...user,
+      label: user.email,
+      value: user.email
+    }));
+    setUserOptions(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
+
   const expandHandler = panel => {
     setExpanded(panel);
   };
@@ -111,12 +125,44 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
     setRecommend(data);
   }
 
+  const onReferrerSelectHandler = () => async (event) => {
+    const { value } = event.target;
+    if (value === recommend.candidate.email) {
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      return null;
+    }
+
+    const selectedUser = users.find((user) => (user.email === value));
+    const data = {
+      ...recommend,
+      referrer: selectedUser
+    }
+    setRecommend(data);
+  }
+
+  const onCandidateChangeHandler = (name) => async (event) => {
+    const { value } = event.target;
+    if (name === 'email' && value === recommend.referrer.email) {
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      return null;
+    }
+
+    const data = {
+      ...recommend,
+      candidate: {
+        ...recommend.candidate,
+        [name]: value
+      }
+    }
+    setRecommend(data);
+  }
+
   const saveHandler = async () => {
     if (!recommend.expertiseArea
-      || !recommend.whichCapacity
-      || !recommend.whyGreat
-      || !recommend.howYouKnow) {
-      showErrorToast(notifications.FORM_VALODATION_ERROR);
+      || !recommend.candidate.email
+      || !recommend.candidate.firstName
+      || !recommend.candidate.lastName) {
+      showErrorToast(notifications.ADD_RECOMMEND_VALODATION_ERROR);
       return null;
     }
 
@@ -172,10 +218,13 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
             panel={panel}
             isEdit={isEdit}
             onEdit={editHandler}>
-            <EditableInput
-              isEdit={false}
-              label='Referrer email'
+            <EditableSelect
+              isEdit={isEdit}
+              label='Referrer email*'
+              placeholder='Select Referrer email'
+              options={userOptions}
               value={recommend.referrer.email}
+              onChange={onReferrerSelectHandler()}
             />
             <EditableInput
               isEdit={false}
@@ -188,23 +237,26 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.referrer.lastName}
             />
             <EditableInput
-              isEdit={false}
-              label='Candidate email'
+              isEdit={isEdit}
+              label='Candidate email*'
               value={recommend.candidate.email}
+              onChange={onCandidateChangeHandler('email')}
             />
             <EditableInput
-              isEdit={false}
-              label='First Name'
+              isEdit={isEdit}
+              label='First Name*'
               value={recommend.candidate.firstName}
+              onChange={onCandidateChangeHandler('firstName')}
             />
             <EditableInput
-              isEdit={false}
-              label='Last Name'
+              isEdit={isEdit}
+              label='Last Name*'
               value={recommend.candidate.lastName}
+              onChange={onCandidateChangeHandler('lastName')}
             />
             <EditableSelect
               isEdit={isEdit}
-              label='Expertise area'
+              label='Expertise area*'
               placeholder='Select expertise area'
               options={expertiseOptions}
               value={recommend.expertiseArea}

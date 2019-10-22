@@ -1,10 +1,15 @@
 
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import * as GROUP_SERVICE from '../../../../services/group';
-import { addEditGroup } from '../../../../actions';
+import * as RECOMMEND_SERVICE from '../../../../services/recommend';
+import {
+  addEditRecommend,
+  setExpertises,
+  setRelationships,
+  setUsers
+} from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
 import notifications from '../../../../constants/notifications';
@@ -13,10 +18,11 @@ import {
   EditableLayout,
   ConfirmDialog,
   EditableInput,
-  EditableImage
+  EditableSelect,
+  EditableMultiSelect,
+  EditableTextarea
 } from '../../../../components';
-import { showErrorToast } from '../../../../utils/utility';
-import { useInput } from '../../../../utils/hooks';
+import { showErrorToast, isEmpty } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -27,15 +33,59 @@ const styles = theme => {
   };
 };
 
-const AdminAddGroup = ({ classes, match, history }) => {
+const AdminAddRecommend = ({ classes, defaultRecommend, panel, history }) => {
+  const users = useSelector(state => state.user.data, []);
+  const expertises = useSelector(state => state.expertise.data, []);
+  const relationships = useSelector(state => state.relationship.data, []);
   const dispatch = useDispatch();
 
-  const name = useInput('');
-  const password = useInput('');
-  const logo = useInput('');
-  const [expanded, setExpanded] = useState('profilePanel');
-  const [editPanel, setEditPanel] = useState('profilePanel');
+  const [expanded, setExpanded] = useState(panel);
+  const [editPanel, setEditPanel] = useState(panel);
   const [showDialog, setShowDialog] = useState(false);
+  const [recommend, setRecommend] = useState(defaultRecommend);
+  const [expertiseOptions, setExpertiseOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
+  const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
+  const [relationshipOptions, setRelationshipOptions] = useState([]);
+
+  useEffect(() => {
+    dispatch(setUsers());
+    dispatch(setExpertises());
+    dispatch(setRelationships());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const expertisesData = expertises.map(({ name }) => ({ label: name, value: name }));
+    setExpertiseOptions(expertisesData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expertises]);
+
+  useEffect(() => {
+    const relationshipsData = relationships.map(({ name }) => ({ label: name, value: name }));
+    setRelationshipOptions(relationshipsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [relationships]);
+
+  useEffect(() => {
+    const selectedExpertise = expertises.find(expertise => expertise.name === recommend.expertiseArea);
+    let subExpertisesData = []
+    if (!isEmpty(selectedExpertise)) {
+      subExpertisesData = selectedExpertise.subExpertises.map((name) => ({ label: name, value: name }));
+    }
+    setSubExpertiseOptions(subExpertisesData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recommend, expertises]);
+
+  useEffect(() => {
+    const data = users.map((user) => ({
+      ...user,
+      label: user.email,
+      value: user.email
+    }));
+    setUserOptions(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
 
   const expandHandler = panel => {
     setExpanded(panel);
@@ -46,26 +96,70 @@ const AdminAddGroup = ({ classes, match, history }) => {
   }
 
   const backHandler = () => {
-    history.push(pageLinks.AdminGroupList.url);
+    history.push(pageLinks.AdminRecommendList.url);
+  }
+
+  const onFieldChangeHandler = (name) => async (event) => {
+    let data = {
+      ...recommend,
+      [name]: !!event.target ? event.target.value : event
+    }
+
+    if (name === 'expertiseArea') {
+      data = {
+        ...data,
+        subExpertises: []
+      }
+    }
+    setRecommend(data);
+  }
+
+  const onReferrerSelectHandler = () => async (event) => {
+    const { value } = event.target;
+    if (value === recommend.candidate.email) {
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      return null;
+    }
+    const selectedUser = users.find((user) => (user.email === value));
+
+    const data = {
+      ...recommend,
+      referrer: selectedUser
+    }
+    setRecommend(data);
+  }
+
+  const onCandidateChangeHandler = (name) => async (event) => {
+    const { value } = event.target;
+    if (name === 'email' && value === recommend.referrer.email) {
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      return null;
+    }
+
+    const data = {
+      ...recommend,
+      candidate: {
+        ...recommend.candidate,
+        [name]: value
+      }
+    }
+    setRecommend(data);
   }
 
   const saveHandler = async () => {
-    if (!name.value || !password.value) {
-      showErrorToast(notifications.FORM_VALODATION_ERROR);
+    if (!recommend.expertiseArea
+      || !recommend.referrer.email
+      || !recommend.candidate.email
+      || !recommend.candidate.firstName
+      || !recommend.candidate.lastName) {
+      showErrorToast(notifications.ADD_RECOMMEND_VALODATION_ERROR);
       return null;
     }
 
     try {
-      const groupData = {
-        name: name.value,
-        password: password.value,
-        viewPassword: password.value,
-        logo: logo.value
-      };
-
-      const { data } = await GROUP_SERVICE.addGroup(groupData);
-      dispatch(addEditGroup(data));
-      history.push(pageLinks.AdminGroupList.url);
+      const { data } = await RECOMMEND_SERVICE.addRecommend(recommend);
+      dispatch(addEditRecommend(data));
+      history.push(pageLinks.AdminRecommendList.url);
     } catch (error) {
       if (error.response) {
         const { message } = error.response.data;
@@ -74,59 +168,110 @@ const AdminAddGroup = ({ classes, match, history }) => {
     }
   }
 
-  const deleteHandler = () => {
-    name.onSet('');
-    password.onSet('');
-    logo.onSet('');
+  const deleteHandler = async () => {
+    setRecommend(defaultRecommend);
     setEditPanel(false);
     setShowDialog(false);
   }
 
   const openConfirmDialogHandler = () => {
-    if (!!name.value || !!password.value || !!logo.value) {
-      setShowDialog(true);
-    }
+    setShowDialog(true);
   }
 
   const closeDialogHandler = () => {
     setShowDialog(false);
   }
 
+  const isEdit = panel === editPanel;
   return (
     <main className={classes.root}>
       <ControlButtons
-        backLabel='back to all groups'
+        backLabel='back to all recommends'
         onBack={backHandler}
         onSave={saveHandler}
         onDelete={openConfirmDialogHandler}
       />
       <AccordionLayout
-        title='BASIC PROFILE'
-        panel='profilePanel'
+        title='Recommend'
+        panel={panel}
         onExpand={expandHandler}
         selectedPanel={expanded}>
         <EditableLayout
-          panel='profilePanel'
-          isEdit={'profilePanel' === editPanel}
+          panel={panel}
+          isEdit={isEdit}
           onEdit={editHandler}>
-          <EditableInput
-            isEdit={'profilePanel' === editPanel}
-            label='Group name'
-            value={name.value}
-            onChange={name.onChange}
+          <EditableSelect
+            isEdit={isEdit}
+            label='Referrer email*'
+            placeholder='Select Referrer email'
+            options={userOptions}
+            value={recommend.referrer.email}
+            onChange={onReferrerSelectHandler()}
           />
           <EditableInput
-            isEdit={'profilePanel' === editPanel}
-            label='Group password'
-            value={password.value}
-            onChange={password.onChange}
+            isEdit={false}
+            label='First Name'
+            value={recommend.referrer.firstName}
           />
-          <EditableImage
-            isAvatar={false}
-            isEdit={'profilePanel' === editPanel}
-            label='Logo'
-            value={logo.value}
-            onChange={logo.onSet}
+          <EditableInput
+            isEdit={false}
+            label='Last Name'
+            value={recommend.referrer.lastName}
+          />
+          <EditableInput
+            isEdit={isEdit}
+            label='Candidate email*'
+            value={recommend.candidate.email}
+            onChange={onCandidateChangeHandler('email')}
+          />
+          <EditableInput
+            isEdit={isEdit}
+            label='First Name*'
+            value={recommend.candidate.firstName}
+            onChange={onCandidateChangeHandler('firstName')}
+          />
+          <EditableInput
+            isEdit={isEdit}
+            label='Last Name*'
+            value={recommend.candidate.lastName}
+            onChange={onCandidateChangeHandler('lastName')}
+          />
+          <EditableSelect
+            isEdit={isEdit}
+            label='Expertise area*'
+            placeholder='Select expertise area'
+            options={expertiseOptions}
+            value={recommend.expertiseArea}
+            onChange={onFieldChangeHandler('expertiseArea')}
+          />
+          <EditableMultiSelect
+            isEdit={isEdit}
+            label='Expertise area detail'
+            placeholder='Select expertise area detail'
+            options={subExpertiseOptions}
+            value={recommend.subExpertises}
+            onChange={onFieldChangeHandler('subExpertises')}
+          />
+          <EditableSelect
+            isEdit={isEdit}
+            label='Relationship'
+            placeholder='Select relationship'
+            options={relationshipOptions}
+            value={recommend.whichCapacity}
+            onChange={onFieldChangeHandler('whichCapacity')}
+          />
+          <EditableTextarea
+            isEdit={isEdit}
+            label='Relationship detail'
+            value={recommend.howYouKnow}
+            onChange={onFieldChangeHandler('howYouKnow')}
+          />
+          <EditableTextarea
+            rows={4}
+            isEdit={isEdit}
+            label='Why great'
+            value={recommend.whyGreat}
+            onChange={onFieldChangeHandler('whyGreat')}
           />
         </EditableLayout>
       </AccordionLayout>
@@ -141,4 +286,15 @@ const AdminAddGroup = ({ classes, match, history }) => {
   );
 };
 
-export default withStyles(styles)(AdminAddGroup);
+AdminAddRecommend.defaultProps = {
+  panel: 'recommendPanel'
+};
+
+AdminAddRecommend.defaultProps = {
+  defaultRecommend: {
+    referrer: {},
+    candidate: {}
+  }
+};
+
+export default withStyles(styles)(AdminAddRecommend);

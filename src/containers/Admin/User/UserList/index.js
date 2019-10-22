@@ -58,11 +58,17 @@ const AdminUserList = ({ classes, history }) => {
 
   const createTableData = users => {
     const tableData = users.map(user => {
-      const { firstName, lastName, email, verified, _id } = user;
+      const { firstName, lastName, email, verified, _id, recommends } = user;
+      let approveRecommend = 0, unAprroveRecommend = 0;
+      recommends.map((recommend) => (
+        recommend.verified ? approveRecommend++ : unAprroveRecommend++
+      ));
+
       const row = [
         firstName,
         lastName,
         email,
+        `${approveRecommend} / ${unAprroveRecommend}`,
         verified,
         _id
       ];
@@ -75,6 +81,7 @@ const AdminUserList = ({ classes, history }) => {
     { name: 'First Name' },
     { name: 'Last Name' },
     { name: 'Email' },
+    { name: '#' },
     {
       name: 'Access',
       options: {

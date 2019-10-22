@@ -87,7 +87,7 @@ const AdminAddGroup = ({ classes, panel, history }) => {
   }
 
   const openConfirmDialogHandler = () => {
-    if (!!group.name.value || !!group.viewPassword || !!group.logo) {
+    if (!!group.name || !!group.viewPassword || !!group.logo) {
       setShowDialog(true);
     }
   }
