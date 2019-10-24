@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
+import * as MAILER_SERVICE from '../../services/mailer';
 import {
   setExpertises,
   setLocations,
@@ -14,6 +15,7 @@ import { CustomSelect, PrimaryButton } from '../../components';
 import { CandidateProfile, ContactEmailModal, ExceptProfile } from './Shared';
 import { useInput } from '../../utils/hooks';
 import years from '../../constants/years';
+import roles from '../../constants/roles';
 
 const styles = theme => {
   return {
@@ -142,6 +144,13 @@ const Discover = ({ classes }) => {
   }
 
   const comfirmModalHandler = () => {
+    const data = {
+      candidateEmail: recommends[step].candidate.email,
+      senderName: `${user.firstName} ${user.lastName}`,
+      referrerName: `${recommends[step].referrer.firstName} ${recommends[step].referrer.lastName}`,
+      candidateName: `${recommends[step].candidate.firstName} ${recommends[step].candidate.lastName}`
+    }
+    MAILER_SERVICE.contactCandidate(data);
     setShowModal(false);
   }
 
@@ -150,6 +159,12 @@ const Discover = ({ classes }) => {
   }
 
   const isNotShowRecommends = () => {
+    if (user.role === roles.ADMIN_ROLE) {
+      return recommends.length === 0
+        || step === recommends.length
+        || !user.verified
+    }
+
     return recommends.length === 0
       || step === recommends.length
       || userRecommends.length < 3

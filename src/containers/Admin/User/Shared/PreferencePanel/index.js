@@ -38,7 +38,7 @@ const PreferencePanel = ({
         label='Primary expertise area'
         placeholder='Select your primary expertise area'
         options={expertises}
-        value={user.primaryExpertises}
+        value={user.primaryExpertise}
         onChange={onChange('primaryExpertise')}
       />
       <EditableMultiSelect

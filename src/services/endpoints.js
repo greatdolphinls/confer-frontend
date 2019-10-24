@@ -19,6 +19,8 @@ const verifyUserPrefix = '/api/verifyUser';
 const verifyRecommendPrefix = '/api/verifyRecommend';
 const addRecommendByUserPrefix = '/api/addRecommendByUser';
 const degreesPrefix = '/api/degrees';
+const contactCandidatePrefix = '/api/contactCandidate';
+const uploadImagePrefix = '/api/uploadImage';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -84,6 +86,14 @@ const getDegreeUrl = () => {
     return urlJoin(config.proxyUrl, degreesPrefix)
 }
 
+const getContactCandidateUrl = () => {
+    return urlJoin(config.proxyUrl, contactCandidatePrefix)
+}
+
+const getUploadImageUrl = () => {
+    return urlJoin(config.proxyUrl, uploadImagePrefix)
+}
+
 export {
     getResetPasswordUrl,
     getForgotPasswordUrl,
@@ -100,5 +110,7 @@ export {
     getVerifyUserUrl,
     getVerifyRecommendUrl,
     getAddRecommendByUserUrl,
-    getDegreeUrl
+    getDegreeUrl,
+    getContactCandidateUrl,
+    getUploadImageUrl
 };

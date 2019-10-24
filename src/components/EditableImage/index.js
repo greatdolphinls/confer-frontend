@@ -3,9 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import Avatar from '../Avatar';
+import Dropzone from 'react-dropzone';
 
+import * as UPLOAD_SERVICE from '../../services/upload';
+import Avatar from '../Avatar';
 import DefaultLogo from '../../assets/img/defaultLogo.jpg';
+import { defaultAvatarLink as DefaultAvatar } from '../../constants/links';
 
 const styles = theme => {
   return {
@@ -23,8 +26,24 @@ const styles = theme => {
       marginBottom: theme.spacing(1)
     },
     value: {
-      width: 165,
-      height: 80,
+      width: 120,
+      height: 60,
+      objectFit: 'cover',
+      borderRadius: 2
+    },
+    upload: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: `2px dashed ${theme.palette.borderColor}`,
+      margin: `${theme.spacing(1)}px  0`,
+      width: 150,
+      height: 150,
+      borderRadius: 3,
+    },
+    editableImage: {
+      width: 100,
+      height: 100,
       objectFit: 'cover',
       borderRadius: 2
     }
@@ -35,9 +54,43 @@ const EditableImage = ({
   classes, isEdit, isAvatar, label, value, onChange
 }) => {
 
-  const onUploadHandler = () => {
-    const image = 'https://images.unsplash.com/photo-1559423649-3129dd793cd9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
-    onChange(image);
+  const onUploadHandler = async (files) => {
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', async () => {
+      const data = {
+        folder: isAvatar ? 'avatar' : 'logo',
+        file: reader.result
+      }
+      const response = await UPLOAD_SERVICE.uploadImage(data);
+      onChange(response.data);
+    });
+    reader.readAsDataURL(file);
+  }
+
+  const imageUploadRender = () => {
+    const DefaultImage = isAvatar ? DefaultAvatar : DefaultLogo;
+
+    return (
+      <Dropzone onDrop={onUploadHandler}>
+        {({ getRootProps, getInputProps }) => {
+          const inputProps = getInputProps()
+          const rootProps = getRootProps()
+          return (
+            <div {...rootProps}
+              className={classes.upload}
+            >
+              <img
+                alt='logoImage'
+                src={value || DefaultImage}
+                className={classes.editableImage} />
+              <input {...inputProps} />
+            </div>
+          )
+        }}
+      </Dropzone>
+    )
   }
 
   return (
@@ -49,11 +102,7 @@ const EditableImage = ({
       </Typography>
       {
         isEdit
-          ? <img
-            alt='logoImage'
-            onClick={onUploadHandler}
-            src={value || DefaultLogo}
-            className={classes.value} />
+          ? imageUploadRender()
           : isAvatar
             ? <Avatar
               src={value}

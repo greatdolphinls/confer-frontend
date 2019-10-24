@@ -23,7 +23,6 @@ const app = (
   </Fragment>
 );
 
-
 ReactDOM.render(app, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
