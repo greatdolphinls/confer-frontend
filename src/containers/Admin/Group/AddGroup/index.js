@@ -7,15 +7,17 @@ import * as GROUP_SERVICE from '../../../../services/group';
 import { addEditGroup } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
+import { groupRoles } from '../../../../constants/roles';
 import notifications from '../../../../constants/notifications';
 import {
   AccordionLayout,
   EditableLayout,
   ConfirmDialog,
   EditableInput,
-  EditableImage
+  EditableImage,
+  EditableSelect
 } from '../../../../components';
-import { showErrorToast } from '../../../../utils/utility';
+import { showErrorToast, getGroupRole } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -48,15 +50,21 @@ const AdminAddGroup = ({ classes, panel, history }) => {
   }
 
   const onFieldChangeHandler = (name) => async (event) => {
+    let value = !!event.target ? event.target.value : event;
+
+    if (name === 'role') {
+      value = parseInt(value, 10);
+    }
+
     let data = {
       ...group,
-      [name]: !!event.target ? event.target.value : event
+      [name]: value
     }
 
     if (name === 'viewPassword') {
       data = {
         ...data,
-        password: !!event.target ? event.target.value : event
+        password: value
       }
     }
     setGroup(data);
@@ -124,6 +132,13 @@ const AdminAddGroup = ({ classes, panel, history }) => {
             label='Group password'
             value={group.viewPassword}
             onChange={onFieldChangeHandler('viewPassword')}
+          />
+          <EditableSelect
+            isEdit={isEdit}
+            label='Group Role'
+            options={groupRoles}
+            value={isEdit ? group.role : getGroupRole(group.role)}
+            onChange={onFieldChangeHandler('role')}
           />
           <EditableImage
             isAvatar={false}

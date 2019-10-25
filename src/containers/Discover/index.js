@@ -15,7 +15,7 @@ import { CustomSelect, PrimaryButton } from '../../components';
 import { CandidateProfile, ContactEmailModal, ExceptProfile } from './Shared';
 import { useInput } from '../../utils/hooks';
 import years from '../../constants/years';
-import roles from '../../constants/roles';
+import { roles } from '../../constants/roles';
 
 const styles = theme => {
   return {

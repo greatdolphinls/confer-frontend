@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
 import { pageLinks, defaultAvatarLink } from '../../constants/links'
-import roles from '../../constants/roles';
+import { roles } from '../../constants/roles';
 import { hasValidToken } from '../../utils/utility';
 import { ProfileDropdown } from '../index';
 import LogoImage from '../../assets/img/logo.png';
@@ -38,7 +38,9 @@ const styles = theme => {
   };
 };
 
-const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems, ...props }) => {
+const NavBar = ({
+  classes, SignOffItems, AdminItems, ReferrerItems, WeakItems, ...props
+}) => {
   const { user } = useSelector(state => state.auth, []);
   let items = [];
 
@@ -49,6 +51,9 @@ const NavBar = ({ classes, SignOffItems, AdminItems, ReferrerItems, ...props }) 
         break;
       case roles.REFERRER_ROLE:
         items = ReferrerItems;
+        break;
+      case roles.WEAK_ROLE:
+        items = WeakItems;
         break;
       default:
         items = ReferrerItems;
@@ -127,6 +132,16 @@ NavBar.defaultProps = {
       title: pageLinks.Discover.title,
       url: pageLinks.Discover.url
     },
+    {
+      title: pageLinks.RecommendCount.title,
+      url: pageLinks.RecommendCount.url
+    },
+    {
+      title: pageLinks.FAQ.title,
+      url: pageLinks.FAQ.url
+    }
+  ],
+  WeakItems: [
     {
       title: pageLinks.RecommendCount.title,
       url: pageLinks.RecommendCount.url

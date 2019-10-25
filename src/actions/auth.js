@@ -8,7 +8,7 @@ import {
     getResetPasswordUrl,
 } from '../services/endpoints';
 import { jwtTokenKey, pageLinks } from '../constants/links';
-import roles from '../constants/roles';
+import { roles } from '../constants/roles';
 import AuthConstants from '../constants/reducerConstants/AuthConstants';
 import { setErrors, clearErrors } from './error';
 import setAuthToken from '../services/security/setAuthToken';

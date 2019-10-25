@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
 import { pageLinks } from '../../../constants/links';
+import { roles } from '../../../constants/roles';
 import { PrimaryButton } from '../../../components';
 import RecommendsContent from './RecommendsContent';
 import RecommendRules from './RecommendRules';
@@ -63,6 +65,7 @@ const styles = theme => {
 };
 
 const GroundRules = ({ classes, history }) => {
+  const { user } = useSelector(state => state.auth, []);
   const [showModal, setShowModal] = useState(false);
 
   const buttonHandler = (url) => () => {
@@ -76,6 +79,10 @@ const GroundRules = ({ classes, history }) => {
   const closeModalHandler = () => {
     setShowModal(false)
   }
+
+  const members = user.role === roles.WEAK_ROLE
+    ? 'Hiring managers will be able to see who recommended a person but not a list'
+    : 'All members';
 
   return (
     <main className={classes.root}>
@@ -91,15 +98,16 @@ const GroundRules = ({ classes, history }) => {
         </Typography>
         <RecommendRules />
         <Typography className={classes.description}>
-          Since transparency drives trust in the network, we will
+          {`Since transparency drives trust in the network, we will
           notify the people you recommend (you can give them a
-          heads up!). All members across our communities will be
+          heads up!). `}
+          {members} across our communities will be
           able to see who recommended a person but not a list of
           all your recommendations. Before we connect anyone,
           both people must opt-in.
         </Typography>
         <Typography className={classes.description}>
-          {'Want inspiration? '}
+          Want inspiration?
           <span onClick={showModalHandler}>
             See some examples
           </span>

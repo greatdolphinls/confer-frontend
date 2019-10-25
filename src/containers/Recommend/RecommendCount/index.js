@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import { pageLinks } from '../../../constants/links';
+import { roles } from '../../../constants/roles';
 import { PrimaryButton } from '../../../components';
 import { CandidateNameItem, RecommendStepper } from '../Shared';
 import { setUserRecommends } from '../../../actions';
@@ -65,6 +66,7 @@ const styles = theme => {
 const RecommendCount = ({
   classes, minCandidates, maxCandidates, history
 }) => {
+  const { user } = useSelector(state => state.auth, []);
   const recommends = useSelector(state => state.recommend.user, []);
   const dispatch = useDispatch();
   const [names, setNames] = useState([]);
@@ -85,9 +87,39 @@ const RecommendCount = ({
   }
 
   const isComplete = names.length >= minCandidates;
+  const isWeakUser = user.role === roles.WEAK_ROLE;
+
+  const getDescription = () => {
+    let description = '';
+
+    if (isComplete) {
+      if (isWeakUser) {
+        description = `Thank you for submitting your recommendations! 
+        We are reviewing them and will notify you once 
+        they have been approved so you can get your reward. 
+        You can continue submitting up to 5 people.`;
+      } else {
+        description = `Thank you for submitting your recommendations! 
+        We are reviewing them and will notify you once 
+        they have been approved so you can start searching 
+        for talent. You can continue submitting up to 5 people.`;
+      }
+    } else {
+      description = `You’ve recommended ${names.length} ${names.length === 1 ? 'person' : 'people'}! `;
+
+      if (isWeakUser) {
+        description += ` You’re just ${minCandidates - names.length} 
+        more away from accessing your reward`;
+      } else {
+        description += ` You’re just ${minCandidates - names.length} 
+        more away from accessing the talent collective`;
+      }
+    }
+    return description;
+  }
 
   const renderDiscoverButton = () => {
-    if (isComplete) {
+    if (isComplete && !isWeakUser) {
       return (
         <PrimaryButton
           classes={{ root: classes.discoverButton }}
@@ -106,16 +138,7 @@ const RecommendCount = ({
       </Typography>
       <RecommendStepper activeStep={names.length} />
       <Typography className={classes.description}>
-        {
-          isComplete
-            ? `Thank you for submitting your recommendations! 
-              We are reviewing them and will notify you once 
-              they have been approved so you can start searching 
-              for talent. You can continue submitting up to 5 people.`
-            : `You’ve recommended ${names.length} ${names.length === 1 ? 'person' : 'people'}! 
-              You’re just ${minCandidates - names.length} more 
-              away from accessing the talent collective.`
-        }
+        {getDescription()}
       </Typography>
       {names.map((name, index) =>
         <CandidateNameItem key={index} name={name} />

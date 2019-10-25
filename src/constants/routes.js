@@ -12,7 +12,7 @@ import {
   AdminAddRecommend,
   AdminEditRecommend
 } from '../containers/Admin';
-import roles from './roles';
+import { roles } from './roles';
 import { pageLinks } from './links';
 
 const authRoutes = [
@@ -20,21 +20,24 @@ const authRoutes = [
     url: pageLinks.GroundRules.url,
     component: GroundRules,
     roles: [
-      roles.REFERRER_ROLE
+      roles.REFERRER_ROLE,
+      roles.WEAK_ROLE
     ]
   },
   {
     url: pageLinks.RecommendForm.url,
     component: RecommendForm,
     roles: [
-      roles.REFERRER_ROLE
+      roles.REFERRER_ROLE,
+      roles.WEAK_ROLE
     ]
   },
   {
     url: pageLinks.RecommendCount.url,
     component: RecommendCount,
     roles: [
-      roles.REFERRER_ROLE
+      roles.REFERRER_ROLE,
+      roles.WEAK_ROLE
     ]
   },
   {

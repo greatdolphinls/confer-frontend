@@ -7,6 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { Typography } from '@material-ui/core';
 
+import { roles } from '../../../../constants/roles';
 import { setUserRecommends } from '../../../../actions';
 import { PrimaryButton } from '../../../../components';
 
@@ -38,9 +39,9 @@ const styles = theme => {
 };
 
 const SuccessRecommendModal = ({
-  classes, opened, minCandidates, keepContent, passContent, onClose, onConfirm
+  classes, opened, minCandidates, keepContent, referrerPassContent, weakPassContent, onClose, onConfirm
 }) => {
-
+  const { user } = useSelector(state => state.auth, []);
   const recommends = useSelector(state => state.recommend.user, []);
   const dispatch = useDispatch();
 
@@ -49,7 +50,12 @@ const SuccessRecommendModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { title, description, confirm } = recommends.length < minCandidates ? keepContent : passContent;
+  const isWeakUser = user.role === roles.WEAK_ROLE;
+  const { title, description, confirm } = recommends.length < minCandidates
+    ? keepContent
+    : isWeakUser
+      ? weakPassContent
+      : referrerPassContent;
 
   return (
     <Dialog
@@ -90,9 +96,14 @@ SuccessRecommendModal.defaultProps = {
     description: 'Awesome, your recommendation has been added. You’ve just helped advance someone’s career in a big way!',
     confirm: 'Keep Up the good work'
   },
-  passContent: {
+  referrerPassContent: {
     title: 'Thank you!',
     description: 'Thank you for submitting your three recommendations and helping to advance their careers! As soon as we’re done reviewing your recommendations, you’ll get to start discovering talent. In the meantime, you can recommend up to two more people.  We’ll be in touch shortly!',
+    confirm: 'CONTINUE'
+  },
+  weakPassContent: {
+    title: 'Thank you!',
+    description: 'Thank you for submitting your three recommendations and helping to advance their careers! As soon as we’re done reviewing your recommendations, you’ll get your reward . In the meantime, you can recommend up to two more people.  We’ll be in touch shortly!',
     confirm: 'CONTINUE'
   }
 };

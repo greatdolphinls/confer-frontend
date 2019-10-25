@@ -9,6 +9,8 @@ import {
   EditableTextarea,
   EditableSelect
 } from '../../../../../components';
+import { getUserRole } from '../../../../../utils/utility';
+import { userRoles } from '../../../../../constants/roles';
 
 const styles = theme => {
   return {
@@ -41,6 +43,13 @@ const BasicProfilePanel = ({ classes, locations, user, editPanel, onEdit, onChan
         label='Email'
         value={user.email}
         onChange={onChange('email')}
+      />
+      <EditableSelect
+        isEdit={isEdit}
+        label='User Role'
+        options={userRoles}
+        value={isEdit ? user.role : getUserRole(user.role)}
+        onChange={onChange('role')}
       />
       <EditableImage
         isEdit={isEdit}

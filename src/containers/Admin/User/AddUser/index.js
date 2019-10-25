@@ -82,9 +82,15 @@ const AdminAddUser = ({ classes, panel, history }) => {
   }
 
   const onFieldChangeHandler = (name) => async (event) => {
-    const data = {
+    let value = !!event.target ? event.target.value : event;
+
+    if (name === 'role') {
+      value = parseInt(value, 10);
+    }
+
+    let data = {
       ...user,
-      [name]: !!event.target ? event.target.value : event
+      [name]: value
     }
 
     setUser(data);

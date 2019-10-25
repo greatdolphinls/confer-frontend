@@ -71,13 +71,14 @@ const styles = theme => {
   };
 };
 
-const AuthLayout = ({ classes, groupName, selectedTab, tabs, children }) => {
+const AuthLayout = ({ classes, isCashGroup, groupName, selectedTab, tabs, children }) => {
   const isSignIn = selectedTab === 'signin';
 
   return (
     <Fragment>
       <div className={classes.root}>
         <AuthDescription
+          isCashGroup={isCashGroup}
           selectedTab={selectedTab}
           groupName={groupName} />
         <Paper className={classes.paper}>
@@ -98,7 +99,8 @@ const AuthLayout = ({ classes, groupName, selectedTab, tabs, children }) => {
             {children}
             <Typography className={classes.termAndPrivacy}>
               By creating account, you agree to our
-              <Link to={pageLinks.TermsOfUse.url} className={classes.link}> Terms and Conditions</Link> &
+              <Link
+                to={pageLinks.TermsOfUse.url} className={classes.link}> Terms and Conditions</Link> &
               <Link to={pageLinks.PrivacyPolicy.url} className={classes.link}> Privacy Policy</Link>
             </Typography>
           </div>
@@ -116,6 +118,7 @@ AuthLayout.propTypes = {
 
 AuthLayout.defaultProps = {
   selectedTab: 'signin',
+  isCashGroup: false,
   tabs: [
     {
       value: 'signin',

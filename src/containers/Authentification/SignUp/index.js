@@ -11,6 +11,7 @@ import { AuthLayout } from '../Shared';
 import { PrimaryButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
+import { roles } from '../../../constants/roles';
 import notifications from '../../../constants/notifications';
 import GroupImage from '../../../assets/img/groupLogos/create.jpg';
 
@@ -56,7 +57,6 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
   const getGroup = async () => {
     const { data } = await GROUP_SERVICE.getGroup(groupId);
     setGroup(data);
-    console.log(data)
   }
 
   const submitHandler = () => {
@@ -104,7 +104,8 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
         className={classes.groupImage} />
       <AuthLayout
         selectedTab='signup'
-        groupName={group.name || 'group'}>
+        groupName={group.name || 'group'}
+        isCashGroup={group.role === roles.GROUP_CASH_ROLE}>
         <ValidatorForm
           onSubmit={submitHandler}
           onError={errors => console.log(errors)}>
@@ -160,7 +161,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
           </PrimaryButton>
         </ValidatorForm>
       </AuthLayout>
-    </main>
+    </main >
   );
 };
 

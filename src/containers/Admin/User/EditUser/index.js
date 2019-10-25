@@ -114,9 +114,15 @@ const AdminEditUser = ({ classes, match, history }) => {
   }
 
   const onFieldChangeHandler = (name) => async (event) => {
+    let value = !!event.target ? event.target.value : event;
+
+    if (name === 'role') {
+      value = parseInt(value, 10);
+    }
+
     let data = {
       ...user,
-      [name]: !!event.target ? event.target.value : event
+      [name]: value
     }
 
     if (name === 'primaryExpertise') {
@@ -125,6 +131,7 @@ const AdminEditUser = ({ classes, match, history }) => {
         subExpertises: []
       }
     }
+
     setUser(data);
   }
 

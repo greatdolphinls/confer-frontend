@@ -2,6 +2,7 @@
 import jwt_decode from 'jwt-decode';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { roles } from '../constants/roles';
 
 const getFontUnit = theme => theme.spacing.unit * 1.25;
 
@@ -54,11 +55,6 @@ const compareObject = (object1, object2) => {
     return false;
   }
   return true;
-};
-
-const dateTimeToUTCString = dateTime => {
-  const dateString = moment(dateTime).format('YYYY.MM.DD HH:mm:ss');
-  return dateString + ' UTC';
 };
 
 // remove item with index and return the rest as array
@@ -158,7 +154,7 @@ const getYears = () => {
   }));
 }
 
-const addEditArray= (items, data) => {
+const addEditArray = (items, data) => {
   const targetIndex = items.findIndex(item => (
     item._id === data._id
   ));
@@ -166,20 +162,44 @@ const addEditArray= (items, data) => {
   if (targetIndex >= 0) {
     items[targetIndex] = data;
   } else {
-      items = [
-          ...items,
-          data
-      ];
+    items = [
+      ...items,
+      data
+    ];
   }
   return items;
 }
 
-const removeArray= (items, id) => {
+const removeArray = (items, id) => {
   const targetIndex = items.findIndex(item => (
     item._id === id
   ));
-  
+
   return removeItemWithSlice(items, targetIndex);
+}
+
+const getGroupRole = (value) => {
+  switch (value) {
+    case roles.GROUP_DISCOVER_ROLE:
+      return 'Standard Group'
+    case roles.GROUP_CASH_ROLE:
+      return 'Cash Group'
+    default:
+      break
+  }
+}
+
+const getUserRole = (value) => {
+  switch (value) {
+    case roles.ADMIN_ROLE:
+      return 'Admin'
+    case roles.REFERRER_ROLE:
+      return 'Standard User'
+    case roles.WEAK_ROLE:
+      return 'Weak User'
+    default:
+      break
+  }
 }
 
 export {
@@ -190,7 +210,6 @@ export {
   getMomentTime,
   getAPIToken,
   compareObject,
-  dateTimeToUTCString,
   removeItemWithSlice,
   getCurrentEmployment,
   showErrorToast,
@@ -201,5 +220,7 @@ export {
   getDuration,
   getYears,
   addEditArray,
-  removeArray
+  removeArray,
+  getGroupRole,
+  getUserRole
 };
