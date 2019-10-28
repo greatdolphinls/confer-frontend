@@ -46,11 +46,15 @@ const pageLinks = {
     title: 'Success Reset Password',
     url: '/success-reset-password'
   },
-  Profile: {
+  ProfileOverview: {
     title: 'Profile',
-    url: '/profile'
+    url: '/profile-overview'
   },
-  MyAccount: {
+  ProfileEdit: {
+    title: 'Edit Profile',
+    url: '/profile-edit'
+  },
+  AccountManage: {
     title: 'Account management',
     url: '/account-management'
   },

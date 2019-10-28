@@ -8,7 +8,9 @@ import AuthConstants from '../constants/reducerConstants/AuthConstants'
 
 const initialState = {
     isAuthenticated: false,
-    user: {}
+    user: {},
+    profile: {},
+    recommend: {}
 };
 
 export default function (state = initialState, action) {
@@ -25,12 +27,22 @@ export default function (state = initialState, action) {
                 user: action.payload
             };
         case AuthConstants.EDIT_CURRENT_USER_INFO: {
-            const newUser = { ...state.user, ...action.payload }
+            const newUser = { ...state.user, ...action.payload };
             return {
                 ...state,
                 user: newUser
             };
         }
+        case AuthConstants.SET_CURRENT_PROFILE:
+            return {
+                ...state,
+                profile: action.payload
+            };
+        case AuthConstants.SET_CURRENT_USER_RECOMMEND:
+            return {
+                ...state,
+                recommend: action.payload
+            };
         default:
             return state;
     }

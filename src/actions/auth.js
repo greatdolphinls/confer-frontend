@@ -7,6 +7,7 @@ import {
     getForgotPasswordUrl,
     getResetPasswordUrl,
 } from '../services/endpoints';
+import { getUser, getUserRecommend } from '../services/user';
 import { jwtTokenKey, pageLinks } from '../constants/links';
 import { roles } from '../constants/roles';
 import AuthConstants from '../constants/reducerConstants/AuthConstants';
@@ -79,6 +80,34 @@ export const setCurrentUser = decoded => {
     };
 };
 
+export const editCurrentUserInfo = user => dispatch => {
+    dispatch({
+        type: AuthConstants.EDIT_CURRENT_USER_INFO,
+        payload: user
+    });
+};
+
+export const setCurrentProfile = () => async (dispatch, getState) => {
+    try {
+        const { auth: { user } } = getState();
+
+        const response = await getUser(user.id);
+        dispatch({
+            type: AuthConstants.SET_CURRENT_PROFILE,
+            payload: response.data
+        });
+    } catch (error) {
+        console.log('great dolphin : [actions auth setCurrentProfile] error => ', error);
+    }
+}
+
+export const editCurrentProfile = user => dispatch => {
+    dispatch({
+        type: AuthConstants.SET_CURRENT_PROFILE,
+        payload: user
+    });
+};
+
 export const logoutUser = history => dispatch => {
     localStorage.clear();
     setAuthToken(false);
@@ -136,3 +165,17 @@ export const resetPassword = (
             }
         });
 };
+
+export const setCurrentUserRecommend = () => async (dispatch, getState) => {
+    try {
+        const { auth: { user } } = getState();
+
+        const response = await getUserRecommend(user.id);
+        dispatch({
+            type: AuthConstants.SET_CURRENT_USER_RECOMMEND,
+            payload: response.data
+        });
+    } catch (error) {
+        console.log('great dolphin : [actions auth setCurrentUserRecommend] error => ', error);
+    }
+}

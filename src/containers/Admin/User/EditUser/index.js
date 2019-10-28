@@ -15,14 +15,14 @@ import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
 import {
   AccordionLayout,
+  PreferencePanel,
+  ExperiencePanel,
+  EducationPanel,
   ConfirmDialog,
   NotFound
 } from '../../../../components';
 import {
   BasicProfilePanel,
-  PreferencePanel,
-  ExperiencePanel,
-  EducationPanel,
   GroupAccessPanel
 } from '../Shared';
 import { showErrorToast, isEmpty } from '../../../../utils/utility';

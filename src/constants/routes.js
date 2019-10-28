@@ -14,8 +14,33 @@ import {
 } from '../containers/Admin';
 import { roles } from './roles';
 import { pageLinks } from './links';
+import AccountManage from '../containers/AccountManage';
+import { ProfileOverview, ProfileEdit } from '../containers/Profile';
 
 const authRoutes = [
+  {
+    url: pageLinks.AccountManage.url,
+    component: AccountManage,
+    roles: [
+      roles.ADMIN_ROLE,
+      roles.REFERRER_ROLE,
+      roles.WEAK_ROLE
+    ]
+  },
+  {
+    url: pageLinks.ProfileOverview.url,
+    component: ProfileOverview,
+    roles: [
+      roles.REFERRER_ROLE
+    ]
+  },
+  {
+    url: pageLinks.ProfileEdit.url,
+    component: ProfileEdit,
+    roles: [
+      roles.REFERRER_ROLE
+    ]
+  },
   {
     url: pageLinks.GroundRules.url,
     component: GroundRules,

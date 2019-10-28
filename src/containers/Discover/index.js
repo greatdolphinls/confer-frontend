@@ -11,8 +11,12 @@ import {
   setUserRecommends,
   setDiscoverRecommends
 } from '../../actions';
-import { CustomSelect, PrimaryButton } from '../../components';
-import { CandidateProfile, ContactEmailModal, ExceptProfile } from './Shared';
+import {
+  CandidateProfile,
+  CustomSelect,
+  PrimaryButton
+} from '../../components';
+import { ContactEmailModal, ExceptProfile } from './Shared';
 import { useInput } from '../../utils/hooks';
 import years from '../../constants/years';
 import { roles } from '../../constants/roles';
@@ -74,7 +78,6 @@ const styles = theme => {
     },
   };
 };
-
 
 const Discover = ({ classes }) => {
   const expertises = useSelector(state => state.expertise.data, []);

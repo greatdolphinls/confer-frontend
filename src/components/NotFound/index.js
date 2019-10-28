@@ -9,7 +9,7 @@ const styles = theme => {
     root: {
       display: 'flex',
       flexDirection: 'column',
-      margin: '250px auto 0'
+      margin: '100px auto 0'
     },
     icon: {
       fontSize: 90,

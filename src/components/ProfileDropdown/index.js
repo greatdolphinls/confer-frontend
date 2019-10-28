@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,6 +13,7 @@ import MenuList from '@material-ui/core/MenuList';
 
 import { Avatar } from '../index';
 import { logoutUser } from '../../actions';
+import { roles } from '../../constants/roles';
 import { pageLinks } from '../../constants/links'
 
 const styles = theme => {
@@ -31,7 +32,9 @@ const styles = theme => {
   };
 };
 
-const ProfileDropdown = ({ classes, avatar, items, history }) => {
+const ProfileDropdown = ({ classes, avatar, history }) => {
+  const { user } = useSelector(state => state.auth, []);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -60,6 +63,8 @@ const ProfileDropdown = ({ classes, avatar, items, history }) => {
     dispatch(logoutUser());
   }
 
+  const isReferrer = user.role === roles.REFERRER_ROLE;
+
   return (
     <div className={classes.root}>
       <div
@@ -81,16 +86,22 @@ const ProfileDropdown = ({ classes, avatar, items, history }) => {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
-                  {items.map((item, index) => (
+                  {isReferrer &&
                     <MenuItem
-                      key={index}
                       component={Link}
-                      to={item.url}
+                      to={pageLinks.ProfileOverview.url}
                       onClick={handleClose}
                       className={classes.item}>
-                      {item.title}
+                      {pageLinks.ProfileOverview.title}
                     </MenuItem>
-                  ))}
+                  }
+                  <MenuItem
+                    component={Link}
+                    to={pageLinks.AccountManage.url}
+                    onClick={handleClose}
+                    className={classes.item}>
+                    {pageLinks.AccountManage.title}
+                  </MenuItem>
                   <MenuItem
                     className={classes.item}
                     onClick={logoutHandler}>
@@ -109,19 +120,6 @@ const ProfileDropdown = ({ classes, avatar, items, history }) => {
 ProfileDropdown.propTypes = {
   classes: PropTypes.object.isRequired,
   items: PropTypes.array
-};
-
-ProfileDropdown.defaultProps = {
-  items: [
-    {
-      title: pageLinks.Profile.title,
-      url: pageLinks.Profile.url
-    },
-    {
-      title: pageLinks.MyAccount.title,
-      url: pageLinks.MyAccount.url
-    }
-  ]
 };
 
 export default withStyles(styles, { withTheme: true })(ProfileDropdown);
