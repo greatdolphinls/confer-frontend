@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core';
 import { setCurrentUserRecommend } from '../../../actions';
 import { PrimaryButton, CandidateProfile, NotFound } from '../../../components';
 import { pageLinks } from '../../../constants/links';
+import { isEmpty } from '../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -38,7 +39,7 @@ const styles = theme => {
 const ProfileOverview = ({ classes }) => {
   const { recommend } = useSelector(state => state.auth, {});
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(setCurrentUserRecommend());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,11 +62,11 @@ const ProfileOverview = ({ classes }) => {
         edit profile
       </PrimaryButton>
       {
-        !!recommend 
-        ?<CandidateProfile
-         recommend={recommend}
-        />
-        : <NotFound />
+        isEmpty(recommend)
+          ? <NotFound />
+          : <CandidateProfile
+            recommend={recommend}
+          />
       }
     </main>
   );
