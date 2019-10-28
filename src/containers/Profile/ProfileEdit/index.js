@@ -53,6 +53,11 @@ const ProfileEdit = ({ classes, history }) => {
   }, []);
 
   useEffect(() => {
+    setTempProfile(profile);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
+
+  useEffect(() => {
     const locationsData = locations.map(({ name }) => ({ label: name, value: name }));
     setLocationOptions(locationsData);
     // eslint-disable-next-line react-hooks/exhaustive-deps

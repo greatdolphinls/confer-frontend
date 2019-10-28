@@ -90,7 +90,7 @@ const BasicPanel = ({
             </Typography>
             <Typography className={classes.linkedInURL}>
               <img src={LinkedInImage} alt='linkedIn' />
-              {user.linkedInURL}
+              {user.linkedInURL || 'LinkedIn URL'}
             </Typography>
             <Typography className={classes.personalWebsite}>
               <img src={PersonalWebsiteImage} alt='personalWebsite' />
