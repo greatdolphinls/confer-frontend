@@ -13,7 +13,7 @@ const styles = theme => {
       display: 'flex',
       justifyContent: 'space-around',
       alignItems: 'center',
-      backgroundColor: theme.palette.subBackColor
+      backgroundColor: theme.palette.sandBackColor
     },
     item: {
       textDecoration: 'none',

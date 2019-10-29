@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 
@@ -28,12 +29,16 @@ const styles = theme => {
       width: 80
     },
     item: {
+      borderRadius: 0,
       minWidth: 'unset',
       opacity: 0.6,
       fontSize: 14,
+      fontFamily: 'ApercuPro',
       fontWeight: 'normal',
-      textTransform: 'unset',
       marginLeft: theme.spacing(3)
+    },
+    signIn: {
+      borderBottom: `2px solid ${theme.palette.buttonColor}`
     }
   };
 };
@@ -82,7 +87,7 @@ const NavBar = ({
           <Button
             key={index}
             href={item.url}
-            className={classes.item}>
+            className={classNames(classes.item, { [classes.signIn]: item.url === pageLinks.SignIn.url})}>
             {item.title}
           </Button>
         ))}
@@ -104,6 +109,10 @@ NavBar.propTypes = {
 
 NavBar.defaultProps = {
   SignOffItems: [
+    {
+      title: pageLinks.HowItWorks.title,
+      url: pageLinks.HowItWorks.url
+    },
     {
       title: pageLinks.FAQ.title,
       url: pageLinks.FAQ.url

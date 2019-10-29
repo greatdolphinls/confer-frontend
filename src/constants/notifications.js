@@ -18,8 +18,8 @@ module.exports = {
   INVALID_INDICATOR_PARAMS: 'Please input correct parameters for ',
 
   RECOMMEND_FORM_VALIDATION_ERROR: 'Please select Items in recommend form',
-
-  FORM_VALODATION_ERROR: 'Please fill inputs',
+  RECOMMEND_FORM_TERMS_PRIVACY: 'Please check terms and privacy',
+  
   ADD_USER_VALODATION_ERROR: 'You should input email, first name and last name',
   ADD_RECOMMEND_VALODATION_ERROR: 'You should input referrer email, candidate email, first name, last name and Expertise',
   RECOMMEND_EMAIL_VALODATION_ERROR: 'Referrer Email and Candidate Email should not be same.'

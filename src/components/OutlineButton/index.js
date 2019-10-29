@@ -7,11 +7,12 @@ import { Button } from '@material-ui/core';
 const styles = theme => {
   return {
     root: {
+      borderRadius: theme.spacing(1),
       fontWeight: 'bold',
-      borderRadius: 0,
-      borderBottom: `2px solid ${theme.palette.buttonColor}`,
+      border: `1.5px solid ${theme.palette.mainForeColor}`,
       color: theme.palette.mainForeColor,
       '&:hover': {
+        borderColor: theme.palette.buttonColor,
         backgroundColor: theme.palette.buttonColor,
         color: theme.palette.whiteColor
       }
@@ -22,7 +23,7 @@ const styles = theme => {
   };
 };
 
-const PrimaryButton = ({ classes, children, disabled = false, ...props }) => {
+const OutlineButton = ({ classes, children, disabled = false, ...props }) => {
   return (
     <Button
       disabled={disabled}
@@ -33,4 +34,4 @@ const PrimaryButton = ({ classes, children, disabled = false, ...props }) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(PrimaryButton);
+export default withStyles(styles, { withTheme: true })(OutlineButton);

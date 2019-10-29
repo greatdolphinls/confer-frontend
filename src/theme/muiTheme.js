@@ -3,7 +3,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 // TODO: * naming and theme use case
 const theme = createMuiTheme({
     palette: {
-        mainBackColor: '#FFFFFF',
+        mainBackColor: '#FEFBF7',
+        sandBackColor: '#EEDECA',
         subBackColor: '#F9F7F7',
         subBackColor1: '#FAFAFA',
         subBackColor2: '#F2994A',
@@ -14,21 +15,27 @@ const theme = createMuiTheme({
         yellowBackColor: '#FFEAA6',
         orangeBackColor: '#FAE6D3',
         iconColor: '#FFFFFF',
-        buttonColor: '#2196F3',
+        buttonColor: '#D65C00',
         subButtonColor: '#6FCF97',
         darkGreyButtonColor: '#919191',
         buttonHoverColor: '#2150f3',
-        mainForeColor: '#000000',
+        mainForeColor: '#281C13',
         subForeColor: '#5E5E5E',
+        craneForeColor: '#7A6453',
         lineColor: 'lightgrey',
         mainRedColor: '#4a3685',
-        borderColor: '#E5E5E5'
+        borderColor: '#E5E5E5',
+        whiteColor: '#FFFFFF'
     },
     typography: {
         useNextVariants: true,
         primary: {
-            color: 'rgba(0, 0, 0, 0.87)'
-        }
+            color: '#281C13'
+        },
+        fontFamily: [
+            'ApercuPro',
+            'Moret'
+        ].join(','),
     },
     overrides: {
         MUIDataTable: {

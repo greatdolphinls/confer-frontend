@@ -1,69 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
-import { Typography } from '@material-ui/core';
+import { Typography, Checkbox } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import * as RECOMMEND_SERVICE from '../../../services/recommend';
-import { setExpertises, setRelationships } from '../../../actions';
+import { 
+  setExpertises, 
+  setRelationships,
+  setSkills,
+  setStrengths
+} from '../../../actions';
 import {
   CustomSelectValidator,
-  CustomTagSelect,
-  CustomTagMultiSelect,
+  CustomMultiSelect,
   PrimaryButton
 } from '../../../components';
-import { RecommendLayout, SuccessRecommendModal } from '../Shared';
+import { SuccessRecommendModal } from '../Shared';
+import { RecommendFormHeader, RecommendMail } from './Shared';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 import { useInput } from '../../../utils/hooks';
-import { removeItemWithSlice } from '../../../utils/utility';
+import { isEmpty, showErrorToast } from '../../../utils/utility';
+import CelebrateImage from '../../../assets/img/icons/celebrate.svg'
 
 const styles = theme => {
   return {
-    root: {},
-    form: {
+    root: {
       display: 'flex',
       flexDirection: 'column'
     },
-    halfInput: {
-      width: '50%',
-      marginBottom: theme.spacing(3),
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      padding: `0 ${theme.spacing(6)}px`,
       [theme.breakpoints.down('sm')]: {
-        width: '100%'
+        padding: 0
       }
     },
-    linkedInInput: {
-      width: '50%',
-      marginBottom: theme.spacing(0.5),
-      [theme.breakpoints.down('sm')]: {
-        width: '100%'
-      }
-    },
-    fullInput: {
-      marginBottom: theme.spacing(3),
-    },
-    button: {
-      width: 94,
-      marginTop: theme.spacing(3),
-      [theme.breakpoints.down('sm')]: {
-        width: '100%'
-      }
-    },
-    linkedIn: {
-      fontSize: 12,
-      marginBottom: theme.spacing(5)
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      lineHeight: `${theme.spacing(5)}px`
     },
     description: {
-      fontSize: 16,
-      marginBottom: theme.spacing(3)
-    },
-    explain: {
-      fontSize: 12,
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginRight: theme.spacing(2),
+      lineHeight: `${theme.spacing(5)}px`,
       [theme.breakpoints.down('sm')]: {
+        fontSize: 16
+      }
+    },
+    smallInput: {
+      width: 120,
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginRight: theme.spacing(2)
+    },
+    middleInput: {
+      width: 260,
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.down('xs')]: {
         width: '100%'
       }
+    },
+    largeInput: {
+      width: '100%',
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginRight: theme.spacing(2)
+    },
+    buttonContainer: {
+      marginBottom: theme.spacing(5),
+      display: 'flex',
+      alignItems: 'center'
+    },
+    button: {
+      width: 'fit-content',
+      marginRight: theme.spacing(1)
+    },
+    check: {
+      color: `${theme.palette.buttonColor} !important`
+    },
+    termsAndPrivacy: {
+      fontSize: 12,
+      opacity: 0.6,
+      width: 430
+    },
+    bottom: {
+      marginBottom: theme.spacing(7)
     }
   };
 };
@@ -71,6 +102,8 @@ const styles = theme => {
 const RecommendForm = ({ classes, history }) => {
   const expertises = useSelector(state => state.expertise.data, []);
   const relationships = useSelector(state => state.relationship.data, []);
+  const skills = useSelector(state => state.skill.data, []);
+  const strengths = useSelector(state => state.strength.data, []);
   const dispatch = useDispatch();
 
   const firstName = useInput('');
@@ -80,65 +113,84 @@ const RecommendForm = ({ classes, history }) => {
   const howYouKnow = useInput('');
   const email = useInput('');
   const linkedInURL = useInput('');
-  const [relationship, setRelationship] = useState('');
-  const [selectedSubExpertises, setSelectedSubExpertises] = useState([]);
-  const [selectedStep, setSelectedStep] = useState(1);
+  const relationship = useInput('');
+  const accomplishment = useInput('');
+  const subExpertises = useInput([]);
+  const skill = useInput([]);
+  const strength = useInput([]);
+  const [termsAndPrivacy, setTermsAndPrivacy] = useState(false);
+  const [expertiseOptions, setExpertiseOptions] = useState([]);
+  const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
+  const [relationshipOptions, setRelationshipOptions] = useState([]);
+  const [skillOptions, setSkillOptions] = useState([]);
+  const [strengthOptions, setStrengthOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(setExpertises());
     dispatch(setRelationships());
+    dispatch(setSkills());
+    dispatch(setStrengths());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!expertise.value && expertises.length !== 0) {
-      expertise.onChange(expertises[0].name);
-    }
-    if (!relationship.value && relationships.length !== 0) {
-      setRelationship(relationships[0].name);
-    }
+    const expertisesData = expertises.map(({ name }) => ({ label: name, value: name }));
+    setExpertiseOptions(expertisesData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertises, relationships]);
+  }, [expertises]);
 
-  const expertiseItems = expertises.map(({ name }) => ({ label: name, value: name }));
-  const selectedExpertise = expertises.find(({ name }) => (name === expertise.value));
-  const subExpertises = selectedExpertise ? selectedExpertise.subExpertises : [];
-  const relationshipList = relationships.map(({ name }) => name);
+  useEffect(() => {
+    const relationshipsData = relationships.map(({ name }) => ({ label: name, value: name }));
+    setRelationshipOptions(relationshipsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [relationships]);
 
-  const relationshipSelectHandler = (value) => () => {
-    setRelationship(value);
-  }
+  useEffect(() => {
+    const skillsData = skills.map(({ name }) => ({ label: name, value: name }));
+    setSkillOptions(skillsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skills]);
 
-  const subExpertisesSelectHandler = (value) => () => {
-    const index = selectedSubExpertises.findIndex((subExpertise) => (subExpertise === value));
-    if (index === -1) {
-      setSelectedSubExpertises([...selectedSubExpertises, value]);
-    } else {
-      setSelectedSubExpertises(removeItemWithSlice(selectedSubExpertises, index))
-    }
-  }
+  useEffect(() => {
+    const strengthsData = strengths.map(({ name }) => ({ label: name, value: name }));
+    setStrengthOptions(strengthsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [strengths]);
+
+  useEffect(() => {
+    const selectedExpertise = expertises.find(({ name }) => (name === expertise.value));
+    const subExpertises = selectedExpertise ? selectedExpertise.subExpertises : [];
+    const subExpertisesData = subExpertises.map((name) => ({ label: name, value: name }));
+    setSubExpertiseOptions(subExpertisesData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expertise.value]);
 
   const comfirmModalHandler = () => {
     setShowModal(false);
     history.push(pageLinks.RecommendCount.url);
   }
 
-  const setStepHandler = (step) => {
-    setSelectedStep(step);
+  const termsAndPrivacyHandler = () => {
+    setTermsAndPrivacy(!termsAndPrivacy);
   }
 
-  const stepOneHandler = () => {
-    if (!relationship) {
-      toast.error(notifications.RECOMMEND_FORM_VALIDATION_ERROR, {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-    } else {
-      setSelectedStep(2);
+  const submitHandler = async () => {
+    if (isEmpty(expertise.value)
+      || isEmpty(relationship.value)
+      || isEmpty(subExpertises.value)
+      || isEmpty(skill.value)
+      || isEmpty(strength.value)
+    ){
+      showErrorToast(notifications.RECOMMEND_FORM_VALIDATION_ERROR);
+      return null;
     }
-  }
 
-  const stepTwoHandler = async () => {
+    if (!termsAndPrivacy){
+      showErrorToast(notifications.RECOMMEND_FORM_TERMS_PRIVACY);
+      return null;
+    }
+
     try {
       const data = {
         recommend: {
@@ -147,12 +199,16 @@ const RecommendForm = ({ classes, history }) => {
           email: email.value,
           linkedInURL: linkedInURL.value,
           expertiseArea: expertise.value,
-          subExpertises: selectedSubExpertises,
+          subExpertises: subExpertises.value,
           howYouKnow: howYouKnow.value,
           whyGreat: whyGreat.value,
-          whichCapacity: relationship
+          whichCapacity: relationship.value,
+          skills: skill.value,
+          strengths: strength.value,
+          accomplishment: accomplishment.value
         }
       };
+
       await RECOMMEND_SERVICE.addRecommendByUser(data);
       setShowModal(true);
     } catch (error) {
@@ -160,144 +216,253 @@ const RecommendForm = ({ classes, history }) => {
       console.log('great dolphin : [containers Recommend Form submitHandler] error => ', error);
       if (error.response) {
         const { message: errorMessage } = error.response.data;
-        toast.error(errorMessage, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        showErrorToast(errorMessage);
       }
     }
   }
 
-  const renderStepOne = () => {
-    if (selectedStep === 1) {
-      return (
-        <ValidatorForm
-          className={classes.form}
-          onSubmit={stepOneHandler}
-          onError={errors => console.log(errors)}>
-          <TextValidator
-            name='firstName'
-            label='First Name*'
-            className={classes.halfInput}
-            value={firstName.value}
-            onChange={firstName.onChange}
-            validators={['required']}
-            errorMessages={['First Name cannot be empty']} />
-          <TextValidator
-            name='lastName'
-            label='Last Name*'
-            className={classes.halfInput}
-            value={lastName.value}
-            onChange={lastName.onChange}
-            validators={['required']}
-            errorMessages={['Last Name cannot be empty']} />
-          <CustomSelectValidator
-            label='What best describes their area of expertise?*'
-            classes={{ root: classes.halfInput }}
-            value={expertise.value}
-            changed={expertise.onChange}
-            items={expertiseItems} />
-          <CustomTagMultiSelect
-            label='Do they particularly excel in any of the following areas? (select multiple)'
-            values={selectedSubExpertises}
-            changed={subExpertisesSelectHandler}
-            items={subExpertises} />
-          <CustomTagSelect
-            label='What is / was your working relationship?* The person is / was your...'
-            value={relationship}
-            changed={relationshipSelectHandler}
-            items={relationshipList} />
-          <TextValidator
-            name='howYouKnow'
-            label='How do you know this person?*'
-            className={classes.fullInput}
-            value={howYouKnow.value}
-            onChange={howYouKnow.onChange}
-            validators={['required']}
-            placeholder='We worked together for 3 years at...'
-            errorMessages={['This field cannot be empty']} />
-          <PrimaryButton classes={{ root: classes.button }} type='submit'>
-            Next
-          </PrimaryButton>
-        </ValidatorForm>
-      );
-    }
+  const nameContainerRender = () => {
+    return (
+      <div className={classes.container}>
+        <Typography className={classes.description}>
+          I would like to strongly recommend   
+        </Typography>
+        <TextValidator
+          name='firstName'
+          placeholder='First name'
+          className={classes.smallInput}
+          value={firstName.value}
+          onChange={firstName.onChange}
+          validators={['required']}
+          errorMessages={['First Name cannot be empty']} />
+        <TextValidator
+          name='lastName'
+          placeholder='Last name'
+          className={classes.smallInput}
+          value={lastName.value}
+          onChange={lastName.onChange}
+          validators={['required']}
+          errorMessages={['Last Name cannot be empty']} />
+      </div>
+    );
   }
 
-  const renderStepTwo = () => {
-    if (selectedStep === 2) {
-      return (
-        <ValidatorForm
-          className={classes.form}
-          onSubmit={stepTwoHandler}
-          onError={errors => console.log(errors)}>
-          <TextValidator
-            fullWidth
-            margin='normal'
-            multiline={true}
-            rows={5}
-            rowsMax={5}
-            name='whyGreat'
-            label='Why is this person among the best people you have worked with?*'
-            placeholder={`Best salesperson, had 2x higher conversion rate than anyone else, but was a strong team player. Personally sourced, hired and managed 20 salespeople in one year.`}
-            className={classes.fullInput}
-            value={whyGreat.value}
-            onChange={whyGreat.onChange}
-            validators={['required']}
-            errorMessages={['Please input this data']} />
-          <TextValidator
-            name='email'
-            label='Email* (personal email preferred)'
-            className={classes.halfInput}
-            value={email.value}
-            onChange={email.onChange}
-            validators={['isEmail', 'required']}
-            errorMessages={['Email is not valid', 'Email cannot be empty']} />
-          <TextValidator
-            name='linkedInURL'
-            label='LinkedIn URL'
-            className={classes.linkedInInput}
-            value={linkedInURL.value}
-            onChange={linkedInURL.onChange} />
-          <Typography className={classes.linkedIn}>
-            Optional, but we want to make sure we have the right person!
-          </Typography>
-          <Typography className={classes.description}>
-            <b>We’ll invite the person you’ve recommended to opt in to emails and edit their profile. </b>
-            We’ll include your name in our invitation since we believe
-            transparency is important to building trust. Want to give
-            them a heads up? We’ll wait 24 hours before inviting them.
-            Here’s a txt or email you can share with them if you’d like:
-          </Typography>
-          <Typography className={classes.explain}>
-            “Hi {`${firstName.value} ${lastName.value}`} - Just want
-            to give you a heads up that I recommended you for Confer.
-            Confer is sourcing recommendations from professionals for
-            the best people they’ve ever worked with, and you fall
-            into that camp! Confer will reach out so you can learn
-            more what being a part of it entails. Thanks - and congrats!”
-          </Typography>
-          <PrimaryButton classes={{ root: classes.button }} type='submit'>
-            Submit
-          </PrimaryButton>
-        </ValidatorForm>
-      );
-    }
+  const experienceContanerRender = () => {
+    return (
+      <div className={classes.container}>
+        <Typography className={classes.description}>
+          who is an outstanding  
+        </Typography>
+        <CustomSelectValidator
+          placeholder='Select discipline'
+          classes={{ root: classes.middleInput }}
+          value={expertise.value}
+          changed={expertise.onChange}
+          items={expertiseOptions} />
+        <Typography className={classes.description}>
+          professional.
+        </Typography>
+      </div>
+    );
+  }
+
+  const relationshipAndHowYouKnowRender = () =>{
+    return (
+      <div className={classNames(classes.container, classes.bottom)}>
+        <Typography className={classes.description}>
+          {firstName.value || '[First name]'} is/was my  
+        </Typography>
+        <CustomSelectValidator
+          placeholder='Select relationship'
+          classes={{ root: classes.middleInput }}
+          value={relationship.value}
+          changed={relationship.onChange}
+          items={relationshipOptions} />
+        <Typography className={classes.description}>
+          when  
+        </Typography>  
+        <TextValidator
+          multiline={true}
+          name='howYouKnow'
+          placeholder='Share how and how long you know this person...'
+          className={classes.largeInput}
+          value={howYouKnow.value}
+          onChange={howYouKnow.onChange}
+          validators={['required']}
+          errorMessages={['Please input this data']} />
+      </div>
+    );
+  }
+
+  const skillAndStrengthRender = () => {
+    return (
+      <div className={classNames(classes.container, classes.bottom)}>
+        <Typography className={classes.description}>
+          {firstName.value || '[First name]'} exhibits exceptional
+        </Typography>
+        <CustomMultiSelect
+          placeholder='Select up to 2 skills'
+          classes={{ root: classes.middleInput }}
+          value={skill.value}
+          changed={skill.onChange}
+          items={skillOptions} />
+        <Typography className={classes.description}>
+          skills and stands out for their
+        </Typography>
+        <CustomMultiSelect
+          placeholder='Select up to 2 strengths'
+          classes={{ root: classes.middleInput }}
+          value={strength.value}
+          changed={strength.onChange}
+          items={strengthOptions} />
+      </div>
+    );
+  }
+
+  const subExpertisesRender = () => {
+    return (
+      <div className={classes.container}>
+        <Typography className={classes.description}>
+          I would turn to {firstName.value || '[First name]'} for help with
+        </Typography>
+        <CustomMultiSelect
+          placeholder='Select or write scenario...'
+          classes={{ root: classes.middleInput }}
+          value={subExpertises.value}
+          changed={subExpertises.onChange}
+          items={subExpertiseOptions} />
+      </div>
+    );
+  }
+
+  const accomplishmentRender = () => {
+    return (
+      <div className={classNames(classes.container, classes.bottom)}>
+        <Typography className={classes.description}>
+          and want to highlight the time that {firstName.value || '[First name]'}
+        </Typography>
+        <TextValidator
+          multiline={true}
+          name='whyGreat'
+          placeholder='Share one of their top accomplishments...'
+          className={classes.largeInput}
+          value={accomplishment.value}
+          onChange={accomplishment.onChange}
+          validators={['required']}
+          errorMessages={['Please input this data']} />
+      </div>
+    );
+  }
+
+  const whyGreatRender = () => {
+    return (
+      <div className={classNames(classes.container, classes.bottom)}>
+        <Typography className={classes.description}>
+          In summary, {firstName.value || '[First name]'} is one of the 
+          best people who I have worked with because
+        </Typography>
+        <TextValidator
+          multiline={true}
+          name='whyGreat'
+          placeholder='share any other reason why they’re great'
+          className={classes.largeInput}
+          value={whyGreat.value}
+          onChange={whyGreat.onChange}
+          validators={['required']}
+          errorMessages={['Please input this data']} />
+      </div>
+    );
+  }
+
+  const emailAndLinkedInRender = () => {
+    return (
+      <div className={classNames(classes.container, classes.bottom)}>
+        <Typography className={classes.description}>
+          I am excited to pay it forward to {firstName.value || '[First name]'} 
+          {' and give them the recognition they deserve.'}
+        </Typography>
+        <Typography className={classes.description}>
+          You can notify {firstName.value || '[First name]'} 
+          {' that I have  recommended them at'}
+        </Typography>
+        <TextValidator
+          name='email'
+          placeholder='their email address'
+          className={classes.middleInput}
+          value={email.value}
+          onChange={email.onChange}
+          validators={['required']}
+          errorMessages={['Please input this data']} />
+        <Typography className={classes.description}>
+          and find them on LinkedIn at
+        </Typography>
+        <TextValidator
+          name='linkedInURL'
+          placeholder='https://www.linkedin.com/...'
+          className={classes.middleInput}
+          value={linkedInURL.value}
+          onChange={linkedInURL.onChange}/>
+          .
+      </div>
+    );
+  }
+
+  const termsAndPolicy = () => {
+    return (
+      <div className={classes.buttonContainer}>
+        <Checkbox
+          checked={termsAndPrivacy}
+          onChange={termsAndPrivacyHandler}
+          value={termsAndPrivacy}
+          className={classes.check}
+        />
+        <Typography className={classes.termsAndPrivacy}>
+          By checking this box I affirm that I have read and 
+          understood Canopy's terms of service and privacy 
+          policy and agree to be bound by their terms.
+        </Typography>
+      </div>
+    );
+  }
+
+  const submitButtonContainer = () => {
+    return (
+      <div className={classes.buttonContainer}>
+        <PrimaryButton classes={{ root: classes.button }} type='submit'>
+          SUBMIT RECOMMENDATION
+        </PrimaryButton>
+        <img
+          src={CelebrateImage}
+          alt='CelebrateImage' />
+      </div>
+    );
   }
 
   return (
-    <RecommendLayout
-      selectedStep={selectedStep}
-      onSetStep={setStepHandler}
-      history={history}
-    >
-      {renderStepOne()}
-      {renderStepTwo()}
+    <main className={classes.root}>
+      <RecommendFormHeader />
+      <ValidatorForm
+        className={classes.form}
+        onSubmit={submitHandler}
+        onError={errors => console.log(errors)}>
+        {nameContainerRender()}
+        {experienceContanerRender()}
+        {relationshipAndHowYouKnowRender()}
+        {skillAndStrengthRender()}
+        {subExpertisesRender()}
+        {accomplishmentRender()}
+        {whyGreatRender()}
+        {emailAndLinkedInRender()}
+        <RecommendMail />
+        {termsAndPolicy()}
+        {submitButtonContainer()}
+      </ValidatorForm>
       {showModal &&
         <SuccessRecommendModal
           opened={showModal}
           onConfirm={comfirmModalHandler} />
       }
-    </RecommendLayout>
+    </main>
   );
 };
 

@@ -14,7 +14,7 @@ const styles = theme => {
   };
 };
 
-const CustomSelectValidator = ({ classes, label, value, changed, items }) => {
+const CustomSelectValidator = ({ classes, label, value, placeholder, changed, items }) => {
 
   return (
     <SelectValidator
@@ -25,11 +25,17 @@ const CustomSelectValidator = ({ classes, label, value, changed, items }) => {
       }}
       className={classes.root}
       label={label}
-      value={value}
+      value={value || 'none'}
       margin='normal'
       onChange={changed}
       validators={['required']}
       errorMessages={[`Please select ${label}`]}>
+      <MenuItem 
+        key='default' 
+        value='none'
+        disabled>
+        {placeholder || ''}
+      </MenuItem>
       {items.map(item => (
         <MenuItem key={item.value} value={item.value}>
           {item.label}

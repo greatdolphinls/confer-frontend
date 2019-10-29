@@ -18,6 +18,10 @@ const pageLinks = {
     title: 'FAQ',
     url: '/faq'
   },
+  HowItWorks: {
+    title: 'How It Works',
+    url: '/how-it-works'
+  },
   SignIn: {
     title: 'Sign In',
     url: '/signin'

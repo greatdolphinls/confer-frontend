@@ -11,6 +11,8 @@ import expertiseReducer from './expertiseReducer';
 import locationReducer from './locationReducer';
 import relationshipReducer from './relationshipReducer';
 import degreeReducer from './degreeReducer';
+import skillReducer from './skillReducer';
+import strengthReducer from './strengthReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -22,5 +24,7 @@ export default combineReducers({
   expertise: expertiseReducer,
   location: locationReducer,
   relationship: relationshipReducer,
-  degree: degreeReducer
+  degree: degreeReducer,
+  skill: skillReducer,
+  strength: strengthReducer
 });
