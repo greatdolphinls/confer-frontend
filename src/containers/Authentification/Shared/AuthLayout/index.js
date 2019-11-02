@@ -25,6 +25,7 @@ const styles = theme => {
       display: 'flex',
       flexDirection: 'column',
       marginBottom: theme.spacing(6),
+      backgroundColor: theme.palette.brownBackColor,
       [theme.breakpoints.down('sm')]: {
         width: `100%`,
       }
@@ -32,6 +33,7 @@ const styles = theme => {
     authTabs: {
       width: '100%',
       display: 'flex',
+      backgroundColor: theme.palette.lightBrownBackColor,
       justifyContent: 'space-around',
     },
     tab: {
@@ -42,31 +44,36 @@ const styles = theme => {
       width: '100%',
       height: 62,
       fontSize: 14,
-      fontWeight: 500,
+      opacity: 0.6,
+      fontWeight: 'bold',
       textAlign: 'center',
       textDecoration: 'none',
       textTransform: 'uppercase'
     },
     selectedTab: {
+      opacity: 1,
       color: theme.palette.buttonColor,
-      borderBottom: `2px solid ${theme.palette.buttonColor}`
+      backgroundColor: theme.palette.brownBackColor,
+      '& span': {
+        borderBottom: `2px solid ${theme.palette.buttonColor}`
+      }
     },
     container: {
-      padding: `${theme.spacing(3.5)}px ${theme.spacing(4)}px ${theme.spacing(1)}px `
+      padding: `${theme.spacing(3.5)}px ${theme.spacing(4)}px ${theme.spacing(2)}px `
     },
     title: {
       fontSize: 20,
       fontWeight: 500,
-      textAlign: 'center',
+      color: theme.palette.blackBrownForeColor,
       marginBottom: theme.spacing(3)
     },
     termAndPrivacy: {
       fontSize: 12,
+      opacity: 0.6,
       textAlign: 'center'
     },
     link: {
-      textDecoration: 'none',
-      color: theme.palette.buttonColor
+      color: theme.palette.mainForeColor
     }
   };
 };
@@ -88,13 +95,15 @@ const AuthLayout = ({ classes, isCashGroup, groupName, selectedTab, tabs, childr
                 key={tab.value}
                 to={tab.url}
                 className={classNames(classes.tab, { [classes.selectedTab]: selectedTab === tab.value })}>
-                {tab.title}
+                <span>
+                  {tab.title}
+                </span>
               </Link>
             ))}
           </div>
           <div className={classes.container}>
             <Typography className={classes.title}>
-              {isSignIn ? 'Sign in' : 'Sign up with email'}
+              {isSignIn ? 'SIGN IN WITH EMAIL' : 'SIGN UP WITH EMAIL'}
             </Typography>
             {children}
             <Typography className={classes.termAndPrivacy}>

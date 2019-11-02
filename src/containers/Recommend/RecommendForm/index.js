@@ -7,8 +7,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import * as RECOMMEND_SERVICE from '../../../services/recommend';
-import { 
-  setExpertises, 
+import {
+  setExpertises,
   setRelationships,
   setSkills,
   setStrengths
@@ -181,12 +181,12 @@ const RecommendForm = ({ classes, history }) => {
       || isEmpty(subExpertises.value)
       || isEmpty(skill.value)
       || isEmpty(strength.value)
-    ){
+    ) {
       showErrorToast(notifications.RECOMMEND_FORM_VALIDATION_ERROR);
       return null;
     }
 
-    if (!termsAndPrivacy){
+    if (!termsAndPrivacy) {
       showErrorToast(notifications.RECOMMEND_FORM_TERMS_PRIVACY);
       return null;
     }
@@ -225,7 +225,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classes.container}>
         <Typography className={classes.description}>
-          I would like to strongly recommend   
+          I would like to strongly recommend
         </Typography>
         <TextValidator
           name='firstName'
@@ -251,7 +251,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classes.container}>
         <Typography className={classes.description}>
-          who is an outstanding  
+          who is an outstanding
         </Typography>
         <CustomSelectValidator
           placeholder='Select discipline'
@@ -266,11 +266,11 @@ const RecommendForm = ({ classes, history }) => {
     );
   }
 
-  const relationshipAndHowYouKnowRender = () =>{
+  const relationshipAndHowYouKnowRender = () => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          {firstName.value || '[First name]'} is/was my  
+          {firstName.value || '[First name]'} is/was my
         </Typography>
         <CustomSelectValidator
           placeholder='Select relationship'
@@ -279,8 +279,8 @@ const RecommendForm = ({ classes, history }) => {
           changed={relationship.onChange}
           items={relationshipOptions} />
         <Typography className={classes.description}>
-          when  
-        </Typography>  
+          when
+        </Typography>
         <TextValidator
           multiline={true}
           name='howYouKnow'
@@ -358,7 +358,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          In summary, {firstName.value || '[First name]'} is one of the 
+          In summary, {firstName.value || '[First name]'} is one of the
           best people who I have worked with because
         </Typography>
         <TextValidator
@@ -378,11 +378,11 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          I am excited to pay it forward to {firstName.value || '[First name]'} 
+          I am excited to pay it forward to {firstName.value || '[First name]'}
           {' and give them the recognition they deserve.'}
         </Typography>
         <Typography className={classes.description}>
-          You can notify {firstName.value || '[First name]'} 
+          You can notify {firstName.value || '[First name]'}
           {' that I have  recommended them at'}
         </Typography>
         <TextValidator
@@ -401,8 +401,8 @@ const RecommendForm = ({ classes, history }) => {
           placeholder='https://www.linkedin.com/...'
           className={classes.middleInput}
           value={linkedInURL.value}
-          onChange={linkedInURL.onChange}/>
-          .
+          onChange={linkedInURL.onChange} />
+        .
       </div>
     );
   }
@@ -417,8 +417,8 @@ const RecommendForm = ({ classes, history }) => {
           className={classes.check}
         />
         <Typography className={classes.termsAndPrivacy}>
-          By checking this box I affirm that I have read and 
-          understood Canopy's terms of service and privacy 
+          By checking this box I affirm that I have read and
+          understood Canopy's terms of service and privacy
           policy and agree to be bound by their terms.
         </Typography>
       </div>

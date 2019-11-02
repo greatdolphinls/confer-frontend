@@ -6,35 +6,30 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 
-import { CloseIconButton } from '../../../../components';
+import { PrimaryButton } from '../../../../../components';
 
 const styles = theme => {
   return {
     paper: {
-      backgroundColor: theme.palette.mainBackColor
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.darkGreyButtonColor,
+      borderRadius: 10,
+      backgroundColor: theme.palette.brownBackColor
     },
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: theme.spacing(6),
+      padding: `${theme.spacing(6)}px !important`,
       [theme.breakpoints.down('xs')]: {
         padding: theme.spacing(2),
       }
     },
     title: {
       fontWeight: 'bold',
-      marginTop: theme.spacing(4)
+      marginBottom: theme.spacing(4)
     },
     description: {
       fontSize: 14,
-      marginTop: theme.spacing(2.5)
+      marginBottom: theme.spacing(2.5)
     }
   };
 };
@@ -49,33 +44,29 @@ const InspirationModal = ({ classes, opened, onClose }) => {
       open={opened}
       aria-labelledby='form-dialog-title'>
       <DialogContent className={classes.content}>
-        {onClose &&
-          <CloseIconButton
-            classes={{ root: classes.closeButton }}
-            onClick={onClose}
-          />
-        }
         <Typography className={classes.title}>
           We get it. It’s hard to narrow down everyone you’ve ever
-          worked with to three outstanding people. Here are some
-          examples to get you started:
+          worked with to three outstanding people. Here are some examples:
         </Typography>
         <Typography className={classes.description}>
-          -An analyst who worked for you for 3 projects and exhibited
-          strong attention to detail, excellent communication skills,
-          and stood out for her commitment to training other analysts
-          on the team
+          -An analyst who worked for you for 3 projects and
+          exhibited strong attention to detail and excellent
+          communication skills
         </Typography>
         <Typography className={classes.description}>
-          -A partner at a vendor you work with who consistently responds
-          to your questions and expertly works within his organization
-          to resolve any issues.
+          -A vendor partner who who consistently responds
+          to your questions and expertly works within their
+          organization to resolve any issues
         </Typography>
         <Typography className={classes.description}>
-          -Your former manager who trained and mentored you and other
-          reports but hasn’t received the recognition she deserves
-          within her organization.
+          -Your former manager who trained and mentored
+          you but hasn’t received the recognition she
+          deserves within her organization
         </Typography>
+        <PrimaryButton
+          onClick={onClose}>
+          GO BACK
+        </PrimaryButton>
       </DialogContent>
     </Dialog>
   );

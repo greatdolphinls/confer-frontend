@@ -13,7 +13,7 @@ import { PrimaryButton, CloseIconButton } from '../../../../components';
 const styles = theme => {
   return {
     paper: {
-      backgroundColor: theme.palette.mainBackColor
+      backgroundColor: theme.palette.brownBackColor
     },
     closeButton: {
       position: 'absolute',
@@ -32,14 +32,15 @@ const styles = theme => {
     },
     title: {
       fontWeight: 'bold',
-      padding: `0 ${theme.spacing(1.5)}px`,
+      textAlign: 'center',
+      padding: `0 ${theme.spacing(1)}px`,
       marginBottom: theme.spacing(3.5)
     },
     description: {
       fontSize: 14,
       padding: theme.spacing(1.5),
       marginBottom: theme.spacing(3.5),
-      border: `1px solid #E5E5E5`,
+      border: `1px solid ${theme.palette.buttonColor}`,
       borderRadius: 4
     }
   };
@@ -67,22 +68,22 @@ const ContactEmailModal = ({ classes, opened, candidateName, referrerName, onClo
       <DialogContent className={classes.content}>
         <Typography className={classes.title}>
           We’ll email {candidateName} directly with your note below.
-          If she’s interested in connecting, we’ll put both of you in touch!
+          If she’s interested in connecting, we’ll put you in touch!
         </Typography>
         <Typography className={classes.description}>
           Hi {candidateName} -
           <br /> <br /> <br />
           I’m {`${firstName} ${lastName}`} and I’m looking to add a new person to our team.
           I love your background and you come highly recommended by {referrerName},
-              so I thought I’d reach out to see if you’d like to hear more about
-              what we’re working on here.
+          so I thought I’d reach out to see if you’d like to hear more about
+          what we’re working on here.
           <br /> <br />
           Best,
           <br />
           {`${firstName} ${lastName}`}
         </Typography>
         <PrimaryButton onClick={onConfirm}>
-          send email
+          Send Message
         </PrimaryButton>
       </DialogContent>
     </Dialog>

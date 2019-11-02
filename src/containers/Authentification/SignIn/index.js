@@ -8,7 +8,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { loginUser, clearErrors, setLoadingStatus } from '../../../actions';
 import { AuthLayout } from '../Shared';
-import { PrimaryButton } from '../../../components';
+import { OutlineButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
@@ -19,8 +19,7 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       marginTop: 105,
-      flexDirection: 'column',
-      alignItems: 'center'
+      flexDirection: 'column'
     },
     input: {
       marginBottom: theme.spacing(3),
@@ -103,9 +102,11 @@ const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) 
             onChange={password.onChange}
             validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
             errorMessages={['Password cannot be empty', 'Password must contain at least 6 characters']} />
-          <PrimaryButton fullWidth classes={{ root: classes.button }} type='submit'>
+          <OutlineButton
+            type='submit'
+            classes={{ root: classes.button }}>
             Sign In
-          </PrimaryButton>
+          </OutlineButton>
           <Link to={pageLinks.ForgotPassword.url} className={classes.forgotPassword}>
             Forgot password?
           </Link>

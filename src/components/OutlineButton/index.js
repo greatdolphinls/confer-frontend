@@ -7,9 +7,8 @@ import { Button } from '@material-ui/core';
 const styles = theme => {
   return {
     root: {
-      borderRadius: theme.spacing(1),
       fontWeight: 'bold',
-      border: `1.5px solid ${theme.palette.mainForeColor}`,
+      border: `1px solid ${theme.palette.mainForeColor}`,
       color: theme.palette.mainForeColor,
       '&:hover': {
         borderColor: theme.palette.buttonColor,

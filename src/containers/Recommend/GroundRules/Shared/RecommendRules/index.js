@@ -3,26 +3,24 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
-import UpHandImage from '../../../../assets/img/icons/up-hand.svg';
-import DownHandImage from '../../../../assets/img/icons/down-hand.svg';
+import { CustomTooltip } from '../../../../../components';
+import CheckImage from '../../../../../assets/img/icons/check.svg';
+import UncheckImage from '../../../../../assets/img/icons/uncheck.svg';
 
 const styles = theme => {
   return {
     root: {
       display: 'flex',
-      alignItems: 'baseline',
-      marginBottom: theme.spacing(3)
+      alignItems: 'center',
+      marginBottom: theme.spacing(1.5)
     },
     img: {
       marginRight: theme.spacing(1)
     },
     description: {
-      fontSize: 20,
-      fontWeight: 'bold'
-    },
-    subDescription: {
-      fontSize: 20,
-      fontWeight: 'normal'
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: theme.palette.craneForeColor
     }
   };
 };
@@ -31,7 +29,7 @@ const RecommendRules = ({ classes, rules }) => {
 
   return (
     <>
-      {rules.map(({ img, description, subDescription }, index) => (
+      {rules.map(({ img, description, tooltip }, index) => (
         <div key={index} className={classes.root}>
           <img
             src={img}
@@ -41,10 +39,9 @@ const RecommendRules = ({ classes, rules }) => {
           <Typography className={classes.description}>
             {description}
             {
-              !!subDescription &&
-              <span className={classes.subDescription}>
-                {subDescription}
-              </span>
+              !!tooltip &&
+              <CustomTooltip
+                title={tooltip} />
             }
           </Typography>
         </div>
@@ -61,21 +58,30 @@ RecommendRules.propTypes = {
 RecommendRules.defaultProps = {
   rules: [
     {
-      img: UpHandImage,
+      img: CheckImage,
       description: 'Peers, direct reports, managers, or clients',
     },
     {
-      img: UpHandImage,
+      img: CheckImage,
       description: 'Current or past co-workers',
-      subDescription: '(though we don’t expect current! think back across your career)'
+      tooltip: `Up to you! We don’t expect current but we welcome anyone. 
+      Think back across your long career.`
     },
     {
-      img: UpHandImage,
+      img: CheckImage,
       description: 'Either looking or not looking for a job currently',
+      tooltip: `We just want to hear about remarkable people! Most people
+       are open to hearing about other opportunities regardless of what 
+       they're up to.Plus, they might be looking for opportunities in 
+       the future.`
     },
     {
-      img: DownHandImage,
-      description: 'Family members or good friends who you never worked with',
+      img: CheckImage,
+      description: 'Someone with 3 to 10 years of experience'
+    },
+    {
+      img: UncheckImage,
+      description: 'Family members or good friends who you never worked with'
     }
   ]
 };

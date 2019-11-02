@@ -10,6 +10,7 @@ export { default as CustomSelectValidator } from './CustomSelectValidator';
 export { default as CustomMultiSelect } from './CustomMultiSelect';
 export { default as CustomTagSelect } from './CustomTagSelect';
 export { default as CustomTagMultiSelect } from './CustomTagMultiSelect';
+export { default as CustomTooltip } from './CustomTooltip';
 export { default as TagItem } from './TagItem';
 export { default as PrimaryButton } from './PrimaryButton';
 export { default as OutlineButton } from './OutlineButton';
@@ -41,8 +42,12 @@ export { default as EducationPanel } from './UserComponents/EducationPanel';
 export { default as ExperiencePanel } from './UserComponents/ExperiencePanel';
 export { default as PreferencePanel } from './UserComponents/PreferencePanel';
 export { default as BasicPanel } from './UserComponents/BasicPanel';
+
 export { default as CandidateProfile } from './CandidateComponents/CandidateProfile';
 export { default as CandidateSnapshot } from './CandidateComponents/CandidateSnapshot';
 export { default as InfoContainer } from './CandidateComponents/InfoContainer';
 export { default as InfoContent } from './CandidateComponents/InfoContent';
 export { default as CandidateEmployment } from './CandidateComponents/CandidateEmployment';
+
+export { default as CandidatePhoto } from './DiscoverComponents/CandidatePhoto';
+export { default as RecommendCard } from './DiscoverComponents/RecommendCard';

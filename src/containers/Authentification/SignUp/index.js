@@ -8,7 +8,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { registerUser, clearErrors, setLoadingStatus } from '../../../actions';
 import * as GROUP_SERVICE from '../../../services/group';
 import { AuthLayout } from '../Shared';
-import { PrimaryButton } from '../../../components';
+import { OutlineButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
 import { roles } from '../../../constants/roles';
@@ -21,8 +21,7 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       marginTop: theme.spacing(3),
-      flexDirection: 'column',
-      alignItems: 'center'
+      flexDirection: 'column'
     },
     groupImage: {
       width: 161,
@@ -156,9 +155,11 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
             onChange={groupPassword.onChange}
             validators={['required']}
             errorMessages={['Group Password cannot be empty']} />
-          <PrimaryButton fullWidth classes={{ root: classes.button }} type='submit'>
+          <OutlineButton
+            type='submit'
+            classes={{ root: classes.button }}>
             Sign Up
-          </PrimaryButton>
+          </OutlineButton>
         </ValidatorForm>
       </AuthLayout>
     </main >

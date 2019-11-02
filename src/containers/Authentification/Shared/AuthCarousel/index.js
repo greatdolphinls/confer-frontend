@@ -6,7 +6,6 @@ import { Typography } from '@material-ui/core';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
-import { Avatar } from '../../../../components';
 import MarkGeosonImage from '../../../../assets/img/users/mark_geoson.jpg';
 import AmandaFreemanImage from '../../../../assets/img/users/amanda_freeman.jpg';
 import TaliRapaportImage from '../../../../assets/img/users/tali_rapaport.jpg';
@@ -20,24 +19,39 @@ const styles = theme => {
     card: {
       height: 220,
       display: 'flex',
+      position: 'relative',
       alignItems: 'center',
       flexDirection: 'column',
-      borderRadius: 8,
-      margin: `0 ${theme.spacing(1.5)}px`,
-      boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12)',
-      padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-      background: theme.palette.orangeBackColor
+      margin: `0 ${theme.spacing(1.5)}px`
     },
     avatar: {
+      borderRadius: 8,
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12)',
       marginBottom: theme.spacing(0.5)
     },
+    content: {
+      position: 'absolute',
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      bottom: theme.spacing(2)
+    },
     name: {
-      fontSize: 14,
-      fontWeight: 500
+      fontSize: 25,
+      lineHeight: '21px',
+      fontWeight: 500,
+      textAlign: 'center',
+      fontFamily: 'Moret-Bold',
+      color: theme.palette.whiteColor,
+      marginBottom: theme.spacing(0.5)
     },
     shortDescription: {
-      fontSize: 14,
-      textAlign: 'center'
+      fontSize: 10,
+      textAlign: 'center',
+      color: theme.palette.whiteColor
     }
   };
 };
@@ -55,17 +69,22 @@ const AuthCarousel = ({ classes, referrers, responsive }) => {
         buttonsDisabled={true} >
         {referrers.map((referrer, index) => (
           <div key={index} className={classes.card}>
-            <Avatar
-              size={130}
+            <img
               src={referrer.avatar}
               className={classes.avatar}
               alt='' />
-            <Typography className={classes.name}>
-              {`${referrer.firstName} ${referrer.lastName}`}
-            </Typography>
-            <Typography className={classes.shortDescription}>
-              {referrer.shortDescription}
-            </Typography>
+            <div className={classes.content}>
+              <Typography className={classes.name}>
+                {referrer.firstName}
+                <br />
+                {referrer.lastName}
+              </Typography>
+              <Typography className={classes.shortDescription}>
+                {referrer.job}
+                <br />
+                @ <u>{referrer.company}</u>
+              </Typography>
+            </div>
           </div>
         ))}
       </AliceCarousel>
@@ -85,30 +104,34 @@ AuthCarousel.defaultProps = {
       firstName: 'Mark',
       lastName: 'Gerson',
       avatar: MarkGeosonImage,
-      shortDescription: 'Co-founder GLG'
+      job: 'Co-founder',
+      company: 'GLG'
     },
     {
       firstName: 'Yaron',
       lastName: 'Samid',
       avatar: YaronSamidImage,
-      shortDescription: 'CEO & Co-founder, BillGuard'
+      job: 'CEO & Co-founder',
+      company: 'BillGuard'
     },
     {
       firstName: 'Amanda',
       lastName: 'Freeman',
       avatar: AmandaFreemanImage,
-      shortDescription: 'Founder & CEO, SLT'
+      job: 'Founder & CEO',
+      company: 'SLT'
     },
     {
       firstName: 'Tali',
       lastName: 'Rapaport',
       avatar: TaliRapaportImage,
-      shortDescription: 'VP Product, Lyft'
+      job: 'VP Product',
+      company: 'Lyft'
     }
   ],
   responsive: {
     480: { items: 2 },
-    720: { items: 4 },
+    680: { items: 4 },
     960: { items: 3 },
     1280: { items: 3 }
   }

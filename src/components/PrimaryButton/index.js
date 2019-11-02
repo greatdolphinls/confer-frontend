@@ -10,6 +10,7 @@ const styles = theme => {
       fontWeight: 'bold',
       borderRadius: 0,
       borderBottom: `2px solid ${theme.palette.buttonColor}`,
+      padding: `${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
       color: theme.palette.mainForeColor,
       '&:hover': {
         backgroundColor: theme.palette.buttonColor,

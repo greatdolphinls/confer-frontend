@@ -5,6 +5,8 @@ const theme = createMuiTheme({
     palette: {
         mainBackColor: '#FEFBF7',
         sandBackColor: '#EEDECA',
+        brownBackColor: '#EFE4D6',
+        lightBrownBackColor: '#F9F2E9',
         subBackColor: '#F9F7F7',
         subBackColor1: '#FAFAFA',
         subBackColor2: '#F2994A',
@@ -21,7 +23,9 @@ const theme = createMuiTheme({
         buttonHoverColor: '#2150f3',
         mainForeColor: '#281C13',
         subForeColor: '#5E5E5E',
-        craneForeColor: '#7A6453',
+        craneForeColor: '#291401',
+        lightBrownForeColor: '#432F20',
+        blackBrownForeColor: '#4E3B2C',
         lineColor: 'lightgrey',
         mainRedColor: '#4a3685',
         borderColor: '#E5E5E5',
@@ -29,9 +33,6 @@ const theme = createMuiTheme({
     },
     typography: {
         useNextVariants: true,
-        primary: {
-            color: '#281C13'
-        },
         fontFamily: [
             'ApercuPro',
             'Moret'
@@ -52,6 +53,11 @@ const theme = createMuiTheme({
                     width: 70
                 }
             }
+        },
+        MuiTypography: {
+            root: {
+                color: '#281C13',
+            },
         }
     }
 });

@@ -14,13 +14,14 @@ import { PrimaryButton } from '../../../../components';
 const styles = theme => {
   return {
     paper: {
-      backgroundColor: theme.palette.mainBackColor
+      borderRadius: 10,
+      backgroundColor: theme.palette.brownBackColor
     },
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${theme.spacing(5)}px ${theme.spacing(7)}px ${theme.spacing(2.5)}px `,
+      padding: `${theme.spacing(6)}px ${theme.spacing(5)}px !important`,
       [theme.breakpoints.down('xs')]: {
         padding: theme.spacing(2),
       }
@@ -28,12 +29,13 @@ const styles = theme => {
     title: {
       fontSize: 34,
       fontWeight: 500,
-      marginBottom: theme.spacing(3.5)
+      fontFamily: 'Moret-Bold',
+      marginBottom: theme.spacing(1)
     },
     description: {
-      fontSize: 14,
+      fontSize: 18,
       textAlign: 'center',
-      marginBottom: theme.spacing(3.5)
+      marginBottom: theme.spacing(3)
     }
   };
 };
@@ -93,17 +95,28 @@ SuccessRecommendModal.defaultProps = {
   onConfirm: () => { },
   keepContent: {
     title: 'Thank you!',
-    description: 'Awesome, your recommendation has been added. You’ve just helped advance someone’s career in a big way!',
+    description: `Awesome, your recommendation has been added. 
+    You’ve just helped advance someone’s career in a big way!`,
     confirm: 'Keep Up the good work'
   },
   referrerPassContent: {
     title: 'Thank you!',
-    description: 'Thank you for submitting your three recommendations and helping to advance their careers! As soon as we’re done reviewing your recommendations, you’ll get to start discovering talent. In the meantime, you can recommend up to two more people.  We’ll be in touch shortly!',
+    description: `Thank you for submitting your three 
+    recommendations and helping to advance their careers! 
+    As soon as we’re done reviewing your recommendations, 
+    you’ll get to start discovering talent. In the meantime, 
+    you can recommend up to two more people.  
+    We’ll be in touch shortly!`,
     confirm: 'CONTINUE'
   },
   weakPassContent: {
     title: 'Thank you!',
-    description: 'Thank you for submitting your three recommendations and helping to advance their careers! As soon as we’re done reviewing your recommendations, you’ll get your reward . In the meantime, you can recommend up to two more people.  We’ll be in touch shortly!',
+    description: `Thank you for submitting your three 
+    recommendations and helping to advance their careers! 
+    As soon as we’re done reviewing your recommendations, 
+    you’ll get your reward . In the meantime, you can 
+    recommend up to two more people.  
+    We’ll be in touch shortly!`,
     confirm: 'CONTINUE'
   }
 };
