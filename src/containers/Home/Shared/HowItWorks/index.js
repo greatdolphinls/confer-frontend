@@ -5,9 +5,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
 import { HomeRecommendCard } from '..';
-import AyeshaCurryImage from '../../../../assets/img/users/ayesha-curry.png';
-import JamieRyanImage from '../../../../assets/img/users/jamie-ryan.png';
-import AnushaGeorgeImage from '../../../../assets/img/users/anusha-george.png';
+import AyeshaCurryImage from '../../../../assets/img/users/ayesha-curry.jpg';
+import JamieRyanImage from '../../../../assets/img/users/jamie-ryan.jpg';
+import AnushaGeorgeImage from '../../../../assets/img/users/anusha-george.jpg';
 
 const styles = theme => {
   return {

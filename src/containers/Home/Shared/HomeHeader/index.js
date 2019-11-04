@@ -10,8 +10,8 @@ import { HomeEmailInput, HomeButton } from '..';
 import notifications from '../../../../constants/notifications'
 import { useInput } from '../../../../utils/hooks';
 import { showErrorToast, showInfoToast } from '../../../../utils/utility';
-import LeftImage from '../../../../assets/img/background/homeRecognizeLeft.svg';
-import RightImage from '../../../../assets/img/background/homeRecognizeRight.svg';
+import LeftImage from '../../../../assets/img/background/homeRecognizeLeft.png';
+import RightImage from '../../../../assets/img/background/homeRecognizeRight.png';
 
 const styles = theme => {
   return {
