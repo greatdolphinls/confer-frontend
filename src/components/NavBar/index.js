@@ -87,7 +87,7 @@ const NavBar = ({
           <Button
             key={index}
             href={item.url}
-            className={classNames(classes.item, { [classes.signIn]: item.url === pageLinks.SignIn.url})}>
+            className={classNames(classes.item, { [classes.signIn]: item.url === pageLinks.SignIn.url })}>
             {item.title}
           </Button>
         ))}
@@ -109,10 +109,6 @@ NavBar.propTypes = {
 
 NavBar.defaultProps = {
   SignOffItems: [
-    {
-      title: pageLinks.HowItWorks.title,
-      url: pageLinks.HowItWorks.url
-    },
     {
       title: pageLinks.FAQ.title,
       url: pageLinks.FAQ.url

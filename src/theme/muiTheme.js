@@ -58,6 +58,20 @@ const theme = createMuiTheme({
             root: {
                 color: '#281C13',
             },
+        },
+        MuiTooltip: {
+            tooltip: {
+                fontSize: 10,
+                color: '#432F20',
+                backgroundColor: '#F7F4F4'
+            }
+        },
+        MuiFormHelperText: {
+            root: {
+                fontSize: 14,
+                fontWeight: 'bold',
+                textAlign: 'center'
+            }
         }
     }
 });

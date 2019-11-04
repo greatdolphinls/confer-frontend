@@ -2,9 +2,13 @@
 const defaultAvatarLink = '//www.gravatar.com/avatar/51b444b6cac7ba2671011bf7616c5d59?s=200&r=pg&d=mm';
 const jwtTokenKey = 'jwtToken';
 const pageLinks = {
+  Home: {
+    title: 'Home',
+    url: '/'
+  },
   ContactUs: {
     title: 'Contact us',
-    url: '/contact-us'
+    url: 'mailto:contact@hellomerit.com'
   },
   TermsOfUse: {
     title: 'Terms of Use',
@@ -17,10 +21,6 @@ const pageLinks = {
   FAQ: {
     title: 'FAQ',
     url: '/faq'
-  },
-  HowItWorks: {
-    title: 'How It Works',
-    url: '/how-it-works'
   },
   SignIn: {
     title: 'Sign In',

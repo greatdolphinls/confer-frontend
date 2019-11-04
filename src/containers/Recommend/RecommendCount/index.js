@@ -81,48 +81,50 @@ const RecommendCount = ({
 
   const isComplete = recommends.length >= minCandidates;
   const isWeakUser = user.role === roles.WEAK_ROLE;
-  const emptyLength = isComplete? 0 : minCandidates - recommends.length;
-  const lastIndex = isComplete? recommends.length : minCandidates;
+  const emptyLength = isComplete ? 0 : minCandidates - recommends.length;
+  const lastIndex = isComplete ? recommends.length : minCandidates;
 
   const getDescription = () => {
     let description = '';
 
     if (isComplete) {
       if (isWeakUser) {
-        if(user.verified){
+        if (user.verified) {
           description = `Thank you for making your recommendations. 
           They have been apprved! You should have received an Amazon 
           gift card. If you did not, please contact support@hellomerit.com.`;
         } else {
-          description = `Thank you for making your recommendations. 
-          We will notify you once they have been approved and will 
-          send your Amazon gift card then! You can add up to five 
-          recommendations if you’d like!`;
+          description = `Thank you for making your recommendations! 
+          We will notify you once they are approved and when you 
+          can expect your Amazon gift card. Is there someone you 
+          left out ? You can add up to two more recommendations 
+          if you'd like!`;
         }
       } else {
-        if(user.verified){
-          description = `Thank you for making your recommendations. 
-          You can now search for talent!`;
+        if (user.verified) {
+          description = `Thank you. Your recommendations have been approved!
+          Enjoy your Amazon gift card.If, for some reason, you did 
+          not receive your gift card, please contact support@hellomerit.com.`;
         } else {
-          description = `Thank you for making your recommendations. 
-          We will notify you once they have been approved and will 
-          send your Amazon gift card then! You can add up to five 
-          recommendations if you’d like!`;
+          description = `Thank you for making your recommendations! 
+          We will notify you once they are approved. Is there someone 
+          you left out ? You can make up to two more recommendations 
+          if you'd like.`;
         }
       }
     } else {
       switch (recommends.length) {
         case 0:
-          description = `You have not submitted a recommendation yet! 
+          description = `You haven't submitted a recommendation yet! 
           Get started below.`;
           break;
         case 1:
-          description = `You’ve recommended 1 person! You have just 
-          2 more to go!`;
+          description = `You've recommended one person! You have just 
+          two more to go.`;
           break;
         case 2:
-          description = `You’ve recommended 2 people! You have just 
-          one more to go!`;
+          description = `You've recommended two people! You have one 
+          more left.`;
           break;
         default:
           break
@@ -132,7 +134,7 @@ const RecommendCount = ({
   }
 
   const renderButtonContainer = () => {
-    if(isComplete){
+    if (isComplete) {
       return (
         <>
           {
@@ -184,8 +186,8 @@ const RecommendCount = ({
       </Typography>
       <div className={classes.container}>
         {recommends.map((recommend, index) =>
-          <CountLayout 
-            key={index} 
+          <CountLayout
+            key={index}
             step={index + 1}
             isLast={lastIndex === index + 1}
             isActive={index + 1 === recommends.length}
@@ -194,10 +196,10 @@ const RecommendCount = ({
         )}
         {[...Array(emptyLength)].map((e, i) => {
           const index = recommends.length + i + 1;
-          return <CountLayout 
-            key={index} 
+          return <CountLayout
+            key={index}
             step={index}
-            isLast={lastIndex === index}  
+            isLast={lastIndex === index}
           />
         })}
       </div>

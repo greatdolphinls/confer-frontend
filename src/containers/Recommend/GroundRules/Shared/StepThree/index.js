@@ -24,7 +24,7 @@ const styles = theme => {
 };
 
 const StepThree = ({
-  classes, defaultStep, isWeak, currentStep, onContinue, onFAQHandler, content
+  classes, defaultStep, isWeak, currentStep, onContinue, onSelect, onFAQHandler, weakContent, standardContent
 }) => {
   const isActive = defaultStep === currentStep;
   const isSkip = defaultStep <= currentStep;
@@ -33,8 +33,8 @@ const StepThree = ({
     if (isWeak) {
       return (
         <Typography className={classes.description}>
-          Once your recommendations have been approved,
-          we’ll send over your reward!
+          Once your recommendations are approved, you’ll
+          receive a [$150 Amazon gift card].
         </Typography>
       )
     }
@@ -45,8 +45,8 @@ const StepThree = ({
       return (
         <>
           <Typography className={classes.description}>
-            You will have access to all recommendations
-            made by your group.
+            You will have access to all the recommendations
+            in your group.
           </Typography>
           <Typography className={classes.description}>
             Here’s what you can expect:
@@ -59,10 +59,11 @@ const StepThree = ({
 
   return (
     <RuleLayout
+      onSelect={onSelect}
       step={defaultStep}
       isActive={isActive}
       isSkip={isSkip}
-      content={content}>
+      content={isWeak ? weakContent : standardContent}>
       {weakContentRender()}
       {standardContentRender()}
       <PrimaryButton
@@ -72,7 +73,7 @@ const StepThree = ({
       <Typography
         className={classes.faqButton}
         onClick={onFAQHandler}>
-        Still have questions? See our FAQ
+        Still questions? See our FAQ
       </Typography>
     </RuleLayout>
   );
@@ -86,7 +87,12 @@ StepThree.defaultProps = {
   isWeak: false,
   defaultStep: 3,
   onContinue: () => { },
-  content: {
+  weakContent: {
+    step: 'STEP THREE',
+    title: 'Thank you',
+    subTitle: 'RECEIVE YOUR REWARD.',
+  },
+  standardContent: {
     step: 'STEP THREE',
     title: 'Discover',
     subTitle: 'MAKE YOUR NEXT HIRE'

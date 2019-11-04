@@ -24,6 +24,7 @@ const uploadImagePrefix = '/api/uploadImage';
 const userRecommendPrefix = '/api/userRecommend';
 const skillsPrefix = 'api/skills';
 const strengthsPrefix = 'api/strengths';
+const requestSignupPrefix = 'api/requestSignup';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -109,6 +110,10 @@ const getStrengthUrl = () => {
     return urlJoin(config.proxyUrl, strengthsPrefix);
 };
 
+const getRequestSignupUrl = () => {
+    return urlJoin(config.proxyUrl, requestSignupPrefix);
+};
+
 export {
     getResetPasswordUrl,
     getForgotPasswordUrl,
@@ -130,5 +135,6 @@ export {
     getUploadImageUrl,
     getUserRecommendUrl,
     getSkillUrl,
-    getStrengthUrl
+    getStrengthUrl,
+    getRequestSignupUrl
 };

@@ -22,7 +22,7 @@ const styles = theme => {
     },
     description: {
       fontSize: 18,
-      width: 360,
+      width: 390,
       textAlign: 'center',
       marginBottom: theme.spacing(5),
       [theme.breakpoints.down('xs')]: {
@@ -54,12 +54,16 @@ const GroundRules = ({ classes, history }) => {
     }
   }
 
+  const selectStepHandler = stepNumber => {
+    setCurrentStep(stepNumber);
+  }
+
   const pageLinkHandler = (url) => () => {
     history.push(url);
   }
 
   const description = `It’s simple: recommend three people, then 
-    ${isWeak ? 'unlock your reward' : 'access your group’s recommendations'}.`
+    ${isWeak ? 'unlock your reward' : 'get access to a curated group of professionals'}.`
 
   return (
     <main className={classes.root}>
@@ -72,13 +76,16 @@ const GroundRules = ({ classes, history }) => {
       <div className={classes.container}>
         <StepOne
           currentStep={currentStep}
+          onSelect={selectStepHandler}
           onContinue={continueButtonHandler} />
         <StepTwo
           currentStep={currentStep}
+          onSelect={selectStepHandler}
           onContinue={continueButtonHandler} />
         <StepThree
           isWeak={isWeak}
           currentStep={currentStep}
+          onSelect={selectStepHandler}
           onContinue={continueButtonHandler}
           onFAQHandler={pageLinkHandler(pageLinks.FAQ.url)} />
       </div>

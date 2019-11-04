@@ -18,7 +18,7 @@ const styles = theme => {
       marginRight: theme.spacing(1)
     },
     description: {
-      fontSize: 15,
+      fontSize: 18,
       fontWeight: 'bold',
       color: theme.palette.craneForeColor
     }

@@ -11,7 +11,7 @@ const styles = theme => {
   return {
     root: {},
     inspiration: {
-      fontSize: 15,
+      fontSize: 18,
       fontWeight: 'bold',
       color: theme.palette.craneForeColor,
       marginBottom: theme.spacing(4),
@@ -24,7 +24,7 @@ const styles = theme => {
 };
 
 const StepOne = ({
-  classes, defaultStep, currentStep, onContinue, content
+  classes, defaultStep, currentStep, onContinue, onSelect, content
 }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -41,6 +41,7 @@ const StepOne = ({
 
   return (
     <RuleLayout
+      onSelect={onSelect}
       step={defaultStep}
       isActive={isActive}
       isSkip={isSkip}

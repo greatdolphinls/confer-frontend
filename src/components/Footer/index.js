@@ -9,29 +9,56 @@ import { pageLinks } from '../../constants/links'
 const styles = theme => {
   return {
     root: {
+      backgroundColor: theme.palette.sandBackColor
+    },
+    container: {
       height: 59,
       display: 'flex',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: theme.palette.sandBackColor
+      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: 920
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: 1170
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: 1366
+      }
     },
     item: {
       textDecoration: 'none',
       fontSize: 16,
-      color: theme.palette.mainForeColor
+      color: theme.palette.mainForeColor,
+      [theme.breakpoints.down('xs')]: {
+        fontSize: 14
+      }
     }
   };
 };
 
 const Footer = ({ classes, items }) => {
   return (
-    <div className={classes.root}>
-      {items.map((item, index) => (
-        <Link key={index} to={item.url} className={classes.item}>
-          {item.title}
-        </Link>
-      ))}
-    </div>
+    <main className={classes.root}>
+      <div className={classes.container}>
+        <a
+          key='contactUs'
+          href={pageLinks.ContactUs.url}
+          className={classes.item}>
+          {pageLinks.ContactUs.title}
+        </a>
+        {items.map((item, index) => (
+          <Link key={index} to={item.url} className={classes.item}>
+            {item.title}
+          </Link>
+        ))}
+      </div>
+    </main>
   );
 };
 
@@ -42,10 +69,6 @@ Footer.propTypes = {
 
 Footer.defaultProps = {
   items: [
-    {
-      title: pageLinks.ContactUs.title,
-      url: pageLinks.ContactUs.url
-    },
     {
       title: pageLinks.TermsOfUse.title,
       url: pageLinks.TermsOfUse.url

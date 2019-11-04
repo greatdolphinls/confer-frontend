@@ -12,10 +12,10 @@ const styles = theme => {
   return {
     root: {
       boxShadow: 'unset',
-      margin: `${theme.spacing(4)}px 0`
+      margin: `${theme.spacing(2)}px 0`
     },
     header: {
-      backgroundColor: theme.palette.greyBackColor
+      backgroundColor: theme.palette.sandBackColor
     },
     heading: {
       width: '100%',
@@ -26,7 +26,8 @@ const styles = theme => {
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
-      padding: `${theme.spacing(3)}px 0`
+      backgroundColor: theme.palette.mainBackColor,
+      padding: `${theme.spacing(2)}px 0`
     }
   };
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Typography, Checkbox } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
@@ -18,8 +18,11 @@ import {
   CustomMultiSelect,
   PrimaryButton
 } from '../../../components';
-import { SuccessRecommendModal } from '../Shared';
-import { RecommendFormHeader, RecommendMail } from './Shared';
+import {
+  RecommendFormHeader,
+  RecommendMail,
+  SuccessRecommendModal
+} from './Shared';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 import { useInput } from '../../../utils/hooks';
@@ -118,7 +121,6 @@ const RecommendForm = ({ classes, history }) => {
   const subExpertises = useInput([]);
   const skill = useInput([]);
   const strength = useInput([]);
-  const [termsAndPrivacy, setTermsAndPrivacy] = useState(false);
   const [expertiseOptions, setExpertiseOptions] = useState([]);
   const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
   const [relationshipOptions, setRelationshipOptions] = useState([]);
@@ -171,10 +173,6 @@ const RecommendForm = ({ classes, history }) => {
     history.push(pageLinks.RecommendCount.url);
   }
 
-  const termsAndPrivacyHandler = () => {
-    setTermsAndPrivacy(!termsAndPrivacy);
-  }
-
   const submitHandler = async () => {
     if (isEmpty(expertise.value)
       || isEmpty(relationship.value)
@@ -183,11 +181,6 @@ const RecommendForm = ({ classes, history }) => {
       || isEmpty(strength.value)
     ) {
       showErrorToast(notifications.RECOMMEND_FORM_VALIDATION_ERROR);
-      return null;
-    }
-
-    if (!termsAndPrivacy) {
-      showErrorToast(notifications.RECOMMEND_FORM_TERMS_PRIVACY);
       return null;
     }
 
@@ -323,7 +316,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classes.container}>
         <Typography className={classes.description}>
-          I would turn to {firstName.value || '[First name]'} for help with
+          {firstName.value || '[First name]'} would be my go-to with
         </Typography>
         <CustomMultiSelect
           placeholder='Select or write scenario...'
@@ -359,7 +352,7 @@ const RecommendForm = ({ classes, history }) => {
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
           In summary, {firstName.value || '[First name]'} is one of the
-          best people who I have worked with because
+          best people I have worked with because
         </Typography>
         <TextValidator
           multiline={true}
@@ -378,12 +371,12 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          I am excited to pay it forward to {firstName.value || '[First name]'}
-          {' and give them the recognition they deserve.'}
+          I am excited to recognize {firstName.value || '[First name]'}
+          {' for their excellent work and give them the recognition they deserve.'}
         </Typography>
         <Typography className={classes.description}>
-          You can notify {firstName.value || '[First name]'}
-          {' that I have  recommended them at'}
+
+          {' that I have recommended them at'}
         </Typography>
         <TextValidator
           name='email'
@@ -399,28 +392,11 @@ const RecommendForm = ({ classes, history }) => {
         <TextValidator
           name='linkedInURL'
           placeholder='https://www.linkedin.com/...'
+          helperText='[Optional]'
           className={classes.middleInput}
           value={linkedInURL.value}
           onChange={linkedInURL.onChange} />
         .
-      </div>
-    );
-  }
-
-  const termsAndPolicy = () => {
-    return (
-      <div className={classes.buttonContainer}>
-        <Checkbox
-          checked={termsAndPrivacy}
-          onChange={termsAndPrivacyHandler}
-          value={termsAndPrivacy}
-          className={classes.check}
-        />
-        <Typography className={classes.termsAndPrivacy}>
-          By checking this box I affirm that I have read and
-          understood Canopy's terms of service and privacy
-          policy and agree to be bound by their terms.
-        </Typography>
       </div>
     );
   }
@@ -454,7 +430,6 @@ const RecommendForm = ({ classes, history }) => {
         {whyGreatRender()}
         {emailAndLinkedInRender()}
         <RecommendMail />
-        {termsAndPolicy()}
         {submitButtonContainer()}
       </ValidatorForm>
       {showModal &&

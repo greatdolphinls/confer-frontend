@@ -62,13 +62,18 @@ const styles = theme => {
 };
 
 const RuleLayout = ({
-  classes, step, isActive, isSkip, content, children
+  classes, step, isActive, isSkip, content, onSelect, children
 }) => {
+  const stepNumberHandler = () => {
+    onSelect(step);
+  }
+
   return (
     <main
       className={classNames(classes.root, { [classes.active]: isSkip })}>
       <div>
         <Typography
+          onClick={stepNumberHandler}
           className={classNames(classes.step, { [classes.activeStep]: isSkip })}>
           {step}
         </Typography>

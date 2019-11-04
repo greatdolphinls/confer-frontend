@@ -20,6 +20,7 @@ const styles = theme => {
     root: {
       width: '100%',
       display: 'flex',
+      alignItems: 'center',
       marginTop: theme.spacing(3),
       flexDirection: 'column'
     },

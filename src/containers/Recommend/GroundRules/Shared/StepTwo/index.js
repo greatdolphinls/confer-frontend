@@ -21,13 +21,14 @@ const styles = theme => {
 };
 
 const StepTwo = ({
-  classes, defaultStep, currentStep, onContinue, content, descriptions
+  classes, defaultStep, currentStep, onContinue, onSelect, content, descriptions
 }) => {
   const isActive = defaultStep === currentStep;
   const isSkip = defaultStep <= currentStep;
 
   return (
     <RuleLayout
+      onSelect={onSelect}
       step={defaultStep}
       isActive={isActive}
       isSkip={isSkip}
@@ -68,15 +69,18 @@ StepTwo.defaultProps = {
   },
   descriptions: [
     {
-      description: `Expect 5 minutes per recommendation. We’ll review 
-      each one to to ensure they meet our quality standards.`
+      description: `Expect each recommendation to take about 5 minutes.`
     },
     {
-      description: `Since transparency drives trust, we will notify 
-      the people you recommend once they are approved.You can give 
-      them a heads up first!`,
-      tooltip: `We disclose only your name to the people who you 
-      recommend. We do not share your full recommendation. `
+      description: `Don’t rush. We’ll review them to ensure they 
+      meet our quality standards.`
+    },
+    {
+      description: `We will notify the people you recommend once 
+      they are approved.You can give them a heads up first!`,
+      tooltip: `We disclose only your name to them, not your full 
+      recommendation. We believe that transparency is critical to 
+      creating trust in the platform.`
     }
   ]
 };

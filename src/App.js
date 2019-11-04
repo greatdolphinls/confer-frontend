@@ -14,7 +14,7 @@ import {
   ResetPassword,
   SuccessResetPassword
 } from './containers/Authentification';
-import ContactUs from './containers/ContactUs';
+import Home from './containers/Home';
 import TermsOfUse from './containers/TermsOfUse';
 import PrivacyPolicy from './containers/PrivacyPolicy';
 import FAQ from './containers/FAQ';
@@ -44,16 +44,16 @@ class App extends Component {
           text={loadingStatus.text}>
           <Layout>
             <Switch>
-              <Route path={pageLinks.SignUp.url} component={SignUp} />
-              <Route path={pageLinks.SignIn.url} component={SignIn} />
-              <Route path={pageLinks.ForgotPassword.url} component={ForgotPassword} />
-              <Route path={pageLinks.Verification.url} component={Verification} />
-              <Route path={pageLinks.ResetPassword.url} component={ResetPassword} />
-              <Route path={pageLinks.SuccessResetPassword.url} component={SuccessResetPassword} />
-              <Route path={pageLinks.ContactUs.url} component={ContactUs} />
-              <Route path={pageLinks.TermsOfUse.url} component={TermsOfUse} />
-              <Route path={pageLinks.PrivacyPolicy.url} component={PrivacyPolicy} />
-              <Route path={pageLinks.FAQ.url} component={FAQ} />
+              <Route exact path={pageLinks.SignUp.url} component={SignUp} />
+              <Route exact path={pageLinks.SignIn.url} component={SignIn} />
+              <Route exact path={pageLinks.ForgotPassword.url} component={ForgotPassword} />
+              <Route exact path={pageLinks.Verification.url} component={Verification} />
+              <Route exact path={pageLinks.ResetPassword.url} component={ResetPassword} />
+              <Route exact path={pageLinks.SuccessResetPassword.url} component={SuccessResetPassword} />
+              <Route exact path={pageLinks.Home.url} component={Home} />
+              <Route exact path={pageLinks.TermsOfUse.url} component={TermsOfUse} />
+              <Route exact path={pageLinks.PrivacyPolicy.url} component={PrivacyPolicy} />
+              <Route exact path={pageLinks.FAQ.url} component={FAQ} />
               <Route
                 render={() =>
                   hasValidToken()
