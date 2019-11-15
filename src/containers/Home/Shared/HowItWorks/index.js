@@ -119,26 +119,17 @@ HowItWorks.propTypes = {
 HowItWorks.defaultProps = {
   recommends: [
     {
-      firstName: 'AYESHA',
-      lastName: 'CURRY',
       avatar: AyeshaCurryImage,
-      job: 'MANAGER',
       description: `She is one of the most scrappy and tenacious 
       professionals I have ever been around.`
     },
     {
-      firstName: 'JAMIE',
-      lastName: 'RYAN',
       avatar: JamieRyanImage,
-      job: 'TEAM LEAD',
       description: `Her leadership on the team was so impactful, 
       she still mentors junior members in her free time.`
     },
     {
-      firstName: 'ANUSHA',
-      lastName: 'GEORGE',
       avatar: AnushaGeorgeImage,
-      job: '',
       description: `Her vibrant energy was never ending, a breath 
       of fresh air in a tense room.`
     }

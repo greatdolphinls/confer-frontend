@@ -36,16 +36,22 @@ const styles = theme => {
       }
     },
     lineImage: {
-      padding: theme.spacing(0.5)
+      height: 120,
+      padding: theme.spacing(0.5),
+      [theme.breakpoints.down('xs')]: {
+        height: 135
+      }
     },
     container: {
       display: 'flex',
       flexDirection: 'column',
       height: 124,
+      width: 'calc(100% - 100px)',
       marginBottom: theme.spacing(6),
       marginLeft: theme.spacing(5),
       [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(3),
+        width: 'calc(100% - 70px)',
+        marginLeft: theme.spacing(3)
       }
     },
     active: {
@@ -62,7 +68,7 @@ const styles = theme => {
     subTitle: {
       fontSize: 20,
       fontWeight: 'bold',
-      overflow:'hidden',
+      overflow: 'hidden',
       display: '-webkit-box',
       WebkitLineClamp: 3,
       WebkitBoxOrient: 'vertical',
@@ -82,8 +88,8 @@ const CountLayout = ({
   classes, step, isLast, isActive, isSkip, recommend
 }) => {
   const getLineImage = () => {
-    if(isSkip){
-      return isActive? ActiveLineImage: SkipLineImage
+    if (isSkip) {
+      return isActive ? ActiveLineImage : SkipLineImage
     } else {
       return EmptyLineImage;
     }
@@ -98,7 +104,7 @@ const CountLayout = ({
           {step}
         </Typography>
         {
-          !isLast&&
+          !isLast &&
           <img
             alt='lineImage'
             src={getLineImage()}
@@ -107,8 +113,8 @@ const CountLayout = ({
         }
       </div>
       <div className={classes.container}>
-      { isSkip
-        ? <>
+        {isSkip
+          ? <>
             <Typography className={classes.title}>
               {`${recommend.candidate.firstName} ${recommend.candidate.lastName}`}
             </Typography>
@@ -116,12 +122,12 @@ const CountLayout = ({
               {`“${recommend.whyGreat}”`}
             </Typography>
           </>
-        : <img 
-          alt='defaultImage'
-          src={DefaultImage}
-          className={classes.defaultImage}
-        />
-      }
+          : <img
+            alt='defaultImage'
+            src={DefaultImage}
+            className={classes.defaultImage}
+          />
+        }
       </div>
     </main>
   );

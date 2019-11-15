@@ -21,6 +21,7 @@ const styles = theme => {
       fontSize: 20,
       border: `1px solid`,
       borderRadius: '50%',
+      cursor: 'pointer',
       [theme.breakpoints.down('xs')]: {
         height: 35,
         width: 35,
@@ -32,7 +33,7 @@ const styles = theme => {
       flexDirection: 'column',
       marginLeft: theme.spacing(5),
       [theme.breakpoints.down('xs')]: {
-        marginLeft: theme.spacing(3),
+        marginLeft: theme.spacing(2)
       }
     },
     active: {

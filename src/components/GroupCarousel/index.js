@@ -9,28 +9,27 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import WeworkLogo from '../../assets/img/groupLogos/wework.svg';
 import BCGLogo from '../../assets/img/groupLogos/bcg.svg';
 import SeamlessLogo from '../../assets/img/groupLogos/seamless.svg';
-import AirBNBLogo from '../../assets/img/groupLogos/airbnb.svg';
-import AdobeLogo from '../../assets/img/groupLogos/adobe.svg';
+import TeachLogo from '../../assets/img/groupLogos/teach.svg';
+import RedditLogo from '../../assets/img/groupLogos/reddit.svg';
 import LYALogo from '../../assets/img/groupLogos/lya.svg';
 import BonobosLogo from '../../assets/img/groupLogos/bonobos.svg';
-import GroupBackgroundImage from '../../assets/img/background/groupCarousel.svg';
 
 const styles = theme => {
   return {
     root: {
-      width: '100%',
-      height: 235,
+      width: 'calc(100vw - 16.8px)',
+      alignSelf: 'center',
+      height: 275,
       display: 'flex',
       flexDirection: 'column',
-      backgroundRepeat: 'no-repeat',
-      backgroundImage: `url(${GroupBackgroundImage})`,
+      backgroundColor: theme.palette.sandBackColor,
       '& .alice-carousel': {
         marginTop: 0,
         marginBottom: 0
       }
     },
     description: {
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(4),
       color: theme.palette.blackBrownForeColor,
       opacity: 0.6,
       fontSize: 18,
@@ -58,8 +57,6 @@ const GroupCarousel = ({ classes, groups, responsive }) => {
         </Typography>
         <AliceCarousel
           mouseDragEnabled
-          autoPlay
-          autoPlayInterval={1000}
           className={classes.carousel}
           fadeOutAnimation
           responsive={responsive}
@@ -89,8 +86,8 @@ GroupCarousel.defaultProps = {
     WeworkLogo,
     BCGLogo,
     SeamlessLogo,
-    AirBNBLogo,
-    AdobeLogo,
+    TeachLogo,
+    RedditLogo,
     LYALogo,
     BonobosLogo
   ],

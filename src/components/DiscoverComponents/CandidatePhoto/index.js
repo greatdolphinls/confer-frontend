@@ -11,14 +11,15 @@ import LinkedInImage from '../../../assets/img/icons/linkedIn.svg';
 const styles = theme => {
   return {
     root: {
-      width: 374,
-      height: 374,
-      minWidth: 374,
+      height: 400,
+      minWidth: 400,
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
       [theme.breakpoints.down('xs')]: {
-        width: '100%'
+        height: 320,
+        width: '100%',
+        minWidth: '100%'
       }
     },
     image: {
@@ -27,16 +28,22 @@ const styles = theme => {
       borderRadius: 5,
       objectFit: 'cover'
     },
+    tint: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: 5,
+      backgroundColor: 'rgba(0, 0, 0, 0.29)'
+    },
     container: {
       position: 'absolute',
-      padding: theme.spacing(1),
+      padding: theme.spacing(2),
       bottom: 0
     },
     name: {
       display: 'flex',
-      alignItems: 'flex-end',
-      fontSize: 30,
-      lineHeight: '20px',
+      alignItems: 'center',
+      fontSize: 32,
       fontFamily: 'Moret-Bold',
       color: theme.palette.whiteColor,
       marginBottom: theme.spacing(0.5)
@@ -49,7 +56,6 @@ const styles = theme => {
     },
     description: {
       fontSize: 14,
-      textAlign: 'center',
       textTransform: 'uppercase',
       color: theme.palette.whiteColor
     },
@@ -68,19 +74,32 @@ const CandidatePhoto = ({ classes, candidate, isSmall }) => {
         alt='candidateImage'
         src={candidate.avatar}
         className={classes.image} />
+      <div className={classes.tint} />
       <div className={classes.container}>
         <Typography
           className={classNames(classes.name, { [classes.smallName]: isSmall })}>
           {`${candidate.firstName} ${candidate.lastName}`}
-          <img
-            src={LinkedInImage}
-            alt='linkedIn'
-            className={classes.linkedIn} />
+          <a
+            target='_blank'
+            rel='noreferrer noopener'
+            href={candidate.linkedInURL}
+            className={classes.logoContainer}>
+            <img
+              src={LinkedInImage}
+              alt='linkedIn'
+              className={classes.linkedIn} />
+          </a>
         </Typography>
         <Typography
           className={classNames(classes.description, { [classes.smallDescription]: isSmall })}>
-          {`${currentEmployment.title} @`}
-          <u>{currentEmployment.companyName}</u>
+          {`${currentEmployment.title} `}
+          {
+            !!currentEmployment.companyName &&
+            <>
+              @
+              <u>{currentEmployment.companyName}</u>
+            </>
+          }
         </Typography>
       </div>
     </div>

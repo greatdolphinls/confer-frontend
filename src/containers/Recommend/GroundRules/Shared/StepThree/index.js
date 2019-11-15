@@ -14,6 +14,9 @@ const styles = theme => {
       fontSize: 18,
       marginBottom: theme.spacing(1)
     },
+    button: {
+      marginTop: theme.spacing(3)
+    },
     faqButton: {
       fontSize: 12,
       padding: `${theme.spacing(0.5)}px 0`,
@@ -33,8 +36,8 @@ const StepThree = ({
     if (isWeak) {
       return (
         <Typography className={classes.description}>
-          Once your recommendations are approved, you’ll
-          receive a [$150 Amazon gift card].
+          Once your recommendations are approved, you'll
+          receive your gift card.
         </Typography>
       )
     }
@@ -45,8 +48,9 @@ const StepThree = ({
       return (
         <>
           <Typography className={classes.description}>
-            You will have access to all the recommendations
-            in your group.
+            You will have access to all recommendations made by your group.
+            In the future, you will also have the opportunity to see
+            recommendations made by other groups.
           </Typography>
           <Typography className={classes.description}>
             Here’s what you can expect:
@@ -67,13 +71,14 @@ const StepThree = ({
       {weakContentRender()}
       {standardContentRender()}
       <PrimaryButton
+        classes={{ root: classes.button }}
         onClick={onContinue}>
         OK, I’M READY
       </PrimaryButton>
       <Typography
         className={classes.faqButton}
         onClick={onFAQHandler}>
-        Still questions? See our FAQ
+        Still have questions? See our FAQ
       </Typography>
     </RuleLayout>
   );
@@ -90,7 +95,7 @@ StepThree.defaultProps = {
   weakContent: {
     step: 'STEP THREE',
     title: 'Thank you',
-    subTitle: 'RECEIVE YOUR REWARD.',
+    subTitle: 'RECEIVE YOUR REWARD',
   },
   standardContent: {
     step: 'STEP THREE',

@@ -12,7 +12,11 @@ const styles = theme => {
   return {
     paper: {
       borderRadius: 10,
-      backgroundColor: theme.palette.brownBackColor
+      backgroundColor: theme.palette.brownBackColor,
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+        margin: `${theme.spacing(2)}px !important`
+      }
     },
     content: {
       display: 'flex',
@@ -20,7 +24,7 @@ const styles = theme => {
       alignItems: 'center',
       padding: `${theme.spacing(6)}px !important`,
       [theme.breakpoints.down('xs')]: {
-        padding: theme.spacing(2),
+        padding: `${theme.spacing(4)}px !important`
       }
     },
     title: {
@@ -45,8 +49,7 @@ const InspirationModal = ({ classes, opened, onClose }) => {
       aria-labelledby='form-dialog-title'>
       <DialogContent className={classes.content}>
         <Typography className={classes.title}>
-          We get it. It’s hard to narrow down everyone you’ve ever
-          worked with to three outstanding people. Here are some examples:
+          Here are some examples:
         </Typography>
         <Typography className={classes.description}>
           -An analyst who worked for you for 3 projects and

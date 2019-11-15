@@ -30,6 +30,7 @@ const styles = theme => {
     },
     deleteButton: {
       width: 134,
+      color: theme.palette.whiteColor,
       backgroundColor: theme.palette.darkGreyButtonColor
     },
   };

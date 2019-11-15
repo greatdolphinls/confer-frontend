@@ -24,6 +24,9 @@ const styles = theme => {
     avatar: {
       cursor: 'pointer'
     },
+    paper: {
+      backgroundColor: theme.palette.mainBackColor
+    },
     item: {
       opacity: 0.6,
       fontSize: 14,
@@ -83,10 +86,10 @@ const ProfileDropdown = ({ classes, avatar, history }) => {
             {...TransitionProps}
             style={{ transformOrigin: 'center top' }}
           >
-            <Paper>
+            <Paper className={classes.paper}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
-                  {isReferrer &&
+                  {/* {isReferrer &&
                     <MenuItem
                       component={Link}
                       to={pageLinks.ProfileOverview.url}
@@ -94,7 +97,7 @@ const ProfileDropdown = ({ classes, avatar, history }) => {
                       className={classes.item}>
                       {pageLinks.ProfileOverview.title}
                     </MenuItem>
-                  }
+                  } */}
                   <MenuItem
                     component={Link}
                     to={pageLinks.AccountManage.url}

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -41,23 +41,36 @@ const styles = theme => {
 };
 
 const SuccessRecommendModal = ({
-  classes, opened, minCandidates, keepContent, referrerPassContent, weakPassContent, onClose, onConfirm
+  classes, opened, minCandidates, initContent,  keepContent, referrerPassContent, weakPassContent, onClose, onConfirm
 }) => {
   const { user } = useSelector(state => state.auth, []);
   const recommends = useSelector(state => state.recommend.user, []);
   const dispatch = useDispatch();
+  
+  const [content, setContent] = useState(initContent);
+  const [initCall, setInitCall] = useState(false);
 
   useEffect(() => {
     dispatch(setUserRecommends());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isWeakUser = user.role === roles.WEAK_ROLE;
-  const { title, description, confirm } = recommends.length < minCandidates
-    ? keepContent
-    : isWeakUser
-      ? weakPassContent
-      : referrerPassContent;
+  useEffect(() => {
+    if(initCall) {
+      const isWeakUser = user.role === roles.WEAK_ROLE;
+      const data = recommends.length < minCandidates
+        ? keepContent
+        : isWeakUser
+          ? weakPassContent
+          : referrerPassContent;
+      setContent(data);
+    }else {
+      setInitCall(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recommends]);
+  
+  const { title, description, confirm } = content;
 
   return (
     <Dialog
@@ -93,11 +106,16 @@ SuccessRecommendModal.defaultProps = {
   minCandidates: 3,
   onClose: () => { },
   onConfirm: () => { },
+  initContent: {
+    title: '',
+    description: '',
+    confirm: ''
+  },
   keepContent: {
     title: 'Thank you!',
     description: `Awesome, your recommendation has been added. 
     You’ve just helped advance someone’s career in a big way!`,
-    confirm: 'Keep Up the good work'
+    confirm: 'Keep going'
   },
   referrerPassContent: {
     title: 'Thank you!',

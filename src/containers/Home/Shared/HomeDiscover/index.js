@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 
-import DiscoverImage from '../../../../assets/img/background/homeDiscover.png';
+import DiscoverImage from '../../../../assets/img/background/homeDiscover.jpg';
 
 const styles = theme => {
   return {
@@ -38,8 +38,8 @@ const styles = theme => {
     img: {
       width: '70%',
       margin: theme.spacing(5),
-      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.25)',
       borderRadius: 10,
+      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.25)',
       [theme.breakpoints.down('sm')]: {
         width: '100%'
       }

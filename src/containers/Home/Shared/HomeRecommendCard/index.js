@@ -45,27 +45,12 @@ const styles = theme => {
         fontFamily: 'Moret',
         backgroundImage: `linear-gradient(180deg, ${theme.palette.mainBackColor} 50%, ${theme.palette.sandBackColor} 100%)`
       }
-    },
-    name: {
-      fontSize: 16,
-      textAlign: 'center',
-      textTransform: 'uppercase',
-      color: theme.palette.whiteColor,
-      [theme.breakpoints.down('xs')]: {
-        fontSize: 14
-      }
     }
   };
 };
 
 const HomeRecommendCard = ({ classes, recommend }) => {
-  const {
-    firstName,
-    lastName,
-    description,
-    avatar,
-    job
-  } = recommend;
+  const { description, avatar } = recommend;
 
   return (
     <main className={classes.root}>
@@ -76,10 +61,6 @@ const HomeRecommendCard = ({ classes, recommend }) => {
       <div className={classes.container}>
         <Typography className={classes.description}>
           {`“${description}”`}
-        </Typography>
-        <Typography className={classes.name}>
-          {` - ${firstName} ${lastName}`}
-          {!!job && `, ${job}`}
         </Typography>
       </div>
     </main>

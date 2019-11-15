@@ -69,6 +69,7 @@ class App extends Component {
                             />
                           ))
                         }
+                        <Redirect to={pageLinks.GroundRules.url} />
                       </Switch>
                     )
                     : (

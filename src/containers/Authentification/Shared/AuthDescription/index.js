@@ -8,6 +8,7 @@ const styles = theme => {
   return {
     root: {
       width: 548,
+      marginTop: theme.spacing(8),
       color: theme.palette.mainForeColor,
       marginRight: theme.spacing(2),
       marginBottom: theme.spacing(6),
@@ -17,10 +18,6 @@ const styles = theme => {
       }
     },
     title: {
-      fontSize: 22,
-      fontFamily: 'Moret-Bold'
-    },
-    subTitle: {
       fontSize: 42,
       fontWeight: 'bold',
       marginBottom: theme.spacing(1.5)
@@ -39,20 +36,53 @@ const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
 
   const isSignIn = selectedTab === 'signin';
 
+  const signinRender = () => {
+    if (isSignIn) {
+      return (
+        <Typography className={classes.description}>
+          At Merit, we believe that on-the-job performance
+          is the best indicator of someone's future success
+          — not their alma mater. Ready to pay it forward
+          and find your next great hire?
+        </Typography>
+      );
+    }
+  }
+
   const signupRender = () => {
     if (!isSignIn) {
       return (
-        <Typography className={classes.description}>
+        <>
+          <Typography className={classes.description}>
+            {
+              isCashGroup
+                ? `At Merit, we believe that on-the-job performance 
+                is the best indicator of someone's future success 
+                — not their alma mater. By creating an account, 
+                you're joining other experienced and knowledgeable 
+                professionals who are paying it forward to up and 
+                coming talent.`
+                : !!groupName
+                  ? `We want to help you hire top talent through each 
+                  other’s professional recommendations. Create an account 
+                  to get started. After recommending three outstanding 
+                  people, you’ll get access to all recommendations made 
+                  by the ${groupName} community.`
+                  : `We believe that on-the-job performance is the best 
+                  indicator of someone's future success — not their alma 
+                  mater. Sign up with your group link to pay it forward 
+                  to up and coming talent and discover great people to hire.`
+            }
+          </Typography>
           {
-            isCashGroup
-              ? `To show our gratitude, we’ll send you a gift
-               card straight to your inbox. Thanks for taking 
-               the time!`
-              : `Plus, as a recommender, you’ll get access to a 
-              curated group of professionals so you can hire with 
-              confidence.`
+            isCashGroup &&
+            <Typography className={classes.description}>
+              To show our gratitude, we’ll send you a gift
+              card straight to your inbox. Thanks for taking
+              the time!
+            </Typography>
           }
-        </Typography>
+        </>
       );
     }
   }
@@ -60,31 +90,9 @@ const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>
-        {
-          isSignIn
-            ? 'SIGN IN'
-            : 'SIGN UP FOR AN ACCOUNT'
-        }
-      </Typography>
-      <Typography className={classes.subTitle}>
         Join the ranks.
       </Typography>
-      <Typography className={classes.description}>
-        {
-          isSignIn
-            ? `At Merit, we believe that on-the-job performance 
-            is the best indicator of someone's future success 
-            — not their alma mater. Continue paying it forward 
-            to up and coming talent and discovering great people 
-            to hire.`
-            : `At Merit, we believe that on-the-job performance 
-            is the best indicator of someone's future success 
-            — not their alma mater. By creating an account, 
-            you're joining other experienced and knowledgeable 
-            professionals who are paying it forward to up and 
-            coming talent.`
-        }
-      </Typography>
+      {signinRender()}
       {signupRender()}
       <Typography className={classes.subDescription}>
         YOU’RE IN GOOD COMPANY

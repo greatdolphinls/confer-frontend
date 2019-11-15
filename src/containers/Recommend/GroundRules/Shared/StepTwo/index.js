@@ -73,14 +73,22 @@ StepTwo.defaultProps = {
     },
     {
       description: `Don’t rush. We’ll review them to ensure they 
-      meet our quality standards.`
+      meet our quality standards.`,
+      tooltip: `We check that the recommendation meets the requirements 
+      listed in Step 1, contains substantive responses, and does not 
+      contain any negative remarks that would violate our policies.`
     },
     {
-      description: `We will notify the people you recommend once 
-      they are approved.You can give them a heads up first!`,
+      description: `We will notify the people you recommend once they 
+      are approved. You can give them a heads up first! We expect them 
+      to be very flattered!`,
       tooltip: `We disclose only your name to them, not your full 
       recommendation. We believe that transparency is critical to 
       creating trust in the platform.`
+    },
+    {
+      description: `Your recommendations will be seen by hiring managers 
+      and other leading professionals.`
     }
   ]
 };

@@ -71,12 +71,20 @@ FAQ.defaultProps = {
     {
       question: 'What is Merit?',
       answers: [
-        `We believe on-the-job performance is the best 
-        indicator of future success, not inflated resumes 
-        or generic interviews. Merit is a hiring platform 
-        powered by trusted recommendations from people who've 
-        worked together. We aggregate these recommendations 
-        to showcase talent to hiring managers.`
+        `We believe that past on-the-job performance predicts 
+        success better than inflated resumes or generic interviews. 
+        Merit empowers you to make recommendations of people who 
+        you have worked with directly so they can be showcased 
+        to hiring managers.`
+      ]
+    },
+    {
+      question: 'Why should I participate?',
+      answers: [
+        `Merit empowers you to pay it forward to those who deserve 
+        recognition for their outstanding performance - and by 
+        joining the platform, you never know who might tap you 
+        for that next great opportunity!`
       ]
     },
     {
@@ -90,7 +98,7 @@ FAQ.defaultProps = {
     {
       question: 'How many people can I recommend?',
       answers: [
-        `Up to 5 people.We want you to narrow it down to 
+        `Up to 5 people. We want you to narrow it down to 
         the truly remarkable people you have worked with!`
       ]
     },
@@ -119,9 +127,8 @@ FAQ.defaultProps = {
     {
       question: 'Should I recommend someone I currently work with?',
       answers: [
-        `Up to you! There's no expectation you will do so, but 
-        we welcome any outstanding people you recommend. 
-        Think back across your career!`
+        `Up to you! We welcome any outstanding people you recommend. 
+        Think back across your whole career!`
       ]
     },
     {
@@ -136,8 +143,8 @@ FAQ.defaultProps = {
       question: 'I’ve been recommended. What happens now?',
       answers: [
         `We invite you to join Merit and edit your profile! 
-        By joining, you will get to hear about opportunities 
-        from hiring managers who trust Merit’s quality. 
+        By joining, you will get to hear from hiring managers at 
+        top-tier companies who use Merit to find high-performing talent.
         Joining does not mean you’re actively looking for a job, 
         but it lets you keep your options open in the future! 
         If you’re also a hiring manager, you’ll get to discover 
@@ -154,15 +161,6 @@ FAQ.defaultProps = {
         If you indicate on our platform that you are actively looking, 
         we will hide your recommendation from anyone currently working 
         at your employer.`
-      ]
-    },
-    {
-      question: 'Why should I participate?',
-      answers: [
-        `As a recommender, you’ll be paying it forward to people 
-        who deserve recognition. And as someone who has been 
-        recommended, you’ll get showcased to hiring managers 
-        seeking top talent!`
       ]
     }
   ]

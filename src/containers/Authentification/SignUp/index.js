@@ -13,21 +13,20 @@ import { useInput } from '../../../utils/hooks';
 import { pageLinks } from '../../../constants/links';
 import { roles } from '../../../constants/roles';
 import notifications from '../../../constants/notifications';
-import GroupImage from '../../../assets/img/groupLogos/create.jpg';
+import GroupImage from '../../../assets/img/defaultLogo.jpg';
+import { isEmpty } from '../../../utils/utility';
 
 const styles = theme => {
   return {
     root: {
       width: '100%',
       display: 'flex',
-      alignItems: 'center',
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(5),
       flexDirection: 'column'
     },
-    groupImage: {
-      width: 161,
-      height: 49,
-      marginBottom: theme.spacing(4)
+    container: {
+      display: 'flex',
+      flexDirection: 'column'
     },
     input: {
       marginBottom: theme.spacing(3),
@@ -35,6 +34,7 @@ const styles = theme => {
       borderTopRightRadius: theme.spacing(0.5)
     },
     button: {
+      width: 100,
       marginBottom: theme.spacing(6),
     }
   };
@@ -47,7 +47,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
   const password = useInput('');
   const groupPassword = useInput('');
   const groupId = match.params.group;
-  const [group, setGroup] = useState('');
+  const [group, setGroup] = useState({});
 
   useEffect(() => {
     getGroup()
@@ -98,15 +98,13 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
 
   return (
     <main className={classes.root}>
-      <img
-        src={group.logo || GroupImage}
-        alt='group logo'
-        className={classes.groupImage} />
       <AuthLayout
         selectedTab='signup'
-        groupName={group.name || 'group'}
+        groupImage={isEmpty(group) ? '' : group.logo || GroupImage}
+        groupName={group.name || ''}
         isCashGroup={group.role === roles.GROUP_CASH_ROLE}>
         <ValidatorForm
+          className={classes.container}
           onSubmit={submitHandler}
           onError={errors => console.log(errors)}>
           <TextValidator
@@ -149,13 +147,13 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
           <TextValidator
             fullWidth
             name='groupPassword'
-            label='Group Password'
+            label='Access code'
             type='password'
             className={classes.input}
             value={groupPassword.value}
             onChange={groupPassword.onChange}
             validators={['required']}
-            errorMessages={['Group Password cannot be empty']} />
+            errorMessages={['Access code cannot be empty']} />
           <OutlineButton
             type='submit'
             classes={{ root: classes.button }}>

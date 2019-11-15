@@ -10,6 +10,8 @@ import {
   addEditRecommend,
   setExpertises,
   setRelationships,
+  setSkills,
+  setStrengths,
   setUsers
 } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
@@ -41,6 +43,8 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const users = useSelector(state => state.user.data, []);
   const expertises = useSelector(state => state.expertise.data, []);
   const relationships = useSelector(state => state.relationship.data, []);
+  const skills = useSelector(state => state.skill.data, []);
+  const strengths = useSelector(state => state.strength.data, []);
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(panel);
@@ -51,12 +55,16 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const [userOptions, setUserOptions] = useState([]);
   const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
   const [relationshipOptions, setRelationshipOptions] = useState([]);
+  const [skillOptions, setSkillOptions] = useState([]);
+  const [strengthOptions, setStrengthOptions] = useState([]);
 
   useEffect(() => {
     dispatch(setRecommends());
     dispatch(setUsers());
     dispatch(setExpertises());
     dispatch(setRelationships());
+    dispatch(setSkills());
+    dispatch(setStrengths());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -80,8 +88,24 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   }, [relationships]);
 
   useEffect(() => {
+    const skillsData = skills.map(({ name }) => ({ label: name, value: name }));
+    setSkillOptions(skillsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skills]);
+
+  useEffect(() => {
+    const strengthsData = strengths.map(({ name }) => ({ label: name, value: name }));
+    setStrengthOptions(strengthsData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [strengths]);
+
+  useEffect(() => {
     if (!isEmpty(recommend) && !isEmpty(expertises)) {
-      const { subExpertises } = expertises.find(expertise => expertise.name === recommend.expertiseArea);
+      const selectedExpertise = expertises.find(expertise => expertise.name === recommend.expertiseArea);
+      let subExpertises = []
+      if (!isEmpty(selectedExpertise)) {
+        subExpertises = selectedExpertise.subExpertises;
+      }
       const subExpertisesData = subExpertises.map((name) => ({ label: name, value: name }));
       setSubExpertiseOptions(subExpertisesData);
     }
@@ -237,6 +261,11 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.referrer.lastName}
             />
             <EditableInput
+              isEdit={false}
+              label='LinkedIn'
+              value={recommend.referrer.linkedInURL}
+            />
+            <EditableInput
               isEdit={isEdit}
               label='Candidate email*'
               value={recommend.candidate.email}
@@ -254,6 +283,11 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.candidate.lastName}
               onChange={onCandidateChangeHandler('lastName')}
             />
+            <EditableInput
+              isEdit={false}
+              label='LinkedIn'
+              value={recommend.candidate.linkedInURL}
+            />
             <EditableSelect
               isEdit={isEdit}
               label='Expertise area*'
@@ -269,6 +303,22 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               options={subExpertiseOptions}
               value={recommend.subExpertises}
               onChange={onFieldChangeHandler('subExpertises')}
+            />
+            <EditableMultiSelect
+              isEdit={isEdit}
+              label='Skills'
+              placeholder='Select skills'
+              options={skillOptions}
+              value={recommend.skills}
+              onChange={onFieldChangeHandler('skills')}
+            />
+            <EditableMultiSelect
+              isEdit={isEdit}
+              label='Strengths'
+              placeholder='Select strengths'
+              options={strengthOptions}
+              value={recommend.strengths}
+              onChange={onFieldChangeHandler('strengths')}
             />
             <EditableSelect
               isEdit={isEdit}
@@ -290,6 +340,13 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               label='Why great'
               value={recommend.whyGreat}
               onChange={onFieldChangeHandler('whyGreat')}
+            />
+            <EditableTextarea
+              rows={4}
+              isEdit={isEdit}
+              label='Accomplishment'
+              value={recommend.accomplishment}
+              onChange={onFieldChangeHandler('accomplishment')}
             />
           </EditableLayout>
         </AccordionLayout>

@@ -8,6 +8,7 @@ import 'typeface-roboto';
 
 import store, { persistor } from './store';
 import App from './App';
+import ScrollToTop from './ScrollToTop';
 import * as serviceWorker from './serviceWorker';
 
 const app = (
@@ -16,6 +17,7 @@ const app = (
     <BrowserRouter>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
+          <ScrollToTop />
           <App />
         </PersistGate>
       </Provider>

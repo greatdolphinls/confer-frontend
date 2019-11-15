@@ -18,7 +18,11 @@ const styles = theme => {
     root: {
       width: '100%',
       display: 'flex',
-      marginTop: 105,
+      marginTop: theme.spacing(5),
+      flexDirection: 'column'
+    },
+    container: {
+      display: 'flex',
       flexDirection: 'column'
     },
     input: {
@@ -27,9 +31,11 @@ const styles = theme => {
       borderTopRightRadius: theme.spacing(0.5)
     },
     button: {
+      width: 100,
       marginBottom: theme.spacing(1)
     },
     forgotPassword: {
+      width: '100%',
       fontSize: 16,
       display: 'flex',
       justifyContent: 'center',
@@ -81,6 +87,7 @@ const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) 
     <main className={classes.root}>
       <AuthLayout>
         <ValidatorForm
+          className={classes.container}
           onSubmit={submitHandler}
           onError={errors => console.log(errors)}>
           <TextValidator

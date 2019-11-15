@@ -8,8 +8,10 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 
 import MarkGeosonImage from '../../../../assets/img/users/mark_geoson.jpg';
 import AmandaFreemanImage from '../../../../assets/img/users/amanda_freeman.jpg';
+import NickTarantoImage from '../../../../assets/img/users/nick_taranto.jpg';
 import TaliRapaportImage from '../../../../assets/img/users/tali_rapaport.jpg';
 import YaronSamidImage from '../../../../assets/img/users/yaron_samid.jpg';
+import AndyDunnImage from '../../../../assets/img/users/andy_dunn.jpg';
 
 const styles = theme => {
   return {
@@ -22,7 +24,10 @@ const styles = theme => {
       position: 'relative',
       alignItems: 'center',
       flexDirection: 'column',
-      margin: `0 ${theme.spacing(1.5)}px`
+      margin: `0 ${theme.spacing(1.5)}px`,
+      [theme.breakpoints.down('xs')]: {
+        height: 380
+      }
     },
     avatar: {
       borderRadius: 8,
@@ -31,6 +36,13 @@ const styles = theme => {
       objectFit: 'cover',
       boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12)',
       marginBottom: theme.spacing(0.5)
+    },
+    container: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: 8,
+      backgroundColor: 'rgba(0, 0, 0, 0.29)'
     },
     content: {
       position: 'absolute',
@@ -73,6 +85,8 @@ const AuthCarousel = ({ classes, referrers, responsive }) => {
               src={referrer.avatar}
               className={classes.avatar}
               alt='' />
+            <div className={classes.container}>
+            </div>
             <div className={classes.content}>
               <Typography className={classes.name}>
                 {referrer.firstName}
@@ -122,11 +136,25 @@ AuthCarousel.defaultProps = {
       company: 'SLT'
     },
     {
+      firstName: 'Nick',
+      lastName: 'Taranto',
+      avatar: NickTarantoImage,
+      job: 'Founder',
+      company: 'Plated, Trove'
+    },
+    {
       firstName: 'Tali',
       lastName: 'Rapaport',
       avatar: TaliRapaportImage,
       job: 'VP Product',
       company: 'Lyft'
+    },
+    {
+      firstName: 'Andy',
+      lastName: 'Dunn',
+      avatar: AndyDunnImage,
+      job: 'Co-founder',
+      company: 'Bonobos'
     }
   ],
   responsive: {

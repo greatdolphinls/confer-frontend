@@ -36,7 +36,7 @@ const styles = theme => {
       display: 'flex',
       flexDirection: 'column',
       width: 480,
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: '100%'
       }
     },
@@ -90,25 +90,23 @@ const RecommendCount = ({
     if (isComplete) {
       if (isWeakUser) {
         if (user.verified) {
-          description = `Thank you for making your recommendations. 
-          They have been apprved! You should have received an Amazon 
-          gift card. If you did not, please contact support@hellomerit.com.`;
+          description = `Thank you. Your recommendations have been approved!
+          Enjoy your gift card. If, for some reason, you did not receive your 
+          gift card, please contact support@hellomerit.com.`;
         } else {
-          description = `Thank you for making your recommendations! 
-          We will notify you once they are approved and when you 
-          can expect your Amazon gift card. Is there someone you 
-          left out ? You can add up to two more recommendations 
+          description = `Thank you for making your recommendations! We will 
+          notify you once they are approved and when you can expect your gift card.
+          Is there someone you left out? You can add up to five recommendations 
           if you'd like!`;
         }
       } else {
         if (user.verified) {
-          description = `Thank you. Your recommendations have been approved!
-          Enjoy your Amazon gift card.If, for some reason, you did 
-          not receive your gift card, please contact support@hellomerit.com.`;
+          description = `Thank you for making your recommendations. You're 
+          all set to search for talent and make your next hire.`;
         } else {
           description = `Thank you for making your recommendations! 
           We will notify you once they are approved. Is there someone 
-          you left out ? You can make up to two more recommendations 
+          you left out? You can make up to five recommendations 
           if you'd like.`;
         }
       }

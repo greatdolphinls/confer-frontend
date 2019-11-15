@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Typography } from '@material-ui/core';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
-import * as MAILER_SERVICE from '../../../../services/mailer';
+import * as REGISTER_SERVICE from '../../../../services/register';
 import { HomeEmailInput, HomeButton } from '..';
 import notifications from '../../../../constants/notifications'
 import { useInput } from '../../../../utils/hooks';
@@ -44,15 +44,20 @@ const styles = theme => {
 const HomeKnowGreat = ({ classes }) => {
   const email = useInput('');
 
-  const requestHandler = () => {
+  const requestHandler = async () => {
     try {
       const data = {
         email: email.value
       }
-      MAILER_SERVICE.requestSignup(data);
-      showInfoToast(notifications.HOME_REQUEST_EMAIL_SUCCESS)
+      await REGISTER_SERVICE.addRegister(data);
+      await showInfoToast(notifications.HOME_REQUEST_EMAIL_SUCCESS)
     } catch (error) {
-      showErrorToast(notifications.HOME_REQUEST_EMAIL_ERROR)
+      if (error.response) {
+        const { message } = error.response.data;
+        showErrorToast(message);
+      } else {
+        showErrorToast(notifications.HOME_REQUEST_EMAIL_ERROR)
+      }
     }
   }
 

@@ -29,7 +29,7 @@ const theme = createMuiTheme({
         lineColor: 'lightgrey',
         mainRedColor: '#4a3685',
         borderColor: '#E5E5E5',
-        whiteColor: '#FFFFFF'
+        whiteColor: '#FEFBF7'
     },
     typography: {
         useNextVariants: true,
@@ -61,7 +61,8 @@ const theme = createMuiTheme({
         },
         MuiTooltip: {
             tooltip: {
-                fontSize: 10,
+                fontSize: 12,
+                fontWeight: 'bold',
                 color: '#432F20',
                 backgroundColor: '#F7F4F4'
             }
@@ -71,6 +72,26 @@ const theme = createMuiTheme({
                 fontSize: 14,
                 fontWeight: 'bold',
                 textAlign: 'center'
+            }
+        },
+        MuiFormControl: {
+            root: {
+
+            }
+        },
+        MuiFormLabel: {
+            root: {
+                color: '#D65C00'
+            }
+        },
+        MuiInputBase: {
+            root: {
+                '&:before': {
+                    borderColor: '#D65C00 !important'
+                },
+                '&:after': {
+                    borderColor: '#D65C00 !important'
+                }
             }
         }
     }

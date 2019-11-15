@@ -8,6 +8,7 @@ import { Paper, Typography } from '@material-ui/core';
 import { GroupCarousel } from '../../../../components';
 import { AuthDescription } from '../index';
 import { pageLinks } from '../../../../constants/links';
+import { isEmpty } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -19,9 +20,30 @@ const styles = theme => {
         flexDirection: 'column-reverse'
       }
     },
+    leftContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    imageContainer: {
+      height: theme.spacing(8),
+    },
+    groupImage: {
+      width: 161,
+      height: 46,
+      objectFit: 'contain',
+      marginBottom: theme.spacing(2)
+    },
+    defaultLogo: {
+      height: 46,
+      fontSize: 20,
+      fontFamily: 'Moret-Bold',
+      textTransform: 'uppercase',
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2)
+    },
     paper: {
-      width: 540,
-      height: '100%',
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       marginBottom: theme.spacing(6),
@@ -61,12 +83,6 @@ const styles = theme => {
     container: {
       padding: `${theme.spacing(3.5)}px ${theme.spacing(4)}px ${theme.spacing(2)}px `
     },
-    title: {
-      fontSize: 20,
-      fontWeight: 500,
-      color: theme.palette.blackBrownForeColor,
-      marginBottom: theme.spacing(3)
-    },
     termAndPrivacy: {
       fontSize: 12,
       opacity: 0.6,
@@ -78,8 +94,21 @@ const styles = theme => {
   };
 };
 
-const AuthLayout = ({ classes, isCashGroup, groupName, selectedTab, tabs, children }) => {
+const AuthLayout = ({ classes, isCashGroup, groupName, groupImage, selectedTab, tabs, children }) => {
   const isSignIn = selectedTab === 'signin';
+
+  const groupLogoRender = () => {
+    if (!isSignIn) {
+      return isEmpty(groupImage) ?
+        <Typography className={classes.defaultLogo}>
+          Sign up with your group link
+        </Typography> :
+        <img
+          src={groupImage}
+          alt='group logo'
+          className={classes.groupImage} />
+    }
+  }
 
   return (
     <Fragment>
@@ -88,32 +117,42 @@ const AuthLayout = ({ classes, isCashGroup, groupName, selectedTab, tabs, childr
           isCashGroup={isCashGroup}
           selectedTab={selectedTab}
           groupName={groupName} />
-        <Paper className={classes.paper}>
-          <div className={classes.authTabs}>
-            {tabs.map((tab) => (
-              <Link
-                key={tab.value}
-                to={tab.url}
-                className={classNames(classes.tab, { [classes.selectedTab]: selectedTab === tab.value })}>
-                <span>
-                  {tab.title}
-                </span>
-              </Link>
-            ))}
+        <div className={classes.leftContainer}>
+          <div className={classes.imageContainer}>
+            {groupLogoRender()}
           </div>
-          <div className={classes.container}>
-            <Typography className={classes.title}>
-              {isSignIn ? 'SIGN IN WITH EMAIL' : 'SIGN UP WITH EMAIL'}
-            </Typography>
-            {children}
-            <Typography className={classes.termAndPrivacy}>
-              By creating account, you agree to our
-              <Link
-                to={pageLinks.TermsOfUse.url} className={classes.link}> Terms and Conditions</Link> &
-              <Link to={pageLinks.PrivacyPolicy.url} className={classes.link}> Privacy Policy</Link>
-            </Typography>
-          </div>
-        </Paper >
+          <Paper className={classes.paper}>
+            <div className={classes.authTabs}>
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.value}
+                  to={tab.url}
+                  className={classNames(classes.tab, { [classes.selectedTab]: selectedTab === tab.value })}>
+                  <span>
+                    {tab.title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className={classes.container}>
+              {children}
+              <Typography className={classes.termAndPrivacy}>
+                {'By creating account, you agree to our '}
+                <Link
+                  to={pageLinks.TermsOfUse.url}
+                  className={classes.link}>
+                  {'Terms and Conditions'}
+                </Link>
+                {' & '}
+                <Link
+                  to={pageLinks.PrivacyPolicy.url}
+                  className={classes.link}>
+                  {'Privacy Policy'}
+                </Link>
+              </Typography>
+            </div>
+          </Paper >
+        </div>
       </div>
       <GroupCarousel />
     </Fragment>
@@ -128,6 +167,8 @@ AuthLayout.propTypes = {
 AuthLayout.defaultProps = {
   selectedTab: 'signin',
   isCashGroup: false,
+  groupImage: '',
+  groupName: '',
   tabs: [
     {
       value: 'signin',

@@ -36,8 +36,8 @@ const validateRoleAccess = (pageRoles, loggedInUser) => {
   return valid;
 };
 
-const getMomentTime = (date, timeFormat) => {
-  return moment.utc(date).format(timeFormat);
+const getMomentTime = (date, timeFormat = 'MM/DD/YYYY HH:mm') => {
+  return moment(date).format(timeFormat);
 };
 
 const getAPIToken = () => {
@@ -63,6 +63,13 @@ const removeItemWithSlice = (items, index) => {
 };
 
 const getCurrentEmployment = (employments) => {
+  if (isEmpty(employments)) {
+    return {
+      companyName: '',
+      title: ''
+    }
+  }
+
   const currentEmployment = employments.find((employment) => (employment.currentlyWorks));
   if (!!currentEmployment) {
     return currentEmployment;

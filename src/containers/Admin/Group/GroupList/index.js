@@ -51,7 +51,7 @@ const styles = theme => {
   };
 };
 
-const AdminGroupList = ({ classes, history }) => {
+const AdminGroupList = ({ classes, tab, history }) => {
   const groups = useSelector(state => state.group.data, []);
   const dispatch = useDispatch();
 
@@ -164,7 +164,7 @@ const AdminGroupList = ({ classes, history }) => {
 
   return (
     <main className={classes.root}>
-      <AdminTabs selectedValue='groups' history={history} />
+      <AdminTabs selectedValue={tab} history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
           data={createTableData(groups)}
@@ -181,6 +181,10 @@ const AdminGroupList = ({ classes, history }) => {
 
 AdminGroupList.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+AdminGroupList.defaultProps = {
+  tab: 'groups'
 };
 
 export default withStyles(styles)(AdminGroupList);

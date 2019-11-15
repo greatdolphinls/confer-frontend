@@ -21,7 +21,7 @@ import {
 } from '../../../../components';
 import { commonMUITableOptions } from '../../../../utils/styles';
 import { pageLinks } from '../../../../constants/links';
-import { showErrorToast } from '../../../../utils/utility';
+import { showErrorToast, getMomentTime } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -44,7 +44,7 @@ const styles = theme => {
   };
 };
 
-const AdminUserList = ({ classes, history }) => {
+const AdminUserList = ({ classes, tab, history }) => {
   const users = useSelector(state => state.user.data, []);
   const dispatch = useDispatch();
 
@@ -58,7 +58,7 @@ const AdminUserList = ({ classes, history }) => {
 
   const createTableData = users => {
     const tableData = users.map(user => {
-      const { firstName, lastName, email, verified, _id, recommends } = user;
+      const { firstName, lastName, email, createdAt, verified, _id, recommends } = user;
       let approveRecommend = 0, unAprroveRecommend = 0;
       recommends.map((recommend) => (
         recommend.verified ? approveRecommend++ : unAprroveRecommend++
@@ -69,6 +69,7 @@ const AdminUserList = ({ classes, history }) => {
         lastName,
         email,
         `${approveRecommend} / ${unAprroveRecommend}`,
+        getMomentTime(createdAt),
         verified,
         _id
       ];
@@ -82,6 +83,7 @@ const AdminUserList = ({ classes, history }) => {
     { name: 'Last Name' },
     { name: 'Email' },
     { name: '#' },
+    { name: 'Created' },
     {
       name: 'Access',
       options: {
@@ -178,7 +180,7 @@ const AdminUserList = ({ classes, history }) => {
 
   return (
     <main className={classes.root}>
-      <AdminTabs selectedValue='users' history={history} />
+      <AdminTabs selectedValue={tab} history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
           data={createTableData(users)}
@@ -195,6 +197,10 @@ const AdminUserList = ({ classes, history }) => {
 
 AdminUserList.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+AdminUserList.defaultProps = {
+  tab: 'users'
 };
 
 export default withStyles(styles)(AdminUserList);

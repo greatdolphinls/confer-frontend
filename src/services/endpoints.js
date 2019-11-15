@@ -19,12 +19,14 @@ const verifyUserPrefix = '/api/verifyUser';
 const verifyRecommendPrefix = '/api/verifyRecommend';
 const addRecommendByUserPrefix = '/api/addRecommendByUser';
 const degreesPrefix = '/api/degrees';
-const contactCandidatePrefix = '/api/contactCandidate';
 const uploadImagePrefix = '/api/uploadImage';
 const userRecommendPrefix = '/api/userRecommend';
 const skillsPrefix = 'api/skills';
 const strengthsPrefix = 'api/strengths';
-const requestSignupPrefix = 'api/requestSignup';
+const registersPrefix = 'api/registers';
+const sendRegisterRequestPrefix = 'api/sendRegisterRequest';
+const addRegisterRequestPrefix = 'api/addRegisterRequest';
+const contactsPrefix = 'api/contacts';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -90,10 +92,6 @@ const getDegreeUrl = () => {
     return urlJoin(config.proxyUrl, degreesPrefix)
 }
 
-const getContactCandidateUrl = () => {
-    return urlJoin(config.proxyUrl, contactCandidatePrefix)
-}
-
 const getUploadImageUrl = () => {
     return urlJoin(config.proxyUrl, uploadImagePrefix)
 }
@@ -110,8 +108,20 @@ const getStrengthUrl = () => {
     return urlJoin(config.proxyUrl, strengthsPrefix);
 };
 
-const getRequestSignupUrl = () => {
-    return urlJoin(config.proxyUrl, requestSignupPrefix);
+const getRegisterRequestUrl = () => {
+    return urlJoin(config.proxyUrl, registersPrefix);
+};
+
+const getContactUrl = () => {
+    return urlJoin(config.proxyUrl, contactsPrefix);
+};
+
+const getSendRegisterRequestUrl = () => {
+    return urlJoin(config.proxyUrl, sendRegisterRequestPrefix);
+};
+
+const getAddRegisterRequestUrl = () => {
+    return urlJoin(config.proxyUrl, addRegisterRequestPrefix);
 };
 
 export {
@@ -131,10 +141,12 @@ export {
     getVerifyRecommendUrl,
     getAddRecommendByUserUrl,
     getDegreeUrl,
-    getContactCandidateUrl,
     getUploadImageUrl,
     getUserRecommendUrl,
     getSkillUrl,
     getStrengthUrl,
-    getRequestSignupUrl
+    getRegisterRequestUrl,
+    getSendRegisterRequestUrl,
+    getAddRegisterRequestUrl,
+    getContactUrl,
 };

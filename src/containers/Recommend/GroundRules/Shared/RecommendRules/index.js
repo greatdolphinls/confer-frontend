@@ -12,14 +12,16 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      marginBottom: theme.spacing(1.5)
+      marginBottom: theme.spacing(1.5),
+      [theme.breakpoints.down('xs')]: {
+        alignItems: 'baseline'
+      }
     },
     img: {
       marginRight: theme.spacing(1)
     },
     description: {
       fontSize: 18,
-      fontWeight: 'bold',
       color: theme.palette.craneForeColor
     }
   };
@@ -64,16 +66,15 @@ RecommendRules.defaultProps = {
     {
       img: CheckImage,
       description: 'Current or past co-workers',
-      tooltip: `Up to you! We don’t expect current but we welcome anyone. 
-      Think back across your long career.`
+      tooltip: `Up to you! Think back across your whole career.`
     },
     {
       img: CheckImage,
       description: 'Either looking or not looking for a job currently',
-      tooltip: `We just want to hear about remarkable people! Most people
-       are open to hearing about other opportunities regardless of what 
-       they're up to.Plus, they might be looking for opportunities in 
-       the future.`
+      tooltip: `We just want to hear about remarkable people! Most people 
+      are open to hearing about other opportunities regardless of what 
+      they're up to. Plus, they might be looking for opportunities in 
+      the future.`
     },
     {
       img: CheckImage,
@@ -81,7 +82,7 @@ RecommendRules.defaultProps = {
     },
     {
       img: UncheckImage,
-      description: 'Family members or good friends who you never worked with'
+      description: 'No family members or good friends who you never worked with'
     }
   ]
 };

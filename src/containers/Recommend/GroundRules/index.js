@@ -62,8 +62,8 @@ const GroundRules = ({ classes, history }) => {
     history.push(url);
   }
 
-  const description = `It’s simple: recommend three people, then 
-    ${isWeak ? 'unlock your reward' : 'get access to a curated group of professionals'}.`
+  const description = `It’s simple: recommend three people, then
+  ${isWeak ? 'unlock your reward' : 'get access to a curated group of professionals so you can hire great talent'}.`
 
   return (
     <main className={classes.root}>

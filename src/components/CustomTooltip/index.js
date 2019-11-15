@@ -9,8 +9,7 @@ const styles = theme => {
   return {
     root: {},
     img: {
-      width: 12,
-      marginTop: -theme.spacing(0.5),
+      width: 15,
       marginLeft: theme.spacing(0.5)
     }
   };

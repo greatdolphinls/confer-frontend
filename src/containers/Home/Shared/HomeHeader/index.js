@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
-import * as MAILER_SERVICE from '../../../../services/mailer';
+import * as REGISTER_SERVICE from '../../../../services/register';
 import { HomeEmailInput, HomeButton } from '..';
 import notifications from '../../../../constants/notifications'
 import { useInput } from '../../../../utils/hooks';
@@ -26,7 +26,7 @@ const styles = theme => {
       margin: `${theme.spacing(2)}px 0`,
       padding: `${theme.spacing(5)}px 0`,
       [theme.breakpoints.down('sm')]: {
-        padding: `${theme.spacing(3)}px 0`,
+        padding: 0,
         height: 600
       }
     },
@@ -90,7 +90,7 @@ const styles = theme => {
       top: 0,
       left: 0,
       [theme.breakpoints.down('xs')]: {
-        width: '50%'
+        top: 180
       }
     },
     rightImage: {
@@ -99,7 +99,7 @@ const styles = theme => {
       bottom: 0,
       right: 0,
       [theme.breakpoints.down('xs')]: {
-        width: '50%'
+        bottom: 90
       }
     }
   };
@@ -108,15 +108,20 @@ const styles = theme => {
 const HomeHeader = ({ classes }) => {
   const email = useInput('');
 
-  const requestHandler = () => {
+  const requestHandler = async () => {
     try {
       const data = {
         email: email.value
       }
-      MAILER_SERVICE.requestSignup(data);
-      showInfoToast(notifications.HOME_REQUEST_EMAIL_SUCCESS)
+      await REGISTER_SERVICE.addRegister(data);
+      await showInfoToast(notifications.HOME_REQUEST_EMAIL_SUCCESS)
     } catch (error) {
-      showErrorToast(notifications.HOME_REQUEST_EMAIL_ERROR)
+      if (error.response) {
+        const { message } = error.response.data;
+        showErrorToast(message);
+      } else {
+        showErrorToast(notifications.HOME_REQUEST_EMAIL_ERROR)
+      }
     }
   }
 

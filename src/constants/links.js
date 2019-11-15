@@ -16,7 +16,7 @@ const pageLinks = {
   },
   PrivacyPolicy: {
     title: 'Privacy Policy',
-    url: '/privacy-policy'
+    url: '/privacy'
   },
   FAQ: {
     title: 'FAQ',
@@ -113,6 +113,10 @@ const pageLinks = {
   AdminEditRecommend: {
     title: 'Edit Recommend',
     url: '/admin/recommend/edit/:recommendId'
+  },
+  AdminRegisterList: {
+    title: 'Admin Register',
+    url: '/admin/register/list'
   },
 };
 

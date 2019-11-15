@@ -17,7 +17,7 @@ const AntTab = withStyles(theme => ({
     textTransform: 'none',
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing(5),
+    marginRight: theme.spacing(3),
     padding: 0,
     '&:hover': {
       color: theme.palette.buttonColor,
@@ -58,6 +58,9 @@ const AdminTabs = ({ classes, selectedValue, tabs, history }) => {
       case 'recommends':
         history.push(pageLinks.AdminRecommendList.url);
         break
+      case 'registers':
+        history.push(pageLinks.AdminRegisterList.url);
+        break
       default:
         break
     }
@@ -95,6 +98,10 @@ AdminTabs.defaultProps = {
     {
       label: 'Recommends',
       value: 'recommends'
+    },
+    {
+      label: 'Requests',
+      value: 'registers'
     }
   ]
 };

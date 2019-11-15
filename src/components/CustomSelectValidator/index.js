@@ -4,17 +4,21 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { SelectValidator } from 'react-material-ui-form-validator';
 
+import { isEmpty } from '../../utils/utility';
+
 const styles = theme => {
   return {
     root: {},
     selectMenu: {
       backgroundColor: theme.palette.mainBackColor,
-      maxHeight: 250
+      maxHeight: 340
     }
   };
 };
 
 const CustomSelectValidator = ({ classes, label, value, placeholder, changed, items }) => {
+
+  const defaultValue = !isEmpty(placeholder) ? 'none' : '';
 
   return (
     <SelectValidator
@@ -25,17 +29,20 @@ const CustomSelectValidator = ({ classes, label, value, placeholder, changed, it
       }}
       className={classes.root}
       label={label}
-      value={value || 'none'}
+      value={value || defaultValue}
       margin='normal'
       onChange={changed}
       validators={['required']}
       errorMessages={[`Please select ${label}`]}>
-      <MenuItem 
-        key='default' 
-        value='none'
-        disabled>
-        {placeholder || ''}
-      </MenuItem>
+      {
+        !isEmpty(placeholder) &&
+        <MenuItem
+          key='default'
+          value={defaultValue}
+          disabled>
+          {placeholder || ''}
+        </MenuItem>
+      }
       {items.map(item => (
         <MenuItem key={item.value} value={item.value}>
           {item.label}

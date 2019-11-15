@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
+import { BackButton } from '../../../../../components';
+import { pageLinks } from '../../../../../constants/links';
+
 const styles = theme => {
   return {
     root: {
@@ -12,9 +15,6 @@ const styles = theme => {
       margin: `${theme.spacing(5)}px 0`
     },
     title: {
-      fontFamily: 'Moret'
-    },
-    subTitle: {
       fontSize: 36,
       fontFamily: 'ApercuPro-Bold'
     },
@@ -28,13 +28,19 @@ const styles = theme => {
   };
 };
 
-const RecommendFormHeader = ({ classes }) => {
+const RecommendFormHeader = ({ classes, history }) => {
+
+  const backButtonHandler = () => {
+    history.push(pageLinks.GroundRules.url);
+  }
+
   return (
     <main className={classes.root}>
+      <BackButton 
+        label='see how it works'
+        onBack={backButtonHandler}
+      />
       <Typography className={classes.title}>
-        RECOMMENDATION FORM
-      </Typography>
-      <Typography className={classes.subTitle}>
         Time to pay it forward.
       </Typography>
       <Typography className={classes.description}>

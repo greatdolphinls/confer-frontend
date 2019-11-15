@@ -7,9 +7,18 @@ const styles = theme => {
   return {
     root: {},
     select: {
-      '& .MuiSelect-select': {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2)
+      '& fieldset': {
+        border: 0,
+        borderRadius: 0,
+        borderBottom: `1px solid ${theme.palette.buttonColor}`
+      },
+      '& select': {
+        color: theme.palette.buttonColor,
+        paddingTop: theme.spacing(1.5),
+        paddingBottom: theme.spacing(0.5)
+      },
+      '& svg': {
+        color: theme.palette.buttonColor
       }
     }
   };

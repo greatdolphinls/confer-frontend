@@ -5,11 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 
 import { CandidatePhoto, RecommendCard } from '../../../../../components';
+import AyeshaCurryImage from '../../../../../assets/img/users/ayesha-curry.jpg';
 
 const styles = theme => {
   return {
     root: {
       display: 'flex',
+      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.25)',
       backgroundColor: theme.palette.mainBackColor,
       padding: theme.spacing(1),
       marginBottom: theme.spacing(2),
@@ -37,7 +39,6 @@ const ProductSnapshot = ({ classes, recommend }) => {
       <RecommendCard
         isSmall={true}
         recommend={recommend} />
-
     </Paper>
   );
 };
@@ -49,19 +50,18 @@ ProductSnapshot.propTypes = {
 ProductSnapshot.defaultProps = {
   recommend: {
     whichCapacity: 'Direct Report',
-    howYouKnow: 'Worked with Adara @Apple for two years',
-    whyGreat: `“Adara designed our MVP in two weeks and led a 
-    product team of 10 people to get it built in half the time 
-    I budgeted.”`,
+    howYouKnow: 'WORKED WITH FOR TWO YEARS',
+    whyGreat: `She is a remarkably attentive, focused, detail oriented 
+    professional who cares deeply for her clients.`,
     candidate: {
       firstName: 'Adara',
-      lastName: 'Omari',
-      avatar: 'https://images.unsplash.com/photo-1571914000632-e8df0117f2a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+      lastName: 'O.',
+      avatar: AyeshaCurryImage,
       linkedInURL: 'https://www.linkedin.com/in/elizabethdelliott/',
       employmentHistories: [
         {
-          companyName: 'Airbnb',
-          title: 'Senior Product Manager',
+          companyName: '',
+          title: 'Sales Professional',
           startYear: '2017',
           startMonth: 'Dec',
           currentlyWorks: true
@@ -69,14 +69,13 @@ ProductSnapshot.defaultProps = {
       ]
     },
     referrer: {
-      firstName: 'Diego',
-      lastName: 'Lazarez',
-      avatar: 'https://images.unsplash.com/photo-1571914000632-e8df0117f2a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+      firstName: 'Joe',
+      lastName: 'N.',
       linkedInURL: 'https://www.linkedin.com/in/elizabethdelliott/',
       employmentHistories: [
         {
-          companyName: 'Palantir',
-          title: 'Chief tech officer',
+          companyName: 'McKinsey alumn',
+          title: 'Former legislative director to U.S. Senator',
           startYear: '2017',
           startMonth: 'Dec',
           currentlyWorks: true

@@ -13,6 +13,7 @@ import relationshipReducer from './relationshipReducer';
 import degreeReducer from './degreeReducer';
 import skillReducer from './skillReducer';
 import strengthReducer from './strengthReducer';
+import registerReducer from './registerReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -26,5 +27,6 @@ export default combineReducers({
   relationship: relationshipReducer,
   degree: degreeReducer,
   skill: skillReducer,
-  strength: strengthReducer
+  strength: strengthReducer,
+  register: registerReducer
 });

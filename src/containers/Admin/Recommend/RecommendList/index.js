@@ -45,7 +45,7 @@ const styles = theme => {
   };
 };
 
-const AdminRecommendList = ({ classes, history }) => {
+const AdminRecommendList = ({ classes, tab, history }) => {
   const recommends = useSelector(state => state.recommend.data, []);
   const dispatch = useDispatch();
 
@@ -189,6 +189,10 @@ const AdminRecommendList = ({ classes, history }) => {
 
 AdminRecommendList.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+AdminRecommendList.defaultProps = {
+  tab: 'recommends'
 };
 
 export default withStyles(styles)(AdminRecommendList);

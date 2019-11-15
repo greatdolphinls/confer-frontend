@@ -18,15 +18,6 @@ const styles = theme => {
       alignItems: 'center',
       flexDirection: 'column',
       margin: `${theme.spacing(6)}px 0`
-    },
-    groupCarousel: {
-      height: 400,
-      margin: `${theme.spacing(4)}px 0`,
-      backgroundPositionX: 'center',
-      backgroundSize: 'contain',
-      [theme.breakpoints.down('sm')]: {
-        backgroundSize: 'cover',
-      }
     }
   };
 };
@@ -36,7 +27,7 @@ const Home = ({ classes }) => {
     <main className={classes.root}>
       <HomeHeader />
       <HomeTalent />
-      <GroupCarousel classes={{ root: classes.groupCarousel }} />
+      <GroupCarousel />
       <HowItWorks />
       <HomeDiscover />
       <HomeKnowGreat />

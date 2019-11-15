@@ -27,7 +27,6 @@ import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 import { useInput } from '../../../utils/hooks';
 import { isEmpty, showErrorToast } from '../../../utils/utility';
-import CelebrateImage from '../../../assets/img/icons/celebrate.svg'
 
 const styles = theme => {
   return {
@@ -58,6 +57,13 @@ const styles = theme => {
         fontSize: 16
       }
     },
+    errorDescription: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginRight: theme.spacing(2),
+      lineHeight: `${theme.spacing(5)}px`,
+      borderBottom: `1px solid ${theme.palette.buttonColor}`
+    },
     smallInput: {
       width: 120,
       fontSize: 16,
@@ -79,14 +85,9 @@ const styles = theme => {
       fontWeight: 'bold',
       marginRight: theme.spacing(2)
     },
-    buttonContainer: {
-      marginBottom: theme.spacing(5),
-      display: 'flex',
-      alignItems: 'center'
-    },
     button: {
       width: 'fit-content',
-      marginRight: theme.spacing(1)
+      marginBottom: theme.spacing(5)
     },
     check: {
       color: `${theme.palette.buttonColor} !important`
@@ -103,6 +104,7 @@ const styles = theme => {
 };
 
 const RecommendForm = ({ classes, history }) => {
+  const { user } = useSelector(state => state.auth, []);
   const expertises = useSelector(state => state.expertise.data, []);
   const relationships = useSelector(state => state.relationship.data, []);
   const skills = useSelector(state => state.skill.data, []);
@@ -173,6 +175,11 @@ const RecommendForm = ({ classes, history }) => {
     history.push(pageLinks.RecommendCount.url);
   }
 
+  const onExpertisesHander = (event) => {
+    expertise.onChange(event);
+    subExpertises.onChange([]);
+  }
+
   const submitHandler = async () => {
     if (isEmpty(expertise.value)
       || isEmpty(relationship.value)
@@ -181,6 +188,11 @@ const RecommendForm = ({ classes, history }) => {
       || isEmpty(strength.value)
     ) {
       showErrorToast(notifications.RECOMMEND_FORM_VALIDATION_ERROR);
+      return null;
+    }
+
+    if (user.email === email.value) {
+      showErrorToast(notifications.RECOMMEND_FORM_CURRENT_USER_ERROR);
       return null;
     }
 
@@ -250,7 +262,7 @@ const RecommendForm = ({ classes, history }) => {
           placeholder='Select discipline'
           classes={{ root: classes.middleInput }}
           value={expertise.value}
-          changed={expertise.onChange}
+          changed={onExpertisesHander}
           items={expertiseOptions} />
         <Typography className={classes.description}>
           professional.
@@ -282,7 +294,7 @@ const RecommendForm = ({ classes, history }) => {
           value={howYouKnow.value}
           onChange={howYouKnow.onChange}
           validators={['required']}
-          errorMessages={['Please input this data']} />
+          errorMessages={['This field cannot be empty']} />
       </div>
     );
   }
@@ -312,18 +324,32 @@ const RecommendForm = ({ classes, history }) => {
     );
   }
 
+  const subExpertiseSelectRender = () => {
+    if (!!expertise.value) {
+      return (
+        <CustomMultiSelect
+          placeholder='Select up to 2 or write your own'
+          classes={{ root: classes.middleInput }}
+          value={subExpertises.value}
+          changed={subExpertises.onChange}
+          items={subExpertiseOptions} />
+      )
+    } else {
+      return (
+        <Typography className={classes.errorDescription}>
+          scenario (please select discipline first)
+        </Typography>
+      )
+    }
+  }
+
   const subExpertisesRender = () => {
     return (
       <div className={classes.container}>
         <Typography className={classes.description}>
           {firstName.value || '[First name]'} would be my go-to with
         </Typography>
-        <CustomMultiSelect
-          placeholder='Select or write scenario...'
-          classes={{ root: classes.middleInput }}
-          value={subExpertises.value}
-          changed={subExpertises.onChange}
-          items={subExpertiseOptions} />
+        {subExpertiseSelectRender()}
       </div>
     );
   }
@@ -332,7 +358,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          and want to highlight the time that {firstName.value || '[First name]'}
+          and I want to highlight the time that {firstName.value || '[First name]'}
         </Typography>
         <TextValidator
           multiline={true}
@@ -342,7 +368,7 @@ const RecommendForm = ({ classes, history }) => {
           value={accomplishment.value}
           onChange={accomplishment.onChange}
           validators={['required']}
-          errorMessages={['Please input this data']} />
+          errorMessages={['This field cannot be empty']} />
       </div>
     );
   }
@@ -362,7 +388,7 @@ const RecommendForm = ({ classes, history }) => {
           value={whyGreat.value}
           onChange={whyGreat.onChange}
           validators={['required']}
-          errorMessages={['Please input this data']} />
+          errorMessages={['This field cannot be empty']} />
       </div>
     );
   }
@@ -375,7 +401,7 @@ const RecommendForm = ({ classes, history }) => {
           {' for their excellent work and give them the recognition they deserve.'}
         </Typography>
         <Typography className={classes.description}>
-
+          You can notify {firstName.value || '[First name]'}
           {' that I have recommended them at'}
         </Typography>
         <TextValidator
@@ -384,8 +410,8 @@ const RecommendForm = ({ classes, history }) => {
           className={classes.middleInput}
           value={email.value}
           onChange={email.onChange}
-          validators={['required']}
-          errorMessages={['Please input this data']} />
+          validators={['isEmail', 'required']}
+          errorMessages={['Email is not valid', 'Email cannot be empty']} />
         <Typography className={classes.description}>
           and find them on LinkedIn at
         </Typography>
@@ -401,22 +427,10 @@ const RecommendForm = ({ classes, history }) => {
     );
   }
 
-  const submitButtonContainer = () => {
-    return (
-      <div className={classes.buttonContainer}>
-        <PrimaryButton classes={{ root: classes.button }} type='submit'>
-          SUBMIT RECOMMENDATION
-        </PrimaryButton>
-        <img
-          src={CelebrateImage}
-          alt='CelebrateImage' />
-      </div>
-    );
-  }
-
   return (
     <main className={classes.root}>
-      <RecommendFormHeader />
+      <RecommendFormHeader
+        history={history} />
       <ValidatorForm
         className={classes.form}
         onSubmit={submitHandler}
@@ -430,7 +444,11 @@ const RecommendForm = ({ classes, history }) => {
         {whyGreatRender()}
         {emailAndLinkedInRender()}
         <RecommendMail />
-        {submitButtonContainer()}
+        <PrimaryButton
+          classes={{ root: classes.button }}
+          type='submit'>
+          SUBMIT RECOMMENDATION
+        </PrimaryButton>
       </ValidatorForm>
       {showModal &&
         <SuccessRecommendModal

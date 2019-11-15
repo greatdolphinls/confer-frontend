@@ -6,12 +6,16 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { 
+  AppBar, 
+  Toolbar, 
+  Button
+ } from '@material-ui/core';
 
 import { pageLinks, defaultAvatarLink } from '../../constants/links'
 import { roles } from '../../constants/roles';
-import { hasValidToken } from '../../utils/utility';
-import { ProfileDropdown } from '../index';
+import { hasValidToken, isEmpty } from '../../utils/utility';
+import { ProfileDropdown, MenuDropdown } from '..';
 import LogoImage from '../../assets/img/logo.png';
 
 const styles = theme => {
@@ -35,7 +39,10 @@ const styles = theme => {
       fontSize: 14,
       fontFamily: 'ApercuPro',
       fontWeight: 'normal',
-      marginLeft: theme.spacing(3)
+      marginLeft: theme.spacing(3),
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
     },
     signIn: {
       borderBottom: `2px solid ${theme.palette.buttonColor}`
@@ -48,6 +55,10 @@ const NavBar = ({
 }) => {
   const { user } = useSelector(state => state.auth, []);
   let items = [];
+
+  const homeLink = hasValidToken()
+    ? pageLinks.RecommendCount.url
+    : pageLinks.Home.url;
 
   if (hasValidToken()) {
     switch (user.role) {
@@ -75,8 +86,10 @@ const NavBar = ({
       <Toolbar
         disableGutters={true}
         className={classes.toolbar}>
+        <MenuDropdown 
+          items={items} />
         <Link
-          to={'/'}
+          to={homeLink}
           className={classes.logoContainer}>
           <img
             src={LogoImage}
@@ -92,7 +105,7 @@ const NavBar = ({
           </Button>
         ))}
         {
-          (hasValidToken && !!user) &&
+          (hasValidToken() && !isEmpty(user)) &&
           <ProfileDropdown
             {...props}
             avatar={user.avatar || defaultAvatarLink} />
