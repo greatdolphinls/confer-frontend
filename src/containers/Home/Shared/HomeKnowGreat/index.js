@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
-import * as REGISTER_SERVICE from '../../../../services/register';
 import { HomeEmailInput, HomeButton } from '..';
-import notifications from '../../../../constants/notifications'
 import { useInput } from '../../../../utils/hooks';
-import { showErrorToast, showInfoToast } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -26,11 +23,10 @@ const styles = theme => {
       }
     },
     title: {
-      fontSize: 24,
-      fontFamily: 'Moret',
+      fontSize: 20,
       marginBottom: theme.spacing(1),
       [theme.breakpoints.down('xs')]: {
-        fontSize: 22
+        fontSize: 18
       }
     },
     form: {
@@ -41,30 +37,17 @@ const styles = theme => {
   };
 };
 
-const HomeKnowGreat = ({ classes }) => {
+const HomeKnowGreat = ({ classes, title, button, onConfirm }) => {
   const email = useInput('');
 
-  const requestHandler = async () => {
-    try {
-      const data = {
-        email: email.value
-      }
-      await REGISTER_SERVICE.addRegister(data);
-      await showInfoToast(notifications.HOME_REQUEST_EMAIL_SUCCESS)
-    } catch (error) {
-      if (error.response) {
-        const { message } = error.response.data;
-        showErrorToast(message);
-      } else {
-        showErrorToast(notifications.HOME_REQUEST_EMAIL_ERROR)
-      }
-    }
+  const requestHandler = () => {
+    onConfirm(email.value);
   }
 
   return (
     <main className={classes.root}>
       <Typography className={classes.title}>
-        KNOW SOMEONE GREAT?
+        {title}
       </Typography>
       <ValidatorForm
         className={classes.form}
@@ -77,7 +60,7 @@ const HomeKnowGreat = ({ classes }) => {
         />
         <HomeButton
           type='submit'
-          name='SIGN UP TO RECOMMEND THEM'
+          name={button}
         />
       </ValidatorForm>
     </main >
@@ -86,6 +69,12 @@ const HomeKnowGreat = ({ classes }) => {
 
 HomeKnowGreat.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+HomeKnowGreat.defaultProps = {
+  title: 'KNOW SOMEONE GREAT?',
+  button: 'SIGN UP TO RECOMMEND THEM',
+  onConfirm: () => { }
 };
 
 export default withStyles(styles)(HomeKnowGreat);

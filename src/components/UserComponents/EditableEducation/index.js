@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import {
   EditableLayout,
   PrimaryButton,
   CustomSelectValidator,
-  ConfirmDialog,
-  DateLayout
+  ConfirmDialog
 } from '../..';
 import { getYears } from '../../../utils/utility';
 
@@ -22,11 +21,10 @@ const styles = theme => {
     },
     school: {
       fontSize: 14,
-      fontWeight: 500
+      fontWeight: 'bold'
     },
     description: {
-      fontSize: 12,
-      opacity: 0.6
+      fontSize: 12
     },
     editContainer: {
       display: 'flex',
@@ -46,16 +44,16 @@ const styles = theme => {
       marginBottom: theme.spacing(3)
     },
     dateItem: {
-      width: 140,
+      width: 150,
       marginTop: 0,
       marginBottom: 0,
       marginRight: theme.spacing(4)
     },
     saveButton: {
-      width: 134
+      width: 95
     },
     deleteButton: {
-      width: 134,
+      width: 95,
       marginRight: theme.spacing(3),
       backgroundColor: theme.palette.darkGreyButtonColor
     }
@@ -66,14 +64,11 @@ const EditableEducation = ({
   classes, education, degrees, isNew, isEdit, panel, onEdit, onSave, onDelete
 }) => {
   const [tempEducation, setTempEducation] = useState(education);
-  const [years, setYears] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
 
-  useEffect(() => {
-    const data = getYears();
-    setYears(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const years = useMemo(() => getYears()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   useEffect(() => {
     setTempEducation(education);
@@ -142,15 +137,12 @@ const EditableEducation = ({
             validators={['required']}
             errorMessages={['Field of study cannot be empty']} />
           <div className={classes.dateContainer}>
-            <DateLayout
-              label='Date of graduation'>
-              <CustomSelectValidator
-                classes={{ root: classes.dateItem }}
-                label='Graduating Year'
-                value={tempEducation.graduatingYear}
-                changed={onFieldChangeHandler('graduatingYear')}
-                items={years} />
-            </DateLayout>
+            <CustomSelectValidator
+              classes={{ root: classes.dateItem }}
+              label='Graduating Year'
+              value={tempEducation.graduatingYear}
+              changed={onFieldChangeHandler('graduatingYear')}
+              items={years} />
           </div>
           <div>
             <PrimaryButton

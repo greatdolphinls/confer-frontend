@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -23,7 +23,7 @@ import {
   ConfirmDialog,
   EditableInput,
   EditableSelect,
-  EditableMultiSelect,
+  EditableLimitMultiSelect,
   EditableTextarea,
   NotFound
 } from '../../../../components';
@@ -42,21 +42,22 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const recommends = useSelector(state => state.recommend.data, []);
   const users = useSelector(state => state.user.data, []);
   const expertises = useSelector(state => state.expertise.data, []);
-  const relationships = useSelector(state => state.relationship.data, []);
-  const skills = useSelector(state => state.skill.data, []);
-  const strengths = useSelector(state => state.strength.data, []);
+  const expertiseOptions = useSelector(state => state.expertise.options, []);
+  const relationshipOptions = useSelector(state => state.relationship.options, []);
+  const skillOptions = useSelector(state => state.skill.options, []);
+  const strengthOptions = useSelector(state => state.strength.options, []);
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(panel);
   const [editPanel, setEditPanel] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [recommend, setRecommend] = useState({});
-  const [expertiseOptions, setExpertiseOptions] = useState([]);
   const [userOptions, setUserOptions] = useState([]);
   const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
-  const [relationshipOptions, setRelationshipOptions] = useState([]);
-  const [skillOptions, setSkillOptions] = useState([]);
-  const [strengthOptions, setStrengthOptions] = useState([]);
+
+  const isEdit = useMemo(() => panel === editPanel
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [editPanel]);
 
   useEffect(() => {
     dispatch(setRecommends());
@@ -74,30 +75,6 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
     setRecommend(selectedRecommend);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recommends]);
-
-  useEffect(() => {
-    const expertisesData = expertises.map(({ name }) => ({ label: name, value: name }));
-    setExpertiseOptions(expertisesData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertises]);
-
-  useEffect(() => {
-    const relationshipsData = relationships.map(({ name }) => ({ label: name, value: name }));
-    setRelationshipOptions(relationshipsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [relationships]);
-
-  useEffect(() => {
-    const skillsData = skills.map(({ name }) => ({ label: name, value: name }));
-    setSkillOptions(skillsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [skills]);
-
-  useEffect(() => {
-    const strengthsData = strengths.map(({ name }) => ({ label: name, value: name }));
-    setStrengthOptions(strengthsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [strengths]);
 
   useEffect(() => {
     if (!isEmpty(recommend) && !isEmpty(expertises)) {
@@ -152,7 +129,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const onReferrerSelectHandler = () => async (event) => {
     const { value } = event.target;
     if (value === recommend.candidate.email) {
-      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALIDATION_ERROR);
       return null;
     }
 
@@ -167,7 +144,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   const onCandidateChangeHandler = (name) => async (event) => {
     const { value } = event.target;
     if (name === 'email' && value === recommend.referrer.email) {
-      showErrorToast(notifications.RECOMMEND_EMAIL_VALODATION_ERROR);
+      showErrorToast(notifications.RECOMMEND_EMAIL_VALIDATION_ERROR);
       return null;
     }
 
@@ -186,7 +163,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
       || !recommend.candidate.email
       || !recommend.candidate.firstName
       || !recommend.candidate.lastName) {
-      showErrorToast(notifications.ADD_RECOMMEND_VALODATION_ERROR);
+      showErrorToast(notifications.ADD_RECOMMEND_VALIDATION_ERROR);
       return null;
     }
 
@@ -224,7 +201,6 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
   }
 
   if (!isEmpty(recommend)) {
-    const isEdit = panel === editPanel;
     return (
       <main className={classes.root}>
         <ControlButtons
@@ -296,7 +272,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.expertiseArea}
               onChange={onFieldChangeHandler('expertiseArea')}
             />
-            <EditableMultiSelect
+            <EditableLimitMultiSelect
               isEdit={isEdit}
               label='Expertise area detail'
               placeholder='Select expertise area detail'
@@ -304,7 +280,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.subExpertises}
               onChange={onFieldChangeHandler('subExpertises')}
             />
-            <EditableMultiSelect
+            <EditableLimitMultiSelect
               isEdit={isEdit}
               label='Skills'
               placeholder='Select skills'
@@ -312,7 +288,7 @@ const AdminEditRecommend = ({ classes, match, panel, history }) => {
               value={recommend.skills}
               onChange={onFieldChangeHandler('skills')}
             />
-            <EditableMultiSelect
+            <EditableLimitMultiSelect
               isEdit={isEdit}
               label='Strengths'
               placeholder='Select strengths'

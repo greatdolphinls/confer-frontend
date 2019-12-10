@@ -1,26 +1,24 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { 
-  AppBar, 
-  Toolbar, 
-  Button
- } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { pageLinks, defaultAvatarLink } from '../../constants/links'
+import { pageLinks } from '../../constants/links'
 import { roles } from '../../constants/roles';
-import { hasValidToken, isEmpty } from '../../utils/utility';
+import { hasValidToken, isEmpty, getAvatarWithName } from '../../utils/utility';
 import { ProfileDropdown, MenuDropdown } from '..';
-import LogoImage from '../../assets/img/logo.png';
+import LogoImage from '../../assets/img/logo.svg';
 
 const styles = theme => {
   return {
     appBar: {
+      boxShadow: 'unset',
       backgroundColor: theme.palette.mainBackColor,
     },
     toolbar: {},
@@ -33,51 +31,76 @@ const styles = theme => {
       width: 80
     },
     item: {
-      borderRadius: 0,
+      borderRadius: theme.spacing(0.5),
       minWidth: 'unset',
-      opacity: 0.6,
       fontSize: 14,
-      fontFamily: 'ApercuPro',
+      fontFamily: 'Grotesk',
       fontWeight: 'normal',
       marginLeft: theme.spacing(3),
+      textTransform: 'uppercase',
+      textDecoration: 'unset',
+      color: theme.palette.mainForeColor,
+      padding: theme.spacing(0.75),
+      '&:hover': {
+        backgroundColor: theme.palette.sandBackColor
+      },
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
     },
     signIn: {
+      fontWeight: 'bold',
+      borderRadius: 0,
       borderBottom: `2px solid ${theme.palette.buttonColor}`
     }
   };
 };
 
 const NavBar = ({
-  classes, SignOffItems, AdminItems, ReferrerItems, WeakItems, ...props
+  classes, SignOffItems, AdminItems, ReferrerItems, WeakItems
 }) => {
   const { user } = useSelector(state => state.auth, []);
-  let items = [];
 
-  const homeLink = hasValidToken()
-    ? pageLinks.RecommendCount.url
-    : pageLinks.Home.url;
+  const homeLink = useMemo(
+    () => hasValidToken() && !isEmpty(user)
+      ? user.role === roles.ADMIN_ROLE
+        ? pageLinks.AdminUserList.url
+        : pageLinks.RecommendCount.url
+      : pageLinks.StandardHome.url
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [user]);
 
-  if (hasValidToken()) {
-    switch (user.role) {
-      case roles.ADMIN_ROLE:
-        items = AdminItems;
-        break;
-      case roles.REFERRER_ROLE:
-        items = ReferrerItems;
-        break;
-      case roles.WEAK_ROLE:
-        items = WeakItems;
-        break;
-      default:
-        items = ReferrerItems;
-        break;
+  const avatarImage = useMemo(
+    () => {
+      if (hasValidToken() && !isEmpty(user)) {
+        if (user.isProfile) {
+          return user.avatar
+        } else {
+          return getAvatarWithName(user.firstName, user.lastName);
+        }
+      }
     }
-  } else {
-    items = SignOffItems;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [user]);
+
+  const items = useMemo(() => {
+    if (hasValidToken()) {
+      switch (user.role) {
+        case roles.ADMIN_ROLE:
+          return AdminItems;
+        case roles.REFERRER_ROLE:
+          return ReferrerItems;
+        case roles.WEAK_ROLE:
+          return WeakItems;
+        default:
+          return ReferrerItems;
+      }
+    } else {
+      return SignOffItems;
+    }
   }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [user]);
 
   return (
     <AppBar
@@ -86,7 +109,7 @@ const NavBar = ({
       <Toolbar
         disableGutters={true}
         className={classes.toolbar}>
-        <MenuDropdown 
+        <MenuDropdown
           items={items} />
         <Link
           to={homeLink}
@@ -97,18 +120,17 @@ const NavBar = ({
             alt='main logo' />
         </Link>
         {items.map((item, index) => (
-          <Button
+          <Link
             key={index}
-            href={item.url}
+            to={item.url}
             className={classNames(classes.item, { [classes.signIn]: item.url === pageLinks.SignIn.url })}>
             {item.title}
-          </Button>
+          </Link>
         ))}
         {
           (hasValidToken() && !isEmpty(user)) &&
           <ProfileDropdown
-            {...props}
-            avatar={user.avatar || defaultAvatarLink} />
+            avatar={avatarImage} />
         }
       </Toolbar>
     </AppBar>

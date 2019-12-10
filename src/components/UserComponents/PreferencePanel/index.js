@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+
+import companySizes from '../../../constants/companySizes';
 
 import {
   EditableLayout,
   EditableInput,
   EditableSelect,
-  EditableMultiSelect
+  EditableMultiSelect,
+  EditableLimitMultiSelect,
+  EditableLimitAutocomplete
 } from '../..';
 
 const styles = theme => {
@@ -16,9 +20,11 @@ const styles = theme => {
 };
 
 const PreferencePanel = ({
-  classes, panel, locations, expertises, subExpertises, user, editPanel, onEdit, onChange
+  classes, panel, searches, positions, locations, industries, user, editPanel, onEdit, onChange
 }) => {
-  const isEdit = panel === editPanel;
+  const isEdit = useMemo(() => panel === editPanel
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [editPanel]);
 
   return (
     <EditableLayout
@@ -26,30 +32,40 @@ const PreferencePanel = ({
       panel={panel}
       isEdit={isEdit}
       onEdit={onEdit}>
-      <EditableInput
+      <EditableSelect
         isEdit={isEdit}
-        label='Search status'
+        label='Currently looking for'
         placeholder='Select what you’re interested in'
+        options={searches}
         value={user.searchStatus}
         onChange={onChange('searchStatus')}
       />
-      <EditableSelect
+      <EditableInput
         isEdit={isEdit}
-        label='Primary expertise area'
-        placeholder='Select your primary expertise area'
-        options={expertises}
-        value={user.primaryExpertise}
-        onChange={onChange('primaryExpertise')}
+        label='Your ideal next role'
+        placeholder='Describe your ideal next role so we can find the best matches'
+        value={user.preferenceRole}
+        onChange={onChange('preferenceRole')}
       />
       <EditableMultiSelect
         isEdit={isEdit}
-        label='Sub-expertise areas'
-        placeholder='Tell us where you really shine'
-        options={subExpertises}
-        value={user.subExpertises}
-        onChange={onChange('subExpertises')}
+        label='Desired company size'
+        placeholder='Tell us about your ideal company size'
+        options={companySizes}
+        value={user.preferenceCompanySize}
+        onChange={onChange('preferenceCompanySize')}
       />
-      <EditableSelect
+      <EditableLimitMultiSelect
+        limit={3}
+        isEdit={isEdit}
+        label='Desired industry'
+        placeholder='Tell us about which industry intrests you most'
+        options={industries}
+        value={user.preferenceIndustry}
+        onChange={onChange('preferenceIndustry')}
+      />
+      <EditableLimitAutocomplete
+        limit={3}
         isEdit={isEdit}
         label='Desired location'
         placeholder='Select your top locations'
@@ -57,26 +73,13 @@ const PreferencePanel = ({
         value={user.preferenceLocationPref}
         onChange={onChange('preferenceLocationPref')}
       />
-      <EditableInput
+      <EditableMultiSelect
         isEdit={isEdit}
-        label='Your ideal next job'
-        placeholder='Tell us where you want to take your career next (company size and type, job function and role, etc.)'
-        value={user.preferenceRole}
-        onChange={onChange('preferenceRole')}
-      />
-      <EditableInput
-        isEdit={isEdit}
-        label='Ideal company size'
-        placeholder='Tell us about your ideal company size'
-        value={user.preferenceCompanySize}
-        onChange={onChange('preferenceCompanySize')}
-      />
-      <EditableInput
-        isEdit={isEdit}
-        label='Ideal industry'
-        placeholder='Tell us about which industry intrests you most'
-        value={user.preferenceIndustry}
-        onChange={onChange('preferenceIndustry')}
+        label='Other opportunities'
+        placeholder='Select other opportunities you have an interest in'
+        options={positions}
+        value={user.interestedPosition}
+        onChange={onChange('interestedPosition')}
       />
     </EditableLayout>
   )

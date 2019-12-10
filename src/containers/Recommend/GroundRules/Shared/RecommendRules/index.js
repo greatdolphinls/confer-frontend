@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 import { CustomTooltip } from '../../../../../components';
 import CheckImage from '../../../../../assets/img/icons/check.svg';
@@ -21,7 +21,7 @@ const styles = theme => {
       marginRight: theme.spacing(1)
     },
     description: {
-      fontSize: 18,
+      fontSize: 15,
       color: theme.palette.craneForeColor
     }
   };
@@ -78,7 +78,7 @@ RecommendRules.defaultProps = {
     },
     {
       img: CheckImage,
-      description: 'Someone with 3 to 10 years of experience'
+      description: 'Someone with any number of years of experience'
     },
     {
       img: UncheckImage,

@@ -2,16 +2,23 @@
 import LocationConstants from '../constants/reducerConstants/LocationConstants'
 import { getLocations } from '../services/location';
 import { removeItemWithSlice } from '../utils/utility';
+import locations from '../constants/locations';
 
 export const setLocations = refresh => async (dispatch, getState) => {
     try {
         const { location: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getLocations();
+            const { data } = await getLocations();
+            let options = data.filter(({ name }) => !locations.includes(name))
+                .map(({ name }) => name);
+            options = [
+                ...locations,
+                ...options
+            ];
             dispatch({
                 type: LocationConstants.SET_LOCATIONS,
-                payload: response.data
+                payload: { data, options }
             });
         }
     } catch (error) {
@@ -33,10 +40,16 @@ export const addEditLocation = location => async (dispatch, getState) => {
             location
         ];
     }
+    let options = data.filter(({ name }) => !locations.includes(name))
+        .map(({ name }) => name);
+    options = [
+        ...locations,
+        ...options
+    ];
 
     dispatch({
         type: LocationConstants.SET_LOCATIONS,
-        payload: data
+        payload: { data, options }
     });
 }
 
@@ -48,8 +61,15 @@ export const removeLocation = location => async (dispatch, getState) => {
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+    let options = data.filter(({ name }) => !locations.includes(name))
+        .map(({ name }) => name);
+    options = [
+        ...locations,
+        ...options
+    ];
+
     dispatch({
         type: LocationConstants.SET_LOCATIONS,
-        payload: data
+        payload: { data, options }
     });
 }

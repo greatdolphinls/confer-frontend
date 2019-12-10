@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import { defaultAvatarLink } from '../../constants/links';
 import theme from '../../theme/muiTheme';
@@ -40,11 +40,8 @@ Avatar.defaultProps = {
 };
 
 Avatar.propTypes = {
-  /* user's avatar url */
   src: PropTypes.string,
-  /* avatar width and height pixel */
   size: PropTypes.number,
-  /* border */
   isBorder: PropTypes.bool
 };
 

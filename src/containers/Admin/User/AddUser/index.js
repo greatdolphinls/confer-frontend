@@ -4,19 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import * as USER_SERVICE from '../../../../services/user';
-import {
-  addEditUser,
-  setLocations,
-  setExpertises
-} from '../../../../actions';
+import { addEditUser, setLocations } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
 import notifications from '../../../../constants/notifications';
-import {
-  AccordionLayout,
-  ConfirmDialog,
-  NotFound
-} from '../../../../components';
+import { AccordionLayout, ConfirmDialog, NotFound } from '../../../../components';
 import { BasicProfilePanel } from '../Shared';
 import { showErrorToast } from '../../../../utils/utility';
 
@@ -30,26 +22,18 @@ const styles = theme => {
 };
 
 const AdminAddUser = ({ classes, panel, history }) => {
-  const locations = useSelector(state => state.location.data, []);
+  const locationOptions = useSelector(state => state.location.options, []);
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(panel);
   const [editPanel, setEditPanel] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [user, setUser] = useState({});
-  const [locationOptions, setLocationOptions] = useState({});
 
   useEffect(() => {
     dispatch(setLocations());
-    dispatch(setExpertises());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const locationsData = locations.map(({ name }) => ({ label: name, value: name }));
-    setLocationOptions(locationsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locations]);
 
   const expandHandler = panel => {
     setExpanded(panel);
@@ -65,13 +49,13 @@ const AdminAddUser = ({ classes, panel, history }) => {
 
   const saveHandler = async () => {
     if (!user.firstName || !user.lastName || !user.email) {
-      showErrorToast(notifications.ADD_USER_VALODATION_ERROR);
+      showErrorToast(notifications.ADD_USER_VALIDATION_ERROR);
       return null;
     }
 
     try {
       const { data } = await USER_SERVICE.addUser(user);
-      dispatch(addEditUser(data));
+      await dispatch(addEditUser(data));
       history.push(pageLinks.AdminEditUser.url.replace(':userId', data._id));
     } catch (error) {
       if (error.response) {
@@ -82,8 +66,11 @@ const AdminAddUser = ({ classes, panel, history }) => {
   }
 
   const onFieldChangeHandler = (name) => async (event) => {
-    let value = !!event.target ? event.target.value : event;
-
+    let value = event;
+    if (!!event) {
+      value = !!event.target ? event.target.value : event;
+    }
+    
     if (name === 'role') {
       value = parseInt(value, 10);
     }

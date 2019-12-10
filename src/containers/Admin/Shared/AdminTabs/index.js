@@ -61,6 +61,9 @@ const AdminTabs = ({ classes, selectedValue, tabs, history }) => {
       case 'registers':
         history.push(pageLinks.AdminRegisterList.url);
         break
+      case 'contacts':
+        history.push(pageLinks.AdminContactList.url);
+        break
       default:
         break
     }
@@ -102,6 +105,10 @@ AdminTabs.defaultProps = {
     {
       label: 'Requests',
       value: 'registers'
+    },
+    {
+      label: 'Contacts',
+      value: 'contacts'
     }
   ]
 };

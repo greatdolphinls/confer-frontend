@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => {
   return {
@@ -10,6 +10,9 @@ const styles = theme => {
       justifyContent: 'center'
     },
     paper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       width: 540,
       height: '100%',
       marginTop: 203,

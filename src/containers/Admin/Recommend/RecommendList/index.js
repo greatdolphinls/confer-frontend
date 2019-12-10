@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import VerifyIcon from '@material-ui/icons/Link';
 import UnVerifyIcon from '@material-ui/icons/LinkOff';
 
@@ -72,7 +72,7 @@ const AdminRecommendList = ({ classes, tab, history }) => {
     return tableData;
   };
 
-  const columns = () => [
+  const columns = useMemo(() => [
     { name: 'Referrer' },
     { name: 'Candidate' },
     { name: 'Created' },
@@ -110,20 +110,25 @@ const AdminRecommendList = ({ classes, tab, history }) => {
         }
       }
     }
-  ];
+  ]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [recommends]);
 
-  const options = {
-    ...commonMUITableOptions,
-    customToolbar: () => {
-      return (
-        <PrimaryButton
-          className={classes.addButton}
-          onClick={addButtonHandler}>
-          Add Recommend
+  const options = useMemo(() =>
+    ({
+      ...commonMUITableOptions,
+      customToolbar: () => {
+        return (
+          <PrimaryButton
+            className={classes.addButton}
+            onClick={addButtonHandler}>
+            Add Recommend
         </PrimaryButton>
-      );
-    }
-  };
+        );
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , []);
 
   const editButtonHandler = (recommendId) => () => {
     history.push(pageLinks.AdminEditRecommend.url.replace(':recommendId', recommendId));
@@ -159,7 +164,11 @@ const AdminRecommendList = ({ classes, tab, history }) => {
 
   const verifyRecommendHandler = (recommendId) => async () => {
     try {
-      const response = await RECOMMEND_SERVICE.verifyRecommend(recommendId);
+      const recommend = {
+        id: recommendId,
+        host: window.location.origin
+      }
+      const response = await RECOMMEND_SERVICE.verifyRecommend(recommend);
       const { data } = response;
       dispatch(addEditRecommend(data));
     } catch (error) {
@@ -176,7 +185,7 @@ const AdminRecommendList = ({ classes, tab, history }) => {
       <Paper className={classes.paper}>
         <CustomMUIDataTable
           data={createTableData(recommends)}
-          columns={columns()}
+          columns={columns}
           options={options} />
       </Paper>
       <ConfirmDialog

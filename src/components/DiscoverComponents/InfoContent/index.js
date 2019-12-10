@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
@@ -8,14 +8,14 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginTop: theme.spacing(1)
+      marginTop: theme.spacing(0.5)
     },
     description: {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: 'bold'
     },
     footer: {
-      fontSize: 14,
+      fontSize: 12,
       opacity: 0.6,
       fontWeight: 500
     }

@@ -1,16 +1,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { ChevronLeft } from '@material-ui/icons';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
 const styles = theme => {
   return {
     root: {
       display: 'flex',
       alignItems: 'center',
-      fontFamily: 'Moret-Bold',
+      fontSize: 14,
       color: theme.palette.blackBrownForeColor,
       opacity: 0.6,
       cursor: 'pointer'

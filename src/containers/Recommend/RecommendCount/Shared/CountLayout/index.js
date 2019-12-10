@@ -2,8 +2,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import DefaultImage from '../../../../../assets/img/icons/default-recommend.svg';
 import SkipLineImage from '../../../../../assets/img/icons/skip-recommend-line.svg';
@@ -24,6 +24,7 @@ const styles = theme => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      cursor: 'pointer',
       height: 50,
       width: 50,
       fontSize: 20,
@@ -58,16 +59,16 @@ const styles = theme => {
       opacity: 1
     },
     activeStep: {
+      cursor: 'unset',
       color: theme.palette.buttonColor,
       borderColor: theme.palette.buttonColor
     },
     title: {
-      fontSize: 24,
-      fontFamily: 'Moret-Bold'
+      fontSize: 25,
+      fontWeight: 'bold'
     },
     subTitle: {
       fontSize: 20,
-      fontWeight: 'bold',
       overflow: 'hidden',
       display: '-webkit-box',
       WebkitLineClamp: 3,
@@ -85,7 +86,7 @@ const styles = theme => {
 };
 
 const CountLayout = ({
-  classes, step, isLast, isActive, isSkip, recommend
+  classes, step, isLast, isActive, isSkip, recommend, goRecommend
 }) => {
   const getLineImage = () => {
     if (isSkip) {
@@ -95,11 +96,18 @@ const CountLayout = ({
     }
   }
 
+  const stepButtonHandler = () => {
+    if (!isSkip) {
+      goRecommend()
+    }
+  }
+
   return (
     <main
       className={classNames(classes.root, { [classes.active]: isSkip })}>
       <div className={classes.stepContainer}>
         <Typography
+          onClick={stepButtonHandler}
           className={classNames(classes.step, { [classes.activeStep]: isSkip })}>
           {step}
         </Typography>
@@ -141,7 +149,8 @@ CountLayout.defaultProps = {
   step: 1,
   isActive: false,
   isSkip: false,
-  isLast: false
+  isLast: false,
+  goRecommend: () => { }
 };
 
 export default withStyles(styles, { withTheme: true })(CountLayout);

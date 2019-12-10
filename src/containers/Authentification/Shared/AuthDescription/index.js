@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
-import { AuthCarousel } from '../index';
+import { SignUpHint } from '../index';
+import { UserCarousel } from '../../../../components';
 
 const styles = theme => {
   return {
     root: {
       width: 548,
-      marginTop: theme.spacing(8),
       color: theme.palette.mainForeColor,
       marginRight: theme.spacing(2),
       marginBottom: theme.spacing(6),
@@ -18,23 +18,42 @@ const styles = theme => {
       }
     },
     title: {
-      fontSize: 42,
-      fontWeight: 'bold',
-      marginBottom: theme.spacing(1.5)
+      fontSize: 60,
+      fontFamily: 'Ogg',
+      marginBottom: theme.spacing(1.5),
+      [theme.breakpoints.down('xs')]: {
+        fontSize: 35
+      }
     },
     description: {
+      fontSize: 20,
       marginBottom: theme.spacing(2.5)
     },
     subDescription: {
-      fontSize: 22,
-      fontFamily: 'Moret-Bold'
+      fontSize: 20
     }
   };
 };
 
-const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
+const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName, signinTab }) => {
 
-  const isSignIn = selectedTab === 'signin';
+  const isSignIn = useMemo(() => selectedTab === signinTab
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [selectedTab]);
+
+  const titleRender = () => {
+    return (
+      <Typography className={classes.title}>
+        {
+          isSignIn
+            ? 'Pay it forward.'
+            : isCashGroup
+              ? 'Pay it forward.'
+              : 'Let’s find top talent.'
+        }
+      </Typography>
+    )
+  }
 
   const signinRender = () => {
     if (isSignIn) {
@@ -42,8 +61,8 @@ const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
         <Typography className={classes.description}>
           At Merit, we believe that on-the-job performance
           is the best indicator of someone's future success
-          — not their alma mater. Ready to pay it forward
-          and find your next great hire?
+          — not their resume. Ready to pay it forward to
+          someone great who you have worked with?
         </Typography>
       );
     }
@@ -56,32 +75,18 @@ const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
           <Typography className={classes.description}>
             {
               isCashGroup
-                ? `At Merit, we believe that on-the-job performance 
-                is the best indicator of someone's future success 
-                — not their alma mater. By creating an account, 
-                you're joining other experienced and knowledgeable 
-                professionals who are paying it forward to up and 
-                coming talent.`
-                : !!groupName
-                  ? `We want to help you hire top talent through each 
-                  other’s professional recommendations. Create an account 
-                  to get started. After recommending three outstanding 
-                  people, you’ll get access to all recommendations made 
-                  by the ${groupName} community.`
-                  : `We believe that on-the-job performance is the best 
-                  indicator of someone's future success — not their alma 
-                  mater. Sign up with your group link to pay it forward 
-                  to up and coming talent and discover great people to hire.`
+                ? `On-the-job performance best predicts future success 
+                — not someone’s resume. Recommend great people you have 
+                worked with to showcase them to top companies.`
+                : `By sharing recommendations of the best people we’ve 
+                worked with, we at ${groupName || 'group'} can find great talent 
+                for full-time and advisory positions. The more ${groupName || 'group'} 
+                members who participate, the better!`
             }
           </Typography>
-          {
-            isCashGroup &&
-            <Typography className={classes.description}>
-              To show our gratitude, we’ll send you a gift
-              card straight to your inbox. Thanks for taking
-              the time!
-            </Typography>
-          }
+          <SignUpHint
+            groupName={groupName}
+            isCashGroup={isCashGroup} />
         </>
       );
     }
@@ -89,17 +94,19 @@ const AuthDescription = ({ classes, isCashGroup, selectedTab, groupName }) => {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>
-        Join the ranks.
-      </Typography>
+      {titleRender()}
       {signinRender()}
       {signupRender()}
       <Typography className={classes.subDescription}>
         YOU’RE IN GOOD COMPANY
       </Typography>
-      <AuthCarousel />
+      <UserCarousel />
     </div>
   );
+};
+
+AuthDescription.defaultProps = {
+  signinTab: 'signin'
 };
 
 export default withStyles(styles, { withTheme: true })(AuthDescription);

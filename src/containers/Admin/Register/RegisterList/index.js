@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 
 import { AdminTabs } from '../../Shared';
 import { SendRequestModal, AddRequestModal } from '../Shared';
@@ -64,8 +64,8 @@ const AdminRegisterList = ({ classes, tab, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups]);
 
-  const createTableData = registers => {
-    const tableData = registers.map(register => {
+  const createTableData = useMemo(() =>
+    registers.map(register => {
       const { email, _id, createdAt } = register;
       const row = [
         email,
@@ -73,11 +73,11 @@ const AdminRegisterList = ({ classes, tab, history }) => {
         _id
       ];
       return row;
-    });
-    return tableData;
-  };
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [registers]);
 
-  const columns = () => [
+  const columns = useMemo(() =>[
     { name: 'Email' },
     { name: 'Date' },
     {
@@ -96,20 +96,25 @@ const AdminRegisterList = ({ classes, tab, history }) => {
         }
       }
     }
-  ];
+  ]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
-  const options = {
-    ...commonMUITableOptions,
-    customToolbar: () => {
-      return (
-        <PrimaryButton
-          className={classes.addButton}
-          onClick={modalHandler('add', true)}>
-          Add New Request
-        </PrimaryButton>
-      );
-    }
-  };
+  const options = useMemo(() =>
+    ({
+      ...commonMUITableOptions,
+      customToolbar: () => {
+        return (
+          <PrimaryButton
+            className={classes.addButton}
+            onClick={modalHandler('add', true)}>
+            Add New Request
+          </PrimaryButton>
+        );
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   const modalHandler = (modal, show, registerId = null) => () => {
     setRegisterId(registerId);
@@ -176,8 +181,8 @@ const AdminRegisterList = ({ classes, tab, history }) => {
       <AdminTabs selectedValue={tab} history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
-          data={createTableData(registers)}
-          columns={columns()}
+          data={createTableData}
+          columns={columns}
           options={options} />
       </Paper>
       {

@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { PrimaryButton } from '../../../../../components';
 import { RuleLayout, RecommendRules, InspirationModal } from '../';
@@ -11,11 +11,11 @@ const styles = theme => {
   return {
     root: {},
     inspiration: {
-      fontSize: 18,
-      fontWeight: 'bold',
+      fontSize: 15,
       color: theme.palette.craneForeColor,
       marginBottom: theme.spacing(4),
       '& span': {
+        fontWeight: 'bold',
         cursor: 'pointer',
         textDecoration: 'underline'
       }
@@ -28,6 +28,14 @@ const StepOne = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
 
+  const isActive = useMemo(() => defaultStep === currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+
+  const isSkip = useMemo(() => defaultStep <= currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+
   const showModalHandler = () => {
     setShowModal(true)
   }
@@ -35,9 +43,6 @@ const StepOne = ({
   const closeModalHandler = () => {
     setShowModal(false)
   }
-
-  const isActive = defaultStep === currentStep;
-  const isSkip = defaultStep <= currentStep;
 
   return (
     <RuleLayout

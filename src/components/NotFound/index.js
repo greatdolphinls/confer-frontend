@@ -1,15 +1,16 @@
 
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { NoSimOutlined as Icon } from '@material-ui/icons';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+
+import Icon from '@material-ui/icons/NoSimOutlined';
 
 const styles = theme => {
   return {
     root: {
       display: 'flex',
       flexDirection: 'column',
-      margin: '100px auto 0'
+      margin: '100px auto'
     },
     icon: {
       fontSize: 90,

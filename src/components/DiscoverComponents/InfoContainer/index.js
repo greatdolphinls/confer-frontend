@@ -1,17 +1,16 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
     root: {
-      marginTop: theme.spacing(2)
+      marginTop: theme.spacing(1)
     },
     title: {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: 'bold',
-      textTransform: 'uppercase',
-      marginBottom: theme.spacing(0.5),
+      textTransform: 'uppercase'
     }
   };
 };

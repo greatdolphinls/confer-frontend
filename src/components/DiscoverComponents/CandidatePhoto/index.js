@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { getCurrentEmployment } from '../../../utils/utility';
 import LinkedInImage from '../../../assets/img/icons/linkedIn.svg';
@@ -11,27 +11,25 @@ import LinkedInImage from '../../../assets/img/icons/linkedIn.svg';
 const styles = theme => {
   return {
     root: {
-      height: 400,
-      minWidth: 400,
+      height: 'fit-content',
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
-      [theme.breakpoints.down('xs')]: {
-        height: 320,
-        width: '100%',
-        minWidth: '100%'
-      }
+      boxShadow: '20px 4px 40px rgba(0, 0, 0, 0.05)'
     },
     image: {
-      width: '100%',
-      height: '100%',
+      height: 200,
+      width: 260,
       borderRadius: 5,
-      objectFit: 'cover'
+      objectFit: 'cover',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%'
+      }
     },
     tint: {
       position: 'absolute',
       width: '100%',
-      height: '100%',
+      height: 200,
       borderRadius: 5,
       backgroundColor: 'rgba(0, 0, 0, 0.29)'
     },
@@ -43,19 +41,17 @@ const styles = theme => {
     name: {
       display: 'flex',
       alignItems: 'center',
-      fontSize: 32,
-      fontFamily: 'Moret-Bold',
-      color: theme.palette.whiteColor,
-      marginBottom: theme.spacing(0.5)
-    },
-    smallName: {
-      fontSize: 24
+      fontSize: 24,
+      lineHeight: '24px',
+      fontFamily: 'Ogg',
+      fontWeight: 'bold',
+      color: theme.palette.whiteColor
     },
     linkedIn: {
       marginLeft: theme.spacing(1)
     },
     description: {
-      fontSize: 14,
+      fontSize: 10,
       textTransform: 'uppercase',
       color: theme.palette.whiteColor
     },
@@ -66,7 +62,10 @@ const styles = theme => {
 };
 
 const CandidatePhoto = ({ classes, candidate, isSmall }) => {
-  const currentEmployment = getCurrentEmployment(candidate.employmentHistories);
+
+  const currentEmployment = useMemo(() => getCurrentEmployment(candidate.employmentHistories)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [candidate]);
 
   return (
     <div className={classes.root}>
@@ -78,7 +77,7 @@ const CandidatePhoto = ({ classes, candidate, isSmall }) => {
       <div className={classes.container}>
         <Typography
           className={classNames(classes.name, { [classes.smallName]: isSmall })}>
-          {`${candidate.firstName} ${candidate.lastName}`}
+          {candidate.firstName}
           <a
             target='_blank'
             rel='noreferrer noopener'

@@ -1,7 +1,15 @@
 import axios from "axios";
 import urlJoin from "url-join";
 
-import { getUserUrl, getVerifyUserUrl, getUserRecommendUrl } from "./endpoints";
+import {
+    getUserUrl,
+    getForgotPasswordUrl,
+    getResetPasswordUrl,
+    getVerifyUserUrl,
+    getUserRecommendUrl,
+    getImportUserCSVUrl,
+    getGenerateProfileUrl
+} from "./endpoints";
 
 const getUsers = async () => {
     const url = getUserUrl();
@@ -41,6 +49,18 @@ const verifyUser = async _id => {
     return result;
 }
 
+const forgotPassword = async data => {
+    const url = getForgotPasswordUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
+
+const resetPassword = async data => {
+    const url = getResetPasswordUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
+
 const updateMyInfo = async (id, data) => {
     const url = urlJoin(getUserUrl(), id);
     const result = await axios.put(url, data);
@@ -53,13 +73,29 @@ const getUserRecommend = async id => {
     return result;
 }
 
+const importUserCSV = async (data) => {
+    const url = getImportUserCSVUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
+
+const generateProfile = async (data) => {
+    const url = getGenerateProfileUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
+
 export {
     getUsers,
     getUser,
     editUser,
     removeUser,
     addUser,
+    forgotPassword,
+    resetPassword,
     verifyUser,
     updateMyInfo,
-    getUserRecommend
+    getUserRecommend,
+    importUserCSV,
+    generateProfile
 };

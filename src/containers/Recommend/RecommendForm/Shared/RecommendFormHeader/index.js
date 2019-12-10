@@ -1,8 +1,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { BackButton } from '../../../../../components';
 import { pageLinks } from '../../../../../constants/links';
@@ -15,12 +15,15 @@ const styles = theme => {
       margin: `${theme.spacing(5)}px 0`
     },
     title: {
-      fontSize: 36,
-      fontFamily: 'ApercuPro-Bold'
+      fontSize: 60,
+      fontFamily: 'Ogg',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 36
+      }
     },
     description: {
       width: 660,
-      fontSize: 18,
+      fontSize: 20,
       [theme.breakpoints.down('sm')]: {
         width: '100%'
       }
@@ -36,7 +39,7 @@ const RecommendFormHeader = ({ classes, history }) => {
 
   return (
     <main className={classes.root}>
-      <BackButton 
+      <BackButton
         label='see how it works'
         onBack={backButtonHandler}
       />

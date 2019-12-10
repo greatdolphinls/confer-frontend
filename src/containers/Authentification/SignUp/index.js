@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-import { registerUser, clearErrors, setLoadingStatus } from '../../../actions';
+import { registerUser, setLoadingStatus } from '../../../actions';
 import * as GROUP_SERVICE from '../../../services/group';
 import { AuthLayout } from '../Shared';
 import { OutlineButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
+import { isEmpty, showErrorToast, showInfoToast } from '../../../utils/utility';
 import { pageLinks } from '../../../constants/links';
 import { roles } from '../../../constants/roles';
 import notifications from '../../../constants/notifications';
 import GroupImage from '../../../assets/img/defaultLogo.jpg';
-import { isEmpty } from '../../../utils/utility';
 
 const styles = theme => {
   return {
     root: {
       width: '100%',
       display: 'flex',
-      marginTop: theme.spacing(5),
+      marginTop: theme.spacing(4),
       flexDirection: 'column'
     },
     container: {
@@ -40,7 +39,8 @@ const styles = theme => {
   };
 };
 
-const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, registerUser }) => {
+const SignUp = ({ classes, match, history }) => {
+  const dispatch = useDispatch();
   const email = useInput('');
   const firstName = useInput('');
   const lastName = useInput('');
@@ -56,10 +56,10 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
 
   const getGroup = async () => {
     const { data } = await GROUP_SERVICE.getGroup(groupId);
-    setGroup(data);
+    await setGroup(data);
   }
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const data = {
       email: email.value,
       firstName: firstName.value,
@@ -70,30 +70,25 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
       host: window.location.origin
     }
 
-    clearErrors();
-    setLoadingStatus({
+    await dispatch(setLoadingStatus({
       loading: true,
       text: 'Sign Up ...'
-    });
-    registerUser(data, successCallback, errorCallback);
+    }));
+    await dispatch(registerUser(data, successCallback, errorCallback));
   }
 
   const successCallback = () => {
-    setLoadingStatus({ loading: false });
+    dispatch(setLoadingStatus({ loading: false }));
     history.replace(pageLinks.GroundRules.url);
-    toast.info(notifications.SIGN_UP_SUCCESS, {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
+    showInfoToast(notifications.SIGN_UP_SUCCESS);
   };
 
   const errorCallback = (response, message, status) => {
-    setLoadingStatus({ loading: false });
+    dispatch(setLoadingStatus({ loading: false }));
     if (status === 402) {
       history.replace(pageLinks.SignIn.url);
     }
-    toast.error(message || notifications.NO_RESPONSE, {
-      position: toast.POSITION.BOTTOM_RIGHT
-    });
+    showErrorToast(message || notifications.NO_RESPONSE);
   };
 
   return (
@@ -102,7 +97,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
         selectedTab='signup'
         groupImage={isEmpty(group) ? '' : group.logo || GroupImage}
         groupName={group.name || ''}
-        isCashGroup={group.role === roles.GROUP_CASH_ROLE}>
+        isCashGroup={group.role !== roles.GROUP_DISCOVER_ROLE}>
         <ValidatorForm
           className={classes.container}
           onSubmit={submitHandler}
@@ -142,7 +137,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
             className={classes.input}
             value={password.value}
             onChange={password.onChange}
-            validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
+            validators={['required', 'matchRegexp:[0-9a-zA-Z\\d!@#$%^&*]{6,}']}
             errorMessages={['Password cannot be empty', 'Password must contain at least 6 characters']} />
           <TextValidator
             fullWidth
@@ -166,21 +161,7 @@ const SignUp = ({ classes, match, history, setLoadingStatus, clearErrors, regist
 };
 
 SignUp.propTypes = {
-  classes: PropTypes.object.isRequired,
-  registerUser: PropTypes.func.isRequired
+  classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  errorStatus: state.errors.errorStatus
-});
-
-const mapActionToProps = {
-  registerUser,
-  clearErrors,
-  setLoadingStatus
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionToProps
-)(withStyles(styles)(SignUp));
+export default withStyles(styles, { withTheme: true })(SignUp);

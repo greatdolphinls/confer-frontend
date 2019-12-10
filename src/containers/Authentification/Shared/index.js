@@ -1,11 +1,11 @@
 import AuthDescription from './AuthDescription'
 import AuthLayout from './AuthLayout'
-import AuthCarousel from './AuthCarousel'
 import ForgotPasswordLayout from './ForgotPasswordLayout'
+import SignUpHint from './SignUpHint'
 
 export {
   AuthDescription,
   AuthLayout,
-  AuthCarousel,
-  ForgotPasswordLayout
+  ForgotPasswordLayout,
+  SignUpHint
 }

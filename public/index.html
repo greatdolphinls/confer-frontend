@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8"/>
     <link href="%PUBLIC_URL%/favicon.ico" rel="shortcut icon"/>
+    <link as="font" crossorigin="anonymous" href="/font/ogg/Ogg.ttf" rel="preload" type="font/ttf">
+    <link as="font" crossorigin="anonymous" href="/font/grotesk/Grotesk.woff2" rel="preload" type="font/woff2">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="#000000" name="theme-color"/>
     <!--
@@ -22,43 +24,21 @@
     <title>Merit</title>
     <style>
       @font-face {
-        font-family: 'ApercuPro';
-        src: url('/font/apercu/ApercuPro.ttf') format('truetype');
+        font-family: 'Ogg';
+        src: url('/font/ogg/Ogg.ttf') format('truetype');
         font-weight: 500;
         font-style: normal;
+        font-display: fallback;
       }
       @font-face {
-        font-family: 'ApercuPro-Bold';
-        src: url('/font/apercu/ApercuPro-Bold.ttf') format('truetype');
+        font-family: 'Grotesk';
+        src: url('/font/grotesk/Grotesk.woff2') format('woff2');
         font-weight: 500;
         font-style: normal;
-      }
-      @font-face {
-        font-family: 'ApercuPro-Mono';
-        src: url('/font/apercu/ApercuPro-Mono.ttf') format('truetype');
-        font-weight: 500;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: 'Moret';
-        src: url('/font/moret/moret.woff');
-        font-weight: 500;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: 'Moret-Bold';
-        src: url('/font/moret/moret-bold.woff');
-        font-weight: 500;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: 'Moret-Book';
-        src: url('/font/moret/moret-book.woff');
-        font-weight: 500;
-        font-style: normal;
-      }
+        font-display: fallback;
+      } 
       * {
-        font-family: 'ApercuPro';
+        font-family: 'Grotesk';
       }
     </style>
   </head>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,10 +37,10 @@ const styles = theme => ({
   }
 });
 
-const Layout = ({ classes, children, ...props }) => {
+const Layout = ({ classes, children }) => {
   return (
     <div className={classes.root}>
-      <NavBar classes={{ toolbar: classes.container }} {...props} />
+      <NavBar classes={{ toolbar: classes.container }} />
       <main className={classNames(classes.container, classes.content)}>
         <ToastContainer />
         <div className={classes.toolbar} />

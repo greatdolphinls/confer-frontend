@@ -1,7 +1,7 @@
 
 import React from "react";
-import { withStyles } from '@material-ui/core/styles';
-import { Tooltip } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import TooltipImage from '../../assets/img/icons/tooltip.svg';
 
@@ -9,7 +9,7 @@ const styles = theme => {
   return {
     root: {},
     img: {
-      width: 15,
+      width: 12,
       marginLeft: theme.spacing(0.5)
     }
   };

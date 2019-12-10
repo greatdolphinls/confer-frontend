@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 import {
   EditableLayout,
   EditableImage,
   EditableInput,
   EditableTextarea,
-  EditableSelect,
+  EditableAutocomplete,
   Avatar
 } from '../..';
 import LinkedInImage from '../../../assets/img/icons/linkedIn.svg';
@@ -19,7 +19,10 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'flex-start',
-      margin: `${theme.spacing(3)}px 0`
+      margin: `${theme.spacing(3)}px 0`,
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column'
+      }
     },
     avatar: {
       marginTop: theme.spacing(0.5),
@@ -29,38 +32,46 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginLeft: theme.spacing(3)
+      marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(5),
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0
+      }
     },
     name: {
-      fontSize: 24,
-      marginBottom: theme.spacing(0.5)
+      fontSize: 30,
+      fontWeight: 'bold',
+      fontFamily: 'Ogg'
     },
     location: {
       fontSize: 12,
-      marginBottom: theme.spacing(0.5)
+      fontWeight: 'bold',
+      marginBottom: theme.spacing(1)
     },
-    about: {
+    shortDescription: {
       fontSize: 12,
       opacity: 0.6,
-      marginBottom: theme.spacing(0.5)
+      marginBottom: theme.spacing(1)
     },
     linkedInURL: {
       display: 'flex',
       alignItems: 'center',
       fontSize: 12,
-      marginBottom: theme.spacing(0.5),
-      '& img': {
-        marginRight: theme.spacing(1)
-      }
+      marginBottom: theme.spacing(1)
     },
     personalWebsite: {
       display: 'flex',
       alignItems: 'center',
       fontSize: 12,
-      opacity: 0.6,
-      '& img': {
-        marginRight: theme.spacing(1)
-      }
+      opacity: 0.6
+    },
+    imgEditContainer: {
+      display: 'flex',
+      alignItems: 'baseline',
+    },
+    img: {
+      width: 15,
+      marginRight: theme.spacing(1)
     }
   };
 };
@@ -68,7 +79,9 @@ const styles = theme => {
 const BasicPanel = ({
   classes, panel, locations, user, editPanel, onEdit, onChange
 }) => {
-  const isEdit = panel === editPanel;
+  const isEdit = useMemo(() => panel === editPanel
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [editPanel]);
 
   const showContainerRender = () => {
     if (!isEdit) {
@@ -83,17 +96,23 @@ const BasicPanel = ({
               {`${user.firstName} ${user.lastName}`}
             </Typography>
             <Typography className={classes.location}>
-              {user.location}
+              {user.location || 'Location'}
             </Typography>
-            <Typography className={classes.about}>
-              {user.about || 'About you... [this will appear next to your recommendation of someone]'}
+            <Typography className={classes.shortDescription}>
+              {user.shortDescription || 'About you... [this will appear next to your recommendation of someone]'}
             </Typography>
             <Typography className={classes.linkedInURL}>
-              <img src={LinkedInImage} alt='linkedIn' />
+              <img
+                src={LinkedInImage}
+                alt='linkedIn'
+                className={classes.img} />
               {user.linkedInURL || 'LinkedIn URL'}
             </Typography>
             <Typography className={classes.personalWebsite}>
-              <img src={PersonalWebsiteImage} alt='personalWebsite' />
+              <img
+                src={PersonalWebsiteImage}
+                alt='personalWebsite'
+                className={classes.img} />
               {user.personalWebsite || 'Personal Website'}
             </Typography>
           </div>
@@ -110,33 +129,42 @@ const BasicPanel = ({
             isEdit={isEdit}
             isAvatar={true}
             value={user.avatar}
+            firstName={user.firstName}
+            lastName={user.lastName}
             onChange={onChange('avatar')}
           />
           <div className={classes.container}>
             <Typography className={classes.name}>
               {`${user.firstName} ${user.lastName}`}
             </Typography>
-            <EditableSelect
+            <EditableAutocomplete
               isEdit={isEdit}
               options={locations}
               value={user.location}
               onChange={onChange('location')}
             />
             <EditableTextarea
+              rows={1}
               isEdit={isEdit}
-              value={user.about}
-              onChange={onChange('about')}
+              value={user.shortDescription}
+              onChange={onChange('shortDescription')}
             />
-            <div className={classes.linkedInURL}>
-              <img src={LinkedInImage} alt='linkedIn' />
+            <div className={classes.imgEditContainer}>
+              <img
+                src={LinkedInImage}
+                alt='linkedIn'
+                className={classes.img} />
               <EditableInput
                 isEdit={isEdit}
                 value={user.linkedInURL}
                 onChange={onChange('linkedInURL')}
               />
             </div>
-            <div className={classes.personalWebsite}>
-              <img src={PersonalWebsiteImage} alt='personalWebsite' />
+            <div className={classes.imgEditContainer}>
+              <img
+                src={PersonalWebsiteImage}
+                alt='personalWebsite'
+                className={classes.img} />
               <EditableInput
                 isEdit={isEdit}
                 value={user.personalWebsite}

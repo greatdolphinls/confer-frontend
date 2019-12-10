@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { ForgotPasswordLayout } from '../Shared';
@@ -10,6 +10,7 @@ const styles = theme => {
   return {
     root: {},
     button: {
+      width: 'fit-content',
       marginBottom: theme.spacing(2)
     },
     description: {

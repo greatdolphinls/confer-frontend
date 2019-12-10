@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
@@ -41,7 +41,8 @@ const styles = theme => {
     },
     containerTitle: {
       fontSize: 22,
-      fontFamily: 'Moret-Bold',
+      fontWeight: 'bold',
+      fontFamily: 'Ogg',
       marginBottom: theme.spacing(1.5),
       [theme.breakpoints.down('xs')]: {
         fontSize: 18
@@ -74,7 +75,7 @@ const PrivacyPolicy = ({ classes }) => {
           us at contact@hellomerit.com.
         </Typography>
         <Typography className={classes.mainDescription}>
-          When you visit our website http://hellomerit.com, and use
+          When you visit our website https://hellomerit.com, and use
           our services, you trust us with your personal information.
           We take your privacy very seriously. In this privacy policy,
           we seek to explain to you in the clearest way possible what
@@ -86,7 +87,7 @@ const PrivacyPolicy = ({ classes }) => {
         </Typography>
         <Typography className={classes.mainDescription}>
           This privacy policy applies to all information collected
-          through our website (such as http://hellomerit.com), and/or
+          through our website (such as https://hellomerit.com), and/or
           any related services, sales, marketing or events (we refer
           to them collectively in this privacy policy as the <b>"Services"</b>).
         </Typography>
@@ -701,8 +702,6 @@ const PrivacyPolicy = ({ classes }) => {
           <Typography className={classes.mainDescription}>
             Gratitude Software, Inc. <br />
             8 W 40th St, New York, NY 10018, USA<br />
-            New York, NY 10018<br />
-            United States
           </Typography>
         </div>
       </div>

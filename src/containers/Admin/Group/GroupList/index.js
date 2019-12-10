@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 
 import { AdminTabs } from '../../Shared';
 import { setGroups, removeGroup } from '../../../../actions';
@@ -63,8 +63,8 @@ const AdminGroupList = ({ classes, tab, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createTableData = groups => {
-    const tableData = groups.map(group => {
+  const createTableData = useMemo(() =>
+    groups.map(group => {
       const { name, viewPassword, logo, _id } = group;
       const signupUrl = `${window.location.origin}/signup/${_id}`;
       const row = [
@@ -75,11 +75,11 @@ const AdminGroupList = ({ classes, tab, history }) => {
         _id
       ];
       return row;
-    });
-    return tableData;
-  };
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [groups]);
 
-  const columns = () => [
+  const columns = useMemo(() =>[
     { name: 'Group Name' },
     { name: 'Group Password' },
     {
@@ -115,9 +115,12 @@ const AdminGroupList = ({ classes, tab, history }) => {
         }
       }
     }
-  ];
+  ]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
-  const options = {
+  const options = useMemo(() =>
+   ({
     ...commonMUITableOptions,
     customToolbar: () => {
       return (
@@ -128,7 +131,9 @@ const AdminGroupList = ({ classes, tab, history }) => {
         </PrimaryButton>
       );
     }
-  };
+  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   const editButtonHandler = (groupId) => () => {
     history.push(pageLinks.AdminEditGroup.url.replace(':groupId', groupId));
@@ -167,8 +172,8 @@ const AdminGroupList = ({ classes, tab, history }) => {
       <AdminTabs selectedValue={tab} history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
-          data={createTableData(groups)}
-          columns={columns()}
+          data={createTableData}
+          columns={columns}
           options={options} />
       </Paper>
       <ConfirmDialog

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
@@ -49,7 +48,8 @@ const styles = theme => {
     },
     containerTitle: {
       fontSize: 22,
-      fontFamily: 'Moret-Bold',
+      fontWeight: 'bold',
+      fontFamily: 'Ogg',
       marginBottom: theme.spacing(1.5),
       [theme.breakpoints.down('xs')]: {
         fontSize: 18
@@ -79,7 +79,7 @@ const TermsOfUse = ({ classes }) => {
           These Terms of Use constitute a legally binding agreement made between you, whether personally or on
           behalf of an entity (“<b>you</b>”) and Gratitude Software, Inc., doing business as Merit
           (“<b>Merit</b>”, “<b>we</b>”, “<b>us</b>”, or “<b>our</b>”), concerning your access to and use of
-          the http://hellomerit.com website as well as any other media form, media channel, mobile website or
+          the https://hellomerit.com website as well as any other media form, media channel, mobile website or
           mobile application related, linked, or otherwise connected thereto (collectively, the “Site”).
           You agree that by accessing the Site, you have read, understood, and agree to be bound by all of
           these Terms of Use. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS OF USE, THEN YOU ARE EXPRESSLY
@@ -142,15 +142,13 @@ const TermsOfUse = ({ classes }) => {
 
         <Typography className={classes.mainDescription}>
           By using the Site, you represent and warrant that:
-          <small>
-            (1) all registration information you submit will be true, accurate, current, and complete;
-            (2) you will maintain the accuracy of such information and promptly update such registration
-            information as necessary; (3) you have the legal capacity and you agree to comply with these
-            Terms of Use;  (4) you are not a minor in the jurisdiction in which you reside; (5) you will
-            not access the Site through automated or non-human means, whether through a bot, script or
-            otherwise; (6) you will not use the Site for any illegal or unauthorized purpose; and (7) your
-            use of the Site will not violate any applicable law or regulation.
-          </small>
+          (1) all registration information you submit will be true, accurate, current, and complete;
+          (2) you will maintain the accuracy of such information and promptly update such registration
+          information as necessary; (3) you have the legal capacity and you agree to comply with these
+          Terms of Use;  (4) you are not a minor in the jurisdiction in which you reside; (5) you will
+          not access the Site through automated or non-human means, whether through a bot, script or
+          otherwise; (6) you will not use the Site for any illegal or unauthorized purpose; and (7) your
+          use of the Site will not violate any applicable law or regulation.
         </Typography>
         <Typography className={classes.mainDescription}>
           If you provide any information that is untrue, inaccurate, not current, or incomplete, we have
@@ -876,8 +874,6 @@ const TermsOfUse = ({ classes }) => {
         <Typography className={classes.mainDescription}>
           <b>Gratitude Software, Inc.</b><br />
           <b>8 W 40th St, New York, NY 10018, USA</b><br />
-          <b>New York, NY 10018</b><br />
-          <b>United States</b><br />
           <b>Phone: (US)(646) 389-5352</b><br />
           <b>support@hellomerit.com</b><br />
         </Typography>

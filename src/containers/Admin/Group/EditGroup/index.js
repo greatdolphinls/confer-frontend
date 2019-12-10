@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -37,6 +37,10 @@ const AdminEditGroup = ({ classes, panel, match, history }) => {
   const [editPanel, setEditPanel] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [group, setGroup] = useState({});
+  
+  const isEdit = useMemo(() => panel === editPanel
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [editPanel]);
 
   useEffect(() => {
     dispatch(setGroups());
@@ -85,7 +89,7 @@ const AdminEditGroup = ({ classes, panel, match, history }) => {
 
   const saveHandler = async () => {
     if (!group.name || !group.viewPassword) {
-      showErrorToast(notifications.FORM_VALODATION_ERROR);
+      showErrorToast(notifications.FORM_VALIDATION_ERROR);
       return null;
     }
 
@@ -123,8 +127,6 @@ const AdminEditGroup = ({ classes, panel, match, history }) => {
   }
 
   if (!!group) {
-    const isEdit = panel === editPanel;
-
     return (
       <main className={classes.root}>
         <ControlButtons

@@ -7,35 +7,24 @@ const theme = createMuiTheme({
         sandBackColor: '#EEDECA',
         brownBackColor: '#EFE4D6',
         lightBrownBackColor: '#F9F2E9',
-        subBackColor: '#F9F7F7',
-        subBackColor1: '#FAFAFA',
-        subBackColor2: '#F2994A',
-        subBackColor3: '#E3F2FD',
         subBackColor4: '#ECF9F3',
-        subBackColor5: '#FFF4D5',
         greyBackColor: '#F7F4F4',
-        yellowBackColor: '#FFEAA6',
-        orangeBackColor: '#FAE6D3',
-        iconColor: '#FFFFFF',
         buttonColor: '#D65C00',
         subButtonColor: '#6FCF97',
         darkGreyButtonColor: '#919191',
-        buttonHoverColor: '#2150f3',
         mainForeColor: '#281C13',
         subForeColor: '#5E5E5E',
         craneForeColor: '#291401',
-        lightBrownForeColor: '#432F20',
         blackBrownForeColor: '#4E3B2C',
-        lineColor: 'lightgrey',
-        mainRedColor: '#4a3685',
+        blueForeColor: '#1E88E5',
         borderColor: '#E5E5E5',
         whiteColor: '#FEFBF7'
     },
     typography: {
         useNextVariants: true,
         fontFamily: [
-            'ApercuPro',
-            'Moret'
+            'Grotesk',
+            'Ogg'
         ].join(','),
     },
     overrides: {
@@ -56,7 +45,7 @@ const theme = createMuiTheme({
         },
         MuiTypography: {
             root: {
-                color: '#281C13',
+                color: '#281C13'
             },
         },
         MuiTooltip: {
@@ -72,11 +61,6 @@ const theme = createMuiTheme({
                 fontSize: 14,
                 fontWeight: 'bold',
                 textAlign: 'center'
-            }
-        },
-        MuiFormControl: {
-            root: {
-
             }
         },
         MuiFormLabel: {

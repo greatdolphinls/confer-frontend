@@ -53,9 +53,9 @@ const getRecommendsByFilter = async data => {
     return result;
 };
 
-const verifyRecommend = async _id => {
-    const url = urlJoin(getVerifyRecommendUrl(), _id);
-    const result = await axios.get(url);
+const verifyRecommend = async data => {
+    const url = getVerifyRecommendUrl();
+    const result = await axios.post(url, data);
     return result;
 }
 

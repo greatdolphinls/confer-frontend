@@ -9,7 +9,9 @@ import {
   removeUser,
   addEditUser,
   setLocations,
-  setExpertises
+  setSearches,
+  setPositions,
+  setIndustries
 } from '../../../../actions';
 import { ControlButtons } from '../../Shared';
 import { pageLinks } from '../../../../constants/links';
@@ -25,7 +27,7 @@ import {
   BasicProfilePanel,
   GroupAccessPanel
 } from '../Shared';
-import { showErrorToast, isEmpty } from '../../../../utils/utility';
+import { showErrorToast } from '../../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -38,22 +40,23 @@ const styles = theme => {
 
 const AdminEditUser = ({ classes, match, history }) => {
   const users = useSelector(state => state.user.data, []);
-  const locations = useSelector(state => state.location.data, []);
-  const expertises = useSelector(state => state.expertise.data, []);
+  const locationOptions = useSelector(state => state.location.options, []);
+  const searchOptions = useSelector(state => state.search.options, []);
+  const positionOptions = useSelector(state => state.position.options, []);
+  const industriesOptions = useSelector(state => state.industry.options, []);
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState('basicProfilePanel');
   const [editPanel, setEditPanel] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [user, setUser] = useState({});
-  const [locationOptions, setLocationOptions] = useState({});
-  const [expertiseOptions, setExpertiseOptions] = useState({});
-  const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
 
   useEffect(() => {
     dispatch(setUsers());
     dispatch(setLocations());
-    dispatch(setExpertises());
+    dispatch(setSearches());
+    dispatch(setPositions());
+    dispatch(setIndustries());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,30 +66,6 @@ const AdminEditUser = ({ classes, match, history }) => {
     setUser(selectedUser);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users]);
-
-  useEffect(() => {
-    const locationsData = locations.map(({ name }) => ({ label: name, value: name }));
-    setLocationOptions(locationsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locations]);
-
-  useEffect(() => {
-    const expertisesData = expertises.map(({ name }) => ({ label: name, value: name }));
-    setExpertiseOptions(expertisesData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertises]);
-
-  useEffect(() => {
-    if (!isEmpty(user) && !isEmpty(expertises)) {
-      const selectedExpertise = expertises.find(expertise => expertise.name === user.primaryExpertise);
-      let subExpertisesData = []
-      if (!isEmpty(selectedExpertise)) {
-        subExpertisesData = selectedExpertise.subExpertises.map((name) => ({ label: name, value: name }));
-      }
-      setSubExpertiseOptions(subExpertisesData);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, expertises]);
 
   const expandHandler = panel => {
     setExpanded(panel);
@@ -114,7 +93,10 @@ const AdminEditUser = ({ classes, match, history }) => {
   }
 
   const onFieldChangeHandler = (name) => async (event) => {
-    let value = !!event.target ? event.target.value : event;
+    let value = event;
+    if (!!event) {
+      value = !!event.target ? event.target.value : event;
+    }
 
     if (name === 'role') {
       value = parseInt(value, 10);
@@ -123,13 +105,6 @@ const AdminEditUser = ({ classes, match, history }) => {
     let data = {
       ...user,
       [name]: value
-    }
-
-    if (name === 'primaryExpertise') {
-      data = {
-        ...data,
-        subExpertises: []
-      }
     }
 
     setUser(data);
@@ -143,8 +118,8 @@ const AdminEditUser = ({ classes, match, history }) => {
 
     try {
       const { data } = await USER_SERVICE.editUser(userData);
-      setUser(data);
-      dispatch(addEditUser(data));
+      await setUser(data);
+      await dispatch(addEditUser(data));
     } catch (error) {
       if (error.response) {
         const { message } = error.response.data;
@@ -156,7 +131,7 @@ const AdminEditUser = ({ classes, match, history }) => {
   const deleteHandler = async () => {
     try {
       const { data } = await USER_SERVICE.removeUser(user._id);
-      dispatch(removeUser(data));
+      await dispatch(removeUser(data));
       history.push(pageLinks.AdminUserList.url);
     } catch (error) {
       if (error.response) {
@@ -200,9 +175,10 @@ const AdminEditUser = ({ classes, match, history }) => {
         selectedPanel={expanded}>
         <PreferencePanel
           user={user}
+          searches={searchOptions}
+          positions={positionOptions}
+          industries={industriesOptions}
           locations={locationOptions}
-          expertises={expertiseOptions}
-          subExpertises={subExpertiseOptions}
           editPanel={editPanel}
           onEdit={editHandler}
           onChange={onFieldChangeHandler} />

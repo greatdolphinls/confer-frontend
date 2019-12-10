@@ -1,8 +1,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => {
@@ -10,13 +10,16 @@ const styles = theme => {
     root: {
       display: 'flex',
       alignItems: 'center',
-      marginTop: theme.spacing(1.5)
+      marginTop: theme.spacing(1.5),
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+      }
     },
     label: {
       width: 205,
       fontSize: 14,
       fontWeight: 'bold',
-      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
     },
     textField: {

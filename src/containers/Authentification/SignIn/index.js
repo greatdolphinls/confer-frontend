@@ -1,15 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-import { loginUser, clearErrors, setLoadingStatus } from '../../../actions';
+import { loginUser, setLoadingStatus } from '../../../actions';
 import { AuthLayout } from '../Shared';
 import { OutlineButton } from '../../../components';
 import { useInput } from '../../../utils/hooks';
+import { showErrorToast } from '../../../utils/utility'
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
 
@@ -18,7 +18,7 @@ const styles = theme => {
     root: {
       width: '100%',
       display: 'flex',
-      marginTop: theme.spacing(5),
+      marginTop: theme.spacing(4),
       flexDirection: 'column'
     },
     container: {
@@ -46,40 +46,36 @@ const styles = theme => {
   };
 };
 
-const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) => {
+const SignIn = ({ classes, history }) => {
+  const dispatch = useDispatch();
   const email = useInput('');
   const password = useInput('');
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const data = {
       email: email.value,
       password: password.value
     }
 
-    clearErrors();
-    setLoadingStatus({
+    await dispatch(setLoadingStatus({
       loading: true,
       text: 'Signing In...'
-    });
-    loginUser(data, history, successCallback, errorCallback);
+    }));
+    await dispatch(loginUser(data, history, successCallback, errorCallback));
   };
 
   const successCallback = () => {
-    setLoadingStatus({ loading: false });
+    dispatch(setLoadingStatus({ loading: false }));
   };
 
   const errorCallback = error => {
-    setLoadingStatus({ loading: false });
+    dispatch(setLoadingStatus({ loading: false }));
 
     if (!error.response) {
-      toast.error(notifications.NO_RESPONSE, {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+      showErrorToast(notifications.NO_RESPONSE);
     } else {
       const { data: { message } } = error.response;
-      toast.error(message || notifications.NO_RESPONSE, {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
+      showErrorToast(message || notifications.NO_RESPONSE);
     }
   };
 
@@ -107,7 +103,7 @@ const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) 
             className={classes.input}
             value={password.value}
             onChange={password.onChange}
-            validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
+            validators={['required', 'matchRegexp:[0-9a-zA-Z\\d!@#$%^&*]{6,}']}
             errorMessages={['Password cannot be empty', 'Password must contain at least 6 characters']} />
           <OutlineButton
             type='submit'
@@ -124,22 +120,7 @@ const SignIn = ({ classes, history, loginUser, clearErrors, setLoadingStatus }) 
 };
 
 SignIn.propTypes = {
-  classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired
+  classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  errorStatus: state.errors.errorStatus,
-  loggedInUser: state.auth.user
-});
-
-const mapActionToProps = {
-  loginUser,
-  clearErrors,
-  setLoadingStatus
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionToProps
-)(withStyles(styles)(SignIn));
+export default withStyles(styles, { withTheme: true })(SignIn);

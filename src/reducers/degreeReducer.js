@@ -1,7 +1,8 @@
 import DegreeConstants from '../constants/reducerConstants/DegreeConstants'
 
 const initialState = {
-    data: []
+    data: [],
+    options: []
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +10,8 @@ export default function (state = initialState, action) {
         case DegreeConstants.SET_DEGREES:
             return {
                 ...state,
-                data: action.payload
+                data: action.payload.data,
+                options: action.payload.options
             };
         default:
             return state;

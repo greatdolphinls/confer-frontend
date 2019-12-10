@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import * as RECOMMEND_SERVICE from '../../../services/recommend';
 import {
+  setCurrentRecommend,
+  editCurrentRecommend,
   setExpertises,
   setRelationships,
   setSkills,
@@ -15,7 +17,7 @@ import {
 } from '../../../actions';
 import {
   CustomSelectValidator,
-  CustomMultiSelect,
+  CustomLimitMultiSelect,
   PrimaryButton
 } from '../../../components';
 import {
@@ -25,7 +27,6 @@ import {
 } from './Shared';
 import { pageLinks } from '../../../constants/links';
 import notifications from '../../../constants/notifications';
-import { useInput } from '../../../utils/hooks';
 import { isEmpty, showErrorToast } from '../../../utils/utility';
 
 const styles = theme => {
@@ -50,7 +51,6 @@ const styles = theme => {
     },
     description: {
       fontSize: 20,
-      fontWeight: 'bold',
       marginRight: theme.spacing(2),
       lineHeight: `${theme.spacing(5)}px`,
       [theme.breakpoints.down('sm')]: {
@@ -105,29 +105,15 @@ const styles = theme => {
 
 const RecommendForm = ({ classes, history }) => {
   const { user } = useSelector(state => state.auth, []);
+  const recommend = useSelector(state => state.recommend.current, {});
   const expertises = useSelector(state => state.expertise.data, []);
-  const relationships = useSelector(state => state.relationship.data, []);
-  const skills = useSelector(state => state.skill.data, []);
-  const strengths = useSelector(state => state.strength.data, []);
+  const expertiseOptions = useSelector(state => state.expertise.options, []);
+  const relationshipOptions = useSelector(state => state.relationship.options, []);
+  const skillOptions = useSelector(state => state.skill.options, []);
+  const strengthOptions = useSelector(state => state.strength.options, []);
   const dispatch = useDispatch();
 
-  const firstName = useInput('');
-  const lastName = useInput('');
-  const expertise = useInput('');
-  const whyGreat = useInput('');
-  const howYouKnow = useInput('');
-  const email = useInput('');
-  const linkedInURL = useInput('');
-  const relationship = useInput('');
-  const accomplishment = useInput('');
-  const subExpertises = useInput([]);
-  const skill = useInput([]);
-  const strength = useInput([]);
-  const [expertiseOptions, setExpertiseOptions] = useState([]);
   const [subExpertiseOptions, setSubExpertiseOptions] = useState([]);
-  const [relationshipOptions, setRelationshipOptions] = useState([]);
-  const [skillOptions, setSkillOptions] = useState([]);
-  const [strengthOptions, setStrengthOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -139,82 +125,63 @@ const RecommendForm = ({ classes, history }) => {
   }, []);
 
   useEffect(() => {
-    const expertisesData = expertises.map(({ name }) => ({ label: name, value: name }));
-    setExpertiseOptions(expertisesData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertises]);
-
-  useEffect(() => {
-    const relationshipsData = relationships.map(({ name }) => ({ label: name, value: name }));
-    setRelationshipOptions(relationshipsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [relationships]);
-
-  useEffect(() => {
-    const skillsData = skills.map(({ name }) => ({ label: name, value: name }));
-    setSkillOptions(skillsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [skills]);
-
-  useEffect(() => {
-    const strengthsData = strengths.map(({ name }) => ({ label: name, value: name }));
-    setStrengthOptions(strengthsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [strengths]);
-
-  useEffect(() => {
-    const selectedExpertise = expertises.find(({ name }) => (name === expertise.value));
+    const selectedExpertise = expertises.find(({ name }) => (name === recommend.expertiseArea));
     const subExpertises = selectedExpertise ? selectedExpertise.subExpertises : [];
     const subExpertisesData = subExpertises.map((name) => ({ label: name, value: name }));
     setSubExpertiseOptions(subExpertisesData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expertise.value]);
+  }, [recommend.expertiseArea]);
 
   const comfirmModalHandler = () => {
     setShowModal(false);
     history.push(pageLinks.RecommendCount.url);
   }
 
-  const onExpertisesHander = (event) => {
-    expertise.onChange(event);
-    subExpertises.onChange([]);
+  const onFieldChangeHandler = (name) => async (event) => {
+    let value = event;
+    if (!!event) {
+      value = !!event.target ? event.target.value : event;
+    }
+
+    if (name === 'email') {
+      value = value.replace(/ /g, '');
+    }
+
+    let data = { [name]: value };
+
+    if (name === 'expertiseArea') {
+      data = {
+        ...data,
+        subExpertises: []
+      }
+    }
+
+    dispatch(editCurrentRecommend(data));
   }
 
   const submitHandler = async () => {
-    if (isEmpty(expertise.value)
-      || isEmpty(relationship.value)
-      || isEmpty(subExpertises.value)
-      || isEmpty(skill.value)
-      || isEmpty(strength.value)
+    if (isEmpty(recommend.expertiseArea)
+      || isEmpty(recommend.relationship)
+      || isEmpty(recommend.subExpertises)
+      || isEmpty(recommend.skill)
+      || isEmpty(recommend.strength)
     ) {
-      showErrorToast(notifications.RECOMMEND_FORM_VALIDATION_ERROR);
+      showErrorToast(notifications.FORM_VALIDATION_ERROR);
       return null;
     }
 
-    if (user.email === email.value) {
+    if (user.email === recommend.email) {
       showErrorToast(notifications.RECOMMEND_FORM_CURRENT_USER_ERROR);
       return null;
     }
 
     try {
       const data = {
-        recommend: {
-          firstName: firstName.value,
-          lastName: lastName.value,
-          email: email.value,
-          linkedInURL: linkedInURL.value,
-          expertiseArea: expertise.value,
-          subExpertises: subExpertises.value,
-          howYouKnow: howYouKnow.value,
-          whyGreat: whyGreat.value,
-          whichCapacity: relationship.value,
-          skills: skill.value,
-          strengths: strength.value,
-          accomplishment: accomplishment.value
-        }
+        recommend
       };
 
       await RECOMMEND_SERVICE.addRecommendByUser(data);
+      await dispatch(setCurrentRecommend({}));
       setShowModal(true);
     } catch (error) {
       // TODO: axios handling module
@@ -236,16 +203,16 @@ const RecommendForm = ({ classes, history }) => {
           name='firstName'
           placeholder='First name'
           className={classes.smallInput}
-          value={firstName.value}
-          onChange={firstName.onChange}
+          value={recommend.firstName || ''}
+          onChange={onFieldChangeHandler('firstName')}
           validators={['required']}
           errorMessages={['First Name cannot be empty']} />
         <TextValidator
           name='lastName'
           placeholder='Last name'
           className={classes.smallInput}
-          value={lastName.value}
-          onChange={lastName.onChange}
+          value={recommend.lastName || ''}
+          onChange={onFieldChangeHandler('lastName')}
           validators={['required']}
           errorMessages={['Last Name cannot be empty']} />
       </div>
@@ -261,8 +228,8 @@ const RecommendForm = ({ classes, history }) => {
         <CustomSelectValidator
           placeholder='Select discipline'
           classes={{ root: classes.middleInput }}
-          value={expertise.value}
-          changed={onExpertisesHander}
+          value={recommend.expertiseArea}
+          changed={onFieldChangeHandler('expertiseArea')}
           items={expertiseOptions} />
         <Typography className={classes.description}>
           professional.
@@ -275,13 +242,13 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          {firstName.value || '[First name]'} is/was my
+          {recommend.firstName || '[First name]'} is/was my
         </Typography>
         <CustomSelectValidator
           placeholder='Select relationship'
           classes={{ root: classes.middleInput }}
-          value={relationship.value}
-          changed={relationship.onChange}
+          value={recommend.relationship}
+          changed={onFieldChangeHandler('relationship')}
           items={relationshipOptions} />
         <Typography className={classes.description}>
           when
@@ -291,10 +258,10 @@ const RecommendForm = ({ classes, history }) => {
           name='howYouKnow'
           placeholder='Share how and how long you know this person...'
           className={classes.largeInput}
-          value={howYouKnow.value}
-          onChange={howYouKnow.onChange}
-          validators={['required']}
-          errorMessages={['This field cannot be empty']} />
+          value={recommend.howYouKnow}
+          onChange={onFieldChangeHandler('howYouKnow')}
+          validators={['required', 'matchRegexp:^.{25,}']}
+          errorMessages={['This field cannot be empty', 'This field should be at least 25 characters']} />
       </div>
     );
   }
@@ -303,35 +270,35 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          {firstName.value || '[First name]'} exhibits exceptional
+          {recommend.firstName || '[First name]'} exhibits exceptional
         </Typography>
-        <CustomMultiSelect
+        <CustomLimitMultiSelect
           placeholder='Select up to 2 skills'
           classes={{ root: classes.middleInput }}
-          value={skill.value}
-          changed={skill.onChange}
+          value={recommend.skill || []}
+          changed={onFieldChangeHandler('skill')}
           items={skillOptions} />
         <Typography className={classes.description}>
           skills and stands out for their
         </Typography>
-        <CustomMultiSelect
+        <CustomLimitMultiSelect
           placeholder='Select up to 2 strengths'
           classes={{ root: classes.middleInput }}
-          value={strength.value}
-          changed={strength.onChange}
+          value={recommend.strength || []}
+          changed={onFieldChangeHandler('strength')}
           items={strengthOptions} />
       </div>
     );
   }
 
   const subExpertiseSelectRender = () => {
-    if (!!expertise.value) {
+    if (!!recommend.expertiseArea) {
       return (
-        <CustomMultiSelect
+        <CustomLimitMultiSelect
           placeholder='Select up to 2 or write your own'
           classes={{ root: classes.middleInput }}
-          value={subExpertises.value}
-          changed={subExpertises.onChange}
+          value={recommend.subExpertises || []}
+          changed={onFieldChangeHandler('subExpertises')}
           items={subExpertiseOptions} />
       )
     } else {
@@ -347,7 +314,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classes.container}>
         <Typography className={classes.description}>
-          {firstName.value || '[First name]'} would be my go-to with
+          {recommend.firstName || '[First name]'} would be my go-to with
         </Typography>
         {subExpertiseSelectRender()}
       </div>
@@ -358,17 +325,17 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          and I want to highlight the time that {firstName.value || '[First name]'}
+          and I want to highlight the time that {recommend.firstName || '[First name]'}
         </Typography>
         <TextValidator
           multiline={true}
           name='whyGreat'
           placeholder='Share one of their top accomplishments...'
           className={classes.largeInput}
-          value={accomplishment.value}
-          onChange={accomplishment.onChange}
-          validators={['required']}
-          errorMessages={['This field cannot be empty']} />
+          value={recommend.accomplishment || ''}
+          onChange={onFieldChangeHandler('accomplishment')}
+          validators={['required', 'matchRegexp:^.{150,}']}
+          errorMessages={['This field cannot be empty', 'This field should be at least 150 characters']} />
       </div>
     );
   }
@@ -377,7 +344,7 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          In summary, {firstName.value || '[First name]'} is one of the
+          In summary, {recommend.firstName || '[First name]'} is one of the
           best people I have worked with because
         </Typography>
         <TextValidator
@@ -385,10 +352,10 @@ const RecommendForm = ({ classes, history }) => {
           name='whyGreat'
           placeholder='share any other reason why they’re great'
           className={classes.largeInput}
-          value={whyGreat.value}
-          onChange={whyGreat.onChange}
-          validators={['required']}
-          errorMessages={['This field cannot be empty']} />
+          value={recommend.whyGreat || ''}
+          onChange={onFieldChangeHandler('whyGreat')}
+          validators={['required', 'matchRegexp:^.{250,}']}
+          errorMessages={['This field cannot be empty', 'This field should be at least 250 characters']} />
       </div>
     );
   }
@@ -397,19 +364,19 @@ const RecommendForm = ({ classes, history }) => {
     return (
       <div className={classNames(classes.container, classes.bottom)}>
         <Typography className={classes.description}>
-          I am excited to recognize {firstName.value || '[First name]'}
+          I am excited to recognize {recommend.firstName || '[First name]'}
           {' for their excellent work and give them the recognition they deserve.'}
         </Typography>
         <Typography className={classes.description}>
-          You can notify {firstName.value || '[First name]'}
+          You can notify {recommend.firstName || '[First name]'}
           {' that I have recommended them at'}
         </Typography>
         <TextValidator
           name='email'
           placeholder='their email address'
           className={classes.middleInput}
-          value={email.value}
-          onChange={email.onChange}
+          value={recommend.email || ''}
+          onChange={onFieldChangeHandler('email')}
           validators={['isEmail', 'required']}
           errorMessages={['Email is not valid', 'Email cannot be empty']} />
         <Typography className={classes.description}>
@@ -420,8 +387,8 @@ const RecommendForm = ({ classes, history }) => {
           placeholder='https://www.linkedin.com/...'
           helperText='[Optional]'
           className={classes.middleInput}
-          value={linkedInURL.value}
-          onChange={linkedInURL.onChange} />
+          value={recommend.linkedInURL || ''}
+          onChange={onFieldChangeHandler('linkedInURL')} />
         .
       </div>
     );
@@ -443,7 +410,8 @@ const RecommendForm = ({ classes, history }) => {
         {accomplishmentRender()}
         {whyGreatRender()}
         {emailAndLinkedInRender()}
-        <RecommendMail />
+        <RecommendMail
+          firstName={recommend.firstName} />
         <PrimaryButton
           classes={{ root: classes.button }}
           type='submit'>

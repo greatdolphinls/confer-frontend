@@ -27,6 +27,15 @@ const registersPrefix = 'api/registers';
 const sendRegisterRequestPrefix = 'api/sendRegisterRequest';
 const addRegisterRequestPrefix = 'api/addRegisterRequest';
 const contactsPrefix = 'api/contacts';
+const sendContactRequestPrefix = 'api/sendContactRequest';
+const importUserCSVPrefix = 'api/importUserCSV';
+const starsPrefix = 'api/stars';
+const candidatesPrefix = 'api/candidates';
+const registerCandidatesPrefix = 'api/registerCandidate';
+const searchesPrefix = 'api/searches';
+const positionsPrefix = 'api/positions';
+const industriesPrefix = 'api/industries';
+const generateProfilePrefix = 'api/generateProfile';
 
 const getResetPasswordUrl = () => {
     return urlJoin(config.proxyUrl, resetPasswordPrefix);
@@ -124,6 +133,42 @@ const getAddRegisterRequestUrl = () => {
     return urlJoin(config.proxyUrl, addRegisterRequestPrefix);
 };
 
+const getSendContactRequestUrl = () => {
+    return urlJoin(config.proxyUrl, sendContactRequestPrefix);
+};
+
+const getImportUserCSVUrl = () => {
+    return urlJoin(config.proxyUrl, importUserCSVPrefix);
+};
+
+const getStarUrl = () => {
+    return urlJoin(config.proxyUrl, starsPrefix);
+};
+
+const getCandidateUrl = () => {
+    return urlJoin(config.proxyUrl, candidatesPrefix);
+};
+
+const getRegisterCandidateUrl = () => {
+    return urlJoin(config.proxyUrl, registerCandidatesPrefix);
+};
+
+const getSearchUrl = () => {
+    return urlJoin(config.proxyUrl, searchesPrefix);
+};
+
+const getPositionUrl = () => {
+    return urlJoin(config.proxyUrl, positionsPrefix);
+};
+
+const getIndustryUrl = () => {
+    return urlJoin(config.proxyUrl, industriesPrefix);
+};
+
+const getGenerateProfileUrl = () => {
+    return urlJoin(config.proxyUrl, generateProfilePrefix);
+};
+
 export {
     getResetPasswordUrl,
     getForgotPasswordUrl,
@@ -149,4 +194,13 @@ export {
     getSendRegisterRequestUrl,
     getAddRegisterRequestUrl,
     getContactUrl,
+    getSendContactRequestUrl,
+    getImportUserCSVUrl,
+    getStarUrl,
+    getCandidateUrl,
+    getRegisterCandidateUrl,
+    getSearchUrl,
+    getPositionUrl,
+    getIndustryUrl,
+    getGenerateProfileUrl
 };

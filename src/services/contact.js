@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { getContactUrl } from './endpoints';
+import { getContactUrl, getSendContactRequestUrl } from './endpoints';
 
 const getContacts = async () => {
     const url = getContactUrl('');
@@ -28,9 +28,16 @@ const removeContact = async _id => {
     return result;
 };
 
+const sendContactRequest = async data => {
+    const url = getSendContactRequestUrl();
+    const result = await axios.post(url, data);
+    return result;
+};
+
 export {
     getContacts,
     addContact,
     editContact,
-    removeContact
+    removeContact,
+    sendContactRequest
 };

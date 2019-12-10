@@ -1,29 +1,33 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography, Select } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
 
 const styles = theme => {
   return {
     root: {
+      width: '100%',
       display: 'flex',
       alignItems: 'center',
-      marginTop: theme.spacing(1.5)
+      marginTop: theme.spacing(1.5),
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+      }
     },
     label: {
       width: 205,
       fontSize: 14,
       fontWeight: 'bold',
-      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
     },
     select: {
-      width: 325
-    },
-    textField: {
-      margin: 0,
-      width: '100%'
+      width: 325,
+      [theme.breakpoints.down('xs')]: {
+        width: '100%'
+      }
     },
     value: {
       fontSize: 12,

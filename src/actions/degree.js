@@ -8,10 +8,12 @@ export const setDegrees = refresh => async (dispatch, getState) => {
         const { degree: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getDegrees();
+            const { data } = await getDegrees();
+            const options = data.map(({ name }) => ({ label: name, value: name }));
+
             dispatch({
                 type: DegreeConstants.SET_DEGREES,
-                payload: response.data
+                payload: {data, options}
             });
         }
     } catch (error) {
@@ -34,9 +36,11 @@ export const addEditDegree = degree => async (dispatch, getState) => {
         ];
     }
 
+    const options = data.map(({ name }) => ({ label: name, value: name }));
+            
     dispatch({
         type: DegreeConstants.SET_DEGREES,
-        payload: data
+        payload: {data, options}
     });
 }
 
@@ -48,8 +52,10 @@ export const removeDegree = degree => async (dispatch, getState) => {
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+    const options = data.map(({ name }) => ({ label: name, value: name }));
+            
     dispatch({
         type: DegreeConstants.SET_DEGREES,
-        payload: data
+        payload: {data, options}
     });
 }

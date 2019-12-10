@@ -1,9 +1,9 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { pageLinks } from '../../../constants/links';
 import { roles } from '../../../constants/roles';
@@ -20,12 +20,12 @@ const styles = theme => {
       marginTop: theme.spacing(5)
     },
     title: {
-      fontSize: 30,
-      fontWeight: 'bold',
+      fontSize: 45,
+      fontFamily: 'Ogg'
     },
     description: {
       width: 620,
-      fontSize: 18,
+      fontSize: 20,
       textAlign: 'center',
       marginBottom: theme.spacing(5),
       [theme.breakpoints.down('xs')]: {
@@ -41,6 +41,7 @@ const styles = theme => {
       }
     },
     outlineButton: {
+      opacity: 0.6,
       width: 250,
       marginBottom: theme.spacing(1.5),
       [theme.breakpoints.down('xs')]: {
@@ -79,57 +80,83 @@ const RecommendCount = ({
     history.push(url);
   }
 
-  const isComplete = recommends.length >= minCandidates;
-  const isWeakUser = user.role === roles.WEAK_ROLE;
-  const emptyLength = isComplete ? 0 : minCandidates - recommends.length;
-  const lastIndex = isComplete ? recommends.length : minCandidates;
+  const isComplete = useMemo(() => recommends.length >= minCandidates
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [recommends]);
 
-  const getDescription = () => {
-    let description = '';
+  const isWeakUser = useMemo(() => user.role === roles.WEAK_ROLE
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [user]);
 
-    if (isComplete) {
-      if (isWeakUser) {
-        if (user.verified) {
-          description = `Thank you. Your recommendations have been approved!
-          Enjoy your gift card. If, for some reason, you did not receive your 
-          gift card, please contact support@hellomerit.com.`;
-        } else {
-          description = `Thank you for making your recommendations! We will 
-          notify you once they are approved and when you can expect your gift card.
-          Is there someone you left out? You can add up to five recommendations 
-          if you'd like!`;
-        }
+  const emptyLength = useMemo(() => isComplete ? 0 : minCandidates - recommends.length
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [recommends]);
+
+  const lastIndex = useMemo(() => isComplete ? recommends.length : minCandidates
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [recommends]);
+
+  const description = useMemo(() => {
+    if (isWeakUser) {
+      if (user.verified) {
+        return `Thank you. Your recommendations have been approved! 
+        Please share Merit with other professionals whose recommendations 
+        you would trust.`;
       } else {
+        switch (recommends.length) {
+          case 0:
+            return `You haven't submitted a recommendation yet! 
+            Get started below.`;
+          case 1:
+            return `You’ve submitted 1 recommendation. You can 
+            submit 4 more! We’ll be in touch about your reward.`;
+          case 2:
+            return `You’ve submitted 2 recommendations. You can 
+            submit 3 more! We’ll be in touch about your reward.`;
+          case 3:
+            return `You’ve submitted 3 recommendations. You can 
+            submit 2 more! We’ll be in touch about your reward.`;
+          case 4:
+            return `You’ve submitted 4 recommendations. You can 
+            submit 1 more! We’ll be in touch about your reward.`;
+          case 5:
+            return `You’ve submitted 5 recommendations. Thank you, 
+            we’ll be in touch about your reward! Please share Merit with 
+            other professionals whose recommendations you would trust.`;
+          default:
+            return '';
+        }
+      }
+    } else {
+      if (isComplete) {
         if (user.verified) {
-          description = `Thank you for making your recommendations. You're 
+          return `Thank you for making your recommendations. You're 
           all set to search for talent and make your next hire.`;
         } else {
-          description = `Thank you for making your recommendations! 
+          return `Thank you for making your recommendations! 
           We will notify you once they are approved. Is there someone 
           you left out? You can make up to five recommendations 
           if you'd like.`;
         }
-      }
-    } else {
-      switch (recommends.length) {
-        case 0:
-          description = `You haven't submitted a recommendation yet! 
-          Get started below.`;
-          break;
-        case 1:
-          description = `You've recommended one person! You have just 
-          two more to go.`;
-          break;
-        case 2:
-          description = `You've recommended two people! You have one 
-          more left.`;
-          break;
-        default:
-          break
+      } else {
+        switch (recommends.length) {
+          case 0:
+            return `You haven't submitted a recommendation yet! 
+            Get started below.`;
+          case 1:
+            return `You've recommended one person! You have just 
+            two more to go.`;
+          case 2:
+            return `You've recommended two people! You have one 
+            more left.`;
+          default:
+            return '';
+        }
       }
     }
-    return description;
   }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [isWeakUser, isComplete, user, recommends]);
 
   const renderButtonContainer = () => {
     if (isComplete) {
@@ -180,7 +207,7 @@ const RecommendCount = ({
         Your Recommendations
       </Typography>
       <Typography className={classes.description}>
-        {getDescription()}
+        {description}
       </Typography>
       <div className={classes.container}>
         {recommends.map((recommend, index) =>
@@ -198,6 +225,7 @@ const RecommendCount = ({
             key={index}
             step={index}
             isLast={lastIndex === index}
+            goRecommend={buttonHandler(pageLinks.RecommendForm.url)}
           />
         })}
       </div>

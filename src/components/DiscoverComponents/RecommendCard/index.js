@@ -1,12 +1,12 @@
 
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
-import { getCurrentEmployment, isEmpty } from '../../../utils/utility';
+import { isEmpty } from '../../../utils/utility';
 import LinkedInImage from '../../../assets/img/icons/linkedIn.svg';
+import ReferrerIcon from '../../../assets/img/icons/referrer-icon.svg';
 
 const styles = theme => {
   return {
@@ -14,121 +14,142 @@ const styles = theme => {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginLeft: theme.spacing(3),
+      justifyContent: 'space-between',
       [theme.breakpoints.down('sm')]: {
-        marginTop: theme.spacing(2),
-        marginLeft: 0
+        marginTop: theme.spacing(2)
       }
     },
     title: {
-      fontSize: 22,
+      fontSize: 12,
       fontWeight: 'bold',
       color: theme.palette.buttonColor,
-      marginBottom: theme.spacing(2)
-    },
-    smallTitle: {
-      fontSize: 16,
       marginBottom: theme.spacing(0.5)
     },
-    name: {
-      display: 'flex',
-      lineHeight: '35px',
-      alignItems: 'center',
-      fontSize: 30,
-      fontFamily: 'Moret-Bold'
-    },
-    smallName: {
-      fontSize: 24
-    },
-    linkedIn: {
-      marginLeft: theme.spacing(1)
-    },
-    description: {
-      fontSize: 14,
+    whyGreat: {
+      fontSize: 18,
       fontWeight: 'bold',
-      textTransform: 'uppercase',
-      marginBottom: theme.spacing(0.5),
-      color: theme.palette.blackBrownForeColor
+      lineHeight: '26px',
+      overflow: 'hidden',
+      display: '-webkit-box',
+      WebkitLineClamp: 3,
+      WebkitBoxOrient: 'vertical',
+      textOverflow: 'ellipsis',
+      [theme.breakpoints.down('xs')]: {
+        fontSize: 16
+      }
     },
-    smallDescription: {
-      fontSize: 12
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      paddingTop: theme.spacing(1.5),
+      paddingLeft: theme.spacing(1.5)
     },
     recommendContainer: {
       width: '100%',
-      marginTop: theme.spacing(1),
-      paddingTop: theme.spacing(1.5),
-      borderTop: `0.5px solid ${theme.palette.blackBrownForeColor}`
+      display: 'flex',
+      alignItems: 'flex-start'
     },
-    content: {
+    recommendInfo: {
+      marginLeft: theme.spacing(0.5)
+    },
+    name: {
+      display: 'flex',
+      lineHeight: '24px',
+      alignItems: 'center',
       fontSize: 20,
+      fontFamily: 'Ogg',
       fontWeight: 'bold',
-      lineHeight: '35px',
-      overflow: 'hidden',
-      display: '-webkit-box',
-      WebkitLineClamp: 6,
-      WebkitBoxOrient: 'vertical',
-      textOverflow: 'ellipsis',
-      marginTop: theme.spacing(2),
-      [theme.breakpoints.down('xs')]: {
-        fontSize: 18
-      }
     },
-    smallContent: {
-      fontSize: 18,
-      marginTop: 0,
-      lineHeight: '26px'
+    linkedIn: {
+      width: 15,
+      marginLeft: theme.spacing(1)
+    },
+    description: {
+      fontSize: 10,
+      fontWeight: 'bold',
+      opacity: 0.6,
+      textTransform: 'uppercase',
+      marginBottom: theme.spacing(1),
+    },
+    list: {
+      paddingLeft: 0,
+      margin: 0,
+      listStyle: 'none',
+      '& li': {
+        fontSize: 12,
+        lineHeight: '15px',
+        textTransform: 'uppercase',
+        marginBottom: theme.spacing(0.5)
+      },
+      '& li::before': {
+        content: '"•"',
+        color: theme.palette.buttonColor,
+        marginLeft: -theme.spacing(1.5),
+        fontWeight: 'bold',
+        display: 'inline-block',
+        width: theme.spacing(1.5),
+        fontSize: 20,
+        lineHeight: '10px'
+      }
     }
   };
 };
 
 const RecommendCard = ({ classes, recommend, isSmall }) => {
   const { referrer, candidate, whichCapacity, whyGreat, howYouKnow } = recommend;
-  const currentEmployment = getCurrentEmployment(referrer.employmentHistories);
 
   return (
     <div className={classes.root}>
-      <Typography
-        className={classNames(classes.title, { [classes.smallTitle]: isSmall })}>
-        RECOMMENDED BY:
-      </Typography>
-      <Typography
-        className={classNames(classes.name, { [classes.smallName]: isSmall })}>
-        {`${referrer.firstName || ''} ${referrer.lastName || ''}`}
-        <a
-          target='_blank'
-          rel='noreferrer noopener'
-          href={referrer.linkedInURL}
-          className={classes.logoContainer}>
-          <img
-            src={LinkedInImage}
-            alt='linkedIn'
-            className={classes.linkedIn} />
-        </a>
-      </Typography>
-      <Typography
-        className={classNames(classes.description, { [classes.smallDescription]: isSmall })}>
-        {`${currentEmployment.companyName || ''}, ${currentEmployment.title || ''}`}
-      </Typography>
-      <div className={classes.recommendContainer}>
-        {
-          !isEmpty(howYouKnow) &&
-          <Typography
-            className={classNames(classes.description, { [classes.smallDescription]: isSmall })}>
-            {howYouKnow || ''}
-          </Typography>
-        }
-        {
-          !isEmpty(whichCapacity) &&
-          <Typography
-            className={classNames(classes.description, { [classes.smallDescription]: isSmall })}>
-            {`${candidate.firstName || ''} was ${referrer.firstName || ''}'s ${whichCapacity || ''}`}
-          </Typography>
-        }
+      <div>
+        <Typography className={classes.title}>
+          RECOMMENDED BY:
+        </Typography>
+        <Typography className={classes.whyGreat}>
+          {`“${whyGreat || 'XYZ'}”`}
+        </Typography>
       </div>
-      <Typography
-        className={classNames(classes.content, { [classes.smallContent]: isSmall })}>
-        {`“${whyGreat || 'XYZ'}”`}
-      </Typography>
+      <div className={classes.container}>
+        <div className={classes.recommendContainer}>
+          <img src={ReferrerIcon} alt='referrerIcon' />
+          <div className={classes.recommendInfo}>
+            <Typography
+              className={classes.name}>
+              {`${referrer.firstName || ''} ${referrer.lastName || ''}`}
+              <a
+                target='_blank'
+                rel='noreferrer noopener'
+                href={referrer.linkedInURL}
+                className={classes.logoContainer}>
+                <img
+                  src={LinkedInImage}
+                  alt='linkedIn'
+                  className={classes.linkedIn} />
+              </a>
+            </Typography>
+            {
+              !isEmpty(referrer.shortDescription) &&
+              <Typography
+                className={classes.description}>
+                {referrer.shortDescription}
+              </Typography>
+            }
+            <ul className={classes.list}>
+              {
+                !isEmpty(howYouKnow) &&
+                <li>
+                  {howYouKnow || ''}
+                </li>
+              }
+              {
+                !isEmpty(whichCapacity) &&
+                <li>
+                  {`${candidate.firstName || ''} was ${referrer.firstName || ''}'s ${whichCapacity || ''}`}
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

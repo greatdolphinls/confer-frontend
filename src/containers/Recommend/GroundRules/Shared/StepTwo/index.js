@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { PrimaryButton, CustomTooltip } from '../../../../../components';
 import { RuleLayout } from '..';
@@ -21,10 +21,18 @@ const styles = theme => {
 };
 
 const StepTwo = ({
-  classes, defaultStep, currentStep, onContinue, onSelect, content, descriptions
+  classes, defaultStep, isWeak, currentStep, onContinue, onSelect, weakContent, standardContent, descriptions
 }) => {
-  const isActive = defaultStep === currentStep;
-  const isSkip = defaultStep <= currentStep;
+  const isActive = useMemo(() => defaultStep === currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+  const isSkip = useMemo(() => defaultStep <= currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+  const content = useMemo(() =>
+    isWeak ? weakContent : standardContent
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [isWeak]);
 
   return (
     <RuleLayout
@@ -60,35 +68,35 @@ StepTwo.propTypes = {
 };
 
 StepTwo.defaultProps = {
+  isWeak: false,
   defaultStep: 2,
   onContinue: () => { },
-  content: {
+  weakContent: {
+    step: 'STEP TWO',
+    title: 'Recommend',
+    subTitle: 'MAKE UP TO 5 RECOMMENDATIONS AND AWAIT OUR REVIEW'
+  },
+  standardContent: {
     step: 'STEP TWO',
     title: 'Recommend',
     subTitle: 'MAKE AT LEAST 3 RECOMMENDATIONS AND AWAIT OUR REVIEW'
   },
   descriptions: [
     {
-      description: `Expect each recommendation to take about 5 minutes.`
-    },
-    {
-      description: `Don’t rush. We’ll review them to ensure they 
-      meet our quality standards.`,
+      description: `Expect each recommendation to take about 5 minutes. 
+      We’ll review them to ensure they meet our quality standards.`,
       tooltip: `We check that the recommendation meets the requirements 
       listed in Step 1, contains substantive responses, and does not 
       contain any negative remarks that would violate our policies.`
     },
     {
-      description: `We will notify the people you recommend once they 
-      are approved. You can give them a heads up first! We expect them 
-      to be very flattered!`,
-      tooltip: `We disclose only your name to them, not your full 
-      recommendation. We believe that transparency is critical to 
-      creating trust in the platform.`
-    },
-    {
-      description: `Your recommendations will be seen by hiring managers 
-      and other leading professionals.`
+      description: `We’ll invite the people you recommend to sign up 
+      and see your recommendation – expect them to be very flattered! 
+      We wait at least 24 hours to email them so you can give them a 
+      heads up first!`,
+      tooltip: `We disclose your recommendation to them as we believe 
+      that transparency is critical to creating trust in the platform. 
+      You can use the opportunity to reconnect with former colleagues!`
     }
   ]
 };

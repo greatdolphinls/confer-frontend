@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 import { roles } from '../../../../../constants/roles';
 import { setUserRecommends } from '../../../../../actions';
@@ -28,8 +28,8 @@ const styles = theme => {
     },
     title: {
       fontSize: 34,
-      fontWeight: 500,
-      fontFamily: 'Moret-Bold',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
       marginBottom: theme.spacing(1)
     },
     description: {
@@ -41,12 +41,12 @@ const styles = theme => {
 };
 
 const SuccessRecommendModal = ({
-  classes, opened, minCandidates, initContent,  keepContent, referrerPassContent, weakPassContent, onClose, onConfirm
+  classes, opened, minCandidates, initContent, keepContent, referrerPassContent, weakPassContent, onClose, onConfirm
 }) => {
   const { user } = useSelector(state => state.auth, []);
   const recommends = useSelector(state => state.recommend.user, []);
   const dispatch = useDispatch();
-  
+
   const [content, setContent] = useState(initContent);
   const [initCall, setInitCall] = useState(false);
 
@@ -56,7 +56,7 @@ const SuccessRecommendModal = ({
   }, []);
 
   useEffect(() => {
-    if(initCall) {
+    if (initCall) {
       const isWeakUser = user.role === roles.WEAK_ROLE;
       const data = recommends.length < minCandidates
         ? keepContent
@@ -64,12 +64,12 @@ const SuccessRecommendModal = ({
           ? weakPassContent
           : referrerPassContent;
       setContent(data);
-    }else {
+    } else {
       setInitCall(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recommends]);
-  
+
   const { title, description, confirm } = content;
 
   return (

@@ -1,8 +1,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Paper from '@material-ui/core/Paper';
 
 import { CandidatePhoto, RecommendCard } from '../../../../../components';
 import AyeshaCurryImage from '../../../../../assets/img/users/ayesha-curry.jpg';
@@ -19,10 +19,8 @@ const styles = theme => {
         flexDirection: 'column'
       }
     },
-    candidatePhoto: {
-      width: 230,
-      height: 230,
-      minWidth: 230
+    recommendCard: {
+      marginLeft: theme.spacing(2)
     }
   };
 };
@@ -38,7 +36,8 @@ const ProductSnapshot = ({ classes, recommend }) => {
         classes={{ root: classes.candidatePhoto }} />
       <RecommendCard
         isSmall={true}
-        recommend={recommend} />
+        recommend={recommend}
+        classes={{ root: classes.recommendCard }} />
     </Paper>
   );
 };

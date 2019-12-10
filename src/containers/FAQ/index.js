@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 import { AccordionLayout } from '../../components';
 
@@ -85,6 +85,14 @@ FAQ.defaultProps = {
         recognition for their outstanding performance - and by 
         joining the platform, you never know who might tap you 
         for that next great opportunity!`
+      ]
+    },
+    {
+      question: 'What is Merit’s business model?',
+      answers: [
+        `Merit is currently in beta mode but in the future 
+        hiring managers at top companies will be able to 
+        access Merit’s platform for a subscription fee.`
       ]
     },
     {

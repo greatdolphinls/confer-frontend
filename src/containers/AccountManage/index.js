@@ -85,7 +85,7 @@ const AccountManage = ({ classes, defaultUser }) => {
       }
     }
 
-    setLoadingStatus({ loading: true, text: 'Updating ...' });
+    await dispatch(setLoadingStatus({ loading: true, text: 'Updating ...' }));
     try {
       const result = await USER_SERVICE.updateMyInfo(tempUser.id, data);
       dispatch(editCurrentUserInfo(result.data));
@@ -94,7 +94,7 @@ const AccountManage = ({ classes, defaultUser }) => {
       const { message } = error.response.data;
       showErrorToast(message);
     }
-    setLoadingStatus({ loading: false });
+    await dispatch(setLoadingStatus({ loading: false }));
   }
 
   const changePasswordHandler = async () => {
@@ -105,7 +105,7 @@ const AccountManage = ({ classes, defaultUser }) => {
       }
     }
 
-    setLoadingStatus({ loading: true, text: 'Changing Password...' });
+    await dispatch(setLoadingStatus({ loading: true, text: 'Changing Password...' }));
     try {
       await USER_SERVICE.updateMyInfo(tempUser.id, data);
       initPasswordFields();
@@ -118,7 +118,7 @@ const AccountManage = ({ classes, defaultUser }) => {
         showErrorToast(notifications.FAIL_UPDATE_PASSWORD);
       }
     }
-    setLoadingStatus({ loading: false });
+    await dispatch(setLoadingStatus({ loading: false }));
   }
 
   const accountDetailRender = () => {
@@ -180,7 +180,7 @@ const AccountManage = ({ classes, defaultUser }) => {
             className={classes.input}
             value={currentPassword.value}
             onChange={currentPassword.onChange}
-            validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
+            validators={['required', 'matchRegexp:[0-9a-zA-Z\\d!@#$%^&*]{6,}']}
             errorMessages={['Current Password cannot be empty', 'Password must contain at least 6 characters']} />
           <TextValidator
             fullWidth
@@ -190,7 +190,7 @@ const AccountManage = ({ classes, defaultUser }) => {
             className={classes.input}
             value={newPassword.value}
             onChange={newPassword.onChange}
-            validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
+            validators={['required', 'matchRegexp:[0-9a-zA-Z\\d!@#$%^&*]{6,}']}
             errorMessages={['New Password cannot be empty', 'Password must contain at least 6 characters']} />
           <TextValidator
             fullWidth
@@ -214,60 +214,6 @@ const AccountManage = ({ classes, defaultUser }) => {
     <main className={classes.root}>
       {accountDetailRender()}
       {changePasswordRender()}
-      {/* <ValidatorForm
-        onSubmit={accountSubmitHandler}
-        onError={errors => console.log(errors)}>
-        <TextValidator
-          fullWidth
-          name='email'
-          label='Email Address'
-          className={classes.input}
-          value={user.value}
-          onChange={user.onChange}
-          validators={['isEmail', 'required']}
-          errorMessages={['Email is not valid', 'Email cannot be empty']} />
-        <TextValidator
-          fullWidth
-          name='firstName'
-          label='First Name'
-          className={classes.input}
-          value={firstName.value}
-          onChange={firstName.onChange}
-          validators={['required']}
-          errorMessages={['First Name cannot be empty']} />
-        <TextValidator
-          fullWidth
-          name='lastName'
-          label='Last Name'
-          className={classes.input}
-          value={lastName.value}
-          onChange={lastName.onChange}
-          validators={['required']}
-          errorMessages={['Last Name cannot be empty']} />
-        <TextValidator
-          fullWidth
-          name='password'
-          label='Password'
-          type='password'
-          className={classes.input}
-          value={password.value}
-          onChange={password.onChange}
-          validators={['required', 'matchRegexp:[0-9a-zA-Z]{6,}']}
-          errorMessages={['Password cannot be empty', 'Password must contain at least 6 characters']} />
-        <TextValidator
-          fullWidth
-          name='groupPassword'
-          label='Group Password'
-          type='password'
-          className={classes.input}
-          value={groupPassword.value}
-          onChange={groupPassword.onChange}
-          validators={['required']}
-          errorMessages={['Group Password cannot be empty']} />
-        <PrimaryButton fullWidth classes={{ root: classes.button }} type='submit'>
-          Sign Up
-        </PrimaryButton>
-      </ValidatorForm> */}
     </main>
   );
 };

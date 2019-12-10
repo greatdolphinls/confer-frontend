@@ -8,10 +8,12 @@ export const setSkills = refresh => async (dispatch, getState) => {
         const { skill: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getSkills();
+            const { data } = await getSkills();
+            const options = data.map(({ name }) => ({ label: name, value: name }));
+
             dispatch({
                 type: SkillConstants.SET_SKILLS,
-                payload: response.data
+                payload: {data, options}
             });
         }
     } catch (error) {
@@ -33,10 +35,11 @@ export const addEditSkill = skill => async (dispatch, getState) => {
             skill
         ];
     }
+    const options = data.map(({ name }) => ({ label: name, value: name }));
 
     dispatch({
         type: SkillConstants.SET_SKILLS,
-        payload: data
+        payload: {data, options}
     });
 }
 
@@ -48,8 +51,10 @@ export const removeSkill = skill => async (dispatch, getState) => {
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+    const options = data.map(({ name }) => ({ label: name, value: name }));
+
     dispatch({
         type: SkillConstants.SET_SKILLS,
-        payload: data
+        payload: {data, options}
     });
 }

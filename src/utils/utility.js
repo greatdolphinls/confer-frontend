@@ -36,7 +36,7 @@ const validateRoleAccess = (pageRoles, loggedInUser) => {
   return valid;
 };
 
-const getMomentTime = (date, timeFormat = 'MM/DD/YYYY HH:mm') => {
+const getMomentTime = (date, timeFormat = 'MM/DD/YYYY') => {
   return moment(date).format(timeFormat);
 };
 
@@ -71,10 +71,10 @@ const getCurrentEmployment = (employments) => {
   }
 
   const currentEmployment = employments.find((employment) => (employment.currentlyWorks));
-  if (!!currentEmployment) {
+  if (!isEmpty(currentEmployment)) {
     return currentEmployment;
   } else {
-    return employments[employments.length - 1];
+    return employments[0];
   }
 }
 
@@ -91,9 +91,9 @@ const showInfoToast = message => {
 };
 
 const getDiffYearsAndMonths = (startYear, startMonth, endYear, endMonth, currentlyWorks) => {
-  startYear = parseInt(startYear, 10);
+  startYear = parseInt(startYear || 0, 10);
   startMonth = getMonth(startMonth);
-  endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear, 10);
+  endYear = currentlyWorks ? (new Date().getFullYear()) : parseInt(endYear || 0, 10);
   endMonth = currentlyWorks ? (new Date().getMonth() + 1) : getMonth(endMonth);
 
   const diffAllMonths = (endYear - startYear) * 12 + endMonth - startMonth;
@@ -143,9 +143,16 @@ const getTotalYears = (employmentHistories) => {
 }
 
 const getDuration = (startYear, startMonth, endYear, endMonth, currentlyWorks) => {
+  if (isEmpty(startMonth) && isEmpty(startYear)) {
+    return ''
+  }
+
+  if ((isEmpty(endMonth) && isEmpty(endYear)) && !currentlyWorks) {
+    return ''
+  }
+
   const startDate = `${startMonth} ${startYear}`;
   const endDate = currentlyWorks ? 'present' : `${endMonth} ${endYear}`;
-
   return `${startDate} - ${endDate}`;
 }
 
@@ -170,8 +177,8 @@ const addEditArray = (items, data) => {
     items[targetIndex] = data;
   } else {
     items = [
-      ...items,
-      data
+      data,
+      ...items
     ];
   }
   return items;
@@ -209,6 +216,11 @@ const getUserRole = (value) => {
   }
 }
 
+const getAvatarWithName = (firstName, lastName) => {
+  return 'https://www.gravatar.com/avatar/EMAIL_MD5?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/' +
+    firstName.charAt(0).toUpperCase() + '+' + lastName.charAt(0).toUpperCase() + '/128';
+}
+
 export {
   isEmpty,
   hasValidToken,
@@ -229,5 +241,6 @@ export {
   addEditArray,
   removeArray,
   getGroupRole,
-  getUserRole
+  getUserRole,
+  getAvatarWithName
 };

@@ -1,15 +1,18 @@
 
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import Dropzone from 'react-dropzone';
 
 import * as UPLOAD_SERVICE from '../../../services/upload';
-import { Avatar } from '../..';
+import { setLoadingStatus } from '../../../actions'
+import { Avatar, RemoveIconButton } from '../..';
 import DefaultLogo from '../../../assets/img/defaultLogo.jpg';
 import { defaultAvatarLink as DefaultAvatar } from '../../../constants/links';
+import { getAvatarWithName } from '../../../utils/utility';
 
 const styles = theme => {
   return {
@@ -17,7 +20,11 @@ const styles = theme => {
       display: 'flex',
       alignItems: 'center',
       marginTop: theme.spacing(0.5),
-      marginBottom: theme.spacing(0.5)
+      marginBottom: theme.spacing(0.5),
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+      }
     },
     label: {
       width: 205,
@@ -31,6 +38,9 @@ const styles = theme => {
       height: 60,
       objectFit: 'cover',
       borderRadius: 2
+    },
+    uploadContainer: {
+      position: 'relative'
     },
     upload: {
       display: 'flex',
@@ -50,33 +60,48 @@ const styles = theme => {
     },
     avatar: {
       borderRadius: '50%'
+    },
+    removeButton: {
+      bottom: 0,
+      right: 0,
+      position: 'absolute',
+      color: theme.palette.darkGreyButtonColor
     }
   };
 };
 
 const EditableImage = ({
-  classes, isEdit, isAvatar, label, value, onChange
+  classes, isEdit, isAvatar, label, value, onChange, firstName, lastName
 }) => {
+  const dispatch = useDispatch();
 
   const onUploadHandler = async (files) => {
     const file = files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', async () => {
+      await dispatch(setLoadingStatus({ loading: true }));
       const data = {
         folder: isAvatar ? 'avatar' : 'logo',
         file: reader.result
       }
       const response = await UPLOAD_SERVICE.uploadImage(data);
       onChange(response.data);
+      await dispatch(setLoadingStatus({ loading: false }));
     });
     reader.readAsDataURL(file);
+  }
+
+  const removeButtonHandler = () => {
+    if (isAvatar) {
+      onChange(getAvatarWithName(firstName, lastName))
+    }
   }
 
   const imageUploadRender = () => {
     const DefaultImage = isAvatar ? DefaultAvatar : DefaultLogo;
 
-    return (
+    return <div className={classes.uploadContainer}>
       <Dropzone onDrop={onUploadHandler}>
         {({ getRootProps, getInputProps }) => {
           const inputProps = getInputProps()
@@ -94,7 +119,13 @@ const EditableImage = ({
           )
         }}
       </Dropzone>
-    )
+      {
+        isAvatar &&
+        <RemoveIconButton
+          onClick={removeButtonHandler}
+          classes={{ root: classes.removeButton }} />
+      }
+    </div>
   }
 
   return (
@@ -132,6 +163,8 @@ EditableImage.defaultProps = {
   isAvatar: true,
   label: '',
   value: '',
+  firstName: 'A',
+  lastName: 'B',
   onChange: () => { }
 };
 

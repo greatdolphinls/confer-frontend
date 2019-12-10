@@ -1,13 +1,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogActions
-} from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import { PrimaryButton, CustomSelectValidator } from '../../../../../components';

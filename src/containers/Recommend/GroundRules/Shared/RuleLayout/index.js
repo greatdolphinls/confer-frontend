@@ -2,8 +2,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
@@ -44,15 +44,17 @@ const styles = theme => {
       borderColor: theme.palette.buttonColor
     },
     stepName: {
+      fontSize: 15,
       fontWeight: 'bold'
     },
     title: {
-      fontSize: 24,
-      lineHeight: '25px',
-      fontFamily: 'Moret-Bold'
+      fontSize: 25,
+      lineHeight: '35px',
+      fontWeight: 'bold',
+      fontFamily: 'Ogg'
     },
     subTitle: {
-      fontSize: 12,
+      fontSize: 10,
       fontWeight: 'bold',
       width: 240
     },

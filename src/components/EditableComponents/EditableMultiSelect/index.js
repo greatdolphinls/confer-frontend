@@ -1,32 +1,35 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography, Select, Input, MenuItem, TextField } from '@material-ui/core';
-
-import { showErrorToast, isEmpty } from '../../../utils/utility';
-import notifications from '../../../constants/notifications';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => {
   return {
     root: {
+      width: '100%',
       display: 'flex',
       alignItems: 'center',
-      marginTop: theme.spacing(1.5)
+      marginTop: theme.spacing(1.5),
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+      }
     },
     label: {
       width: 205,
       fontSize: 14,
       fontWeight: 'bold',
-      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
     },
     select: {
-      width: 325
-    },
-    textField: {
-      margin: 0,
-      width: '100%'
+      width: 325,
+      [theme.breakpoints.down('xs')]: {
+        width: '100%'
+      }
     },
     value: {
       fontSize: 12,
@@ -38,48 +41,6 @@ const styles = theme => {
 const EditableMultiSelect = ({
   classes, options, isEdit, label, value, placeholder, onChange
 }) => {
-  const [open, setOpen] = useState(false);
-  const [selectedInput, setSelectedInput] = useState(false);
-
-  useEffect(() => {
-    const targetIndex = options.findIndex(option => (
-      option.value === value
-    ));
-
-    if (!isEmpty(value) && targetIndex < 0) {
-      setSelectedInput(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSelect = (event) => {
-    const { value } = event.target;
-    const selectedOther = value.includes('Other');
-
-    if (selectedOther) {
-      setSelectedInput(true);
-      onChange([]);
-    } else {
-      if (value.length > 2) {
-        showErrorToast(notifications.MULTI_SELECT_TWO_ITEM_ERROR);
-      } else {
-        if (value.length === 2) {
-          setOpen(false);
-        }
-        onChange(value);
-      }
-    }
-  }
-
-  const onInputChange = (event) => {
-    const { value } = event.target;
-    if (!value) {
-      setSelectedInput(false);
-      onChange([]);
-    } else {
-      onChange([value]);
-    }
-  }
 
   const valueRender = () => {
     let data = '';
@@ -93,58 +54,33 @@ const EditableMultiSelect = ({
     return data;
   }
 
-  const openHandler = () => {
-    setOpen(true);
-  }
-
-  const closeHandler = () => {
-    setOpen(false);
-  }
-
   const editContainerRender = () => {
     if (isEdit) {
-      if (selectedInput) {
-        return (
-          <TextField
-            name='other'
-            value={value[0] || ''}
-            onChange={onInputChange}
-            className={classes.select}
-            placeholder='other (write your own)' />
-        )
-      } else {
-        return (
-          <Select
-            multiple
-            displayEmpty
-            open={open}
-            onOpen={openHandler}
-            onClose={closeHandler}
-            input={<Input id='select-multiple' />}
-            value={value}
-            onChange={onSelect}
-            renderValue={selected => {
-              if (selected.length === 0) {
-                return placeholder;
-              }
-              return selected.join(', ');
-            }}
-            className={classes.select}
-          >
-            <MenuItem value='' disabled>
-              {placeholder}
+      return (
+        <Select
+          multiple
+          displayEmpty
+          input={<Input id='select-multiple' />}
+          value={value}
+          onChange={onChange}
+          renderValue={selected => {
+            if (selected.length === 0) {
+              return placeholder;
+            }
+            return selected.join(', ');
+          }}
+          className={classes.select}
+        >
+          <MenuItem value='' disabled>
+            {placeholder}
+          </MenuItem>
+          {options.map(({ value, label }, index) => (
+            <MenuItem key={index} value={value}>
+              {label}
             </MenuItem>
-            {options.map(({ value, label }, index) => (
-              <MenuItem key={index} value={value}>
-                {label}
-              </MenuItem>
-            ))}
-            <MenuItem value='Other'>
-              other (write your own)
-            </MenuItem>
-          </Select>
-        );
-      }
+          ))}
+        </Select>
+      );
     }
   }
 

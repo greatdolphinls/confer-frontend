@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => {
   return {
     root: {},
     container: {
       width: 'fit-content',
-      marginRight: theme.spacing(4)
+      marginRight: theme.spacing(2)
     }
   };
 };

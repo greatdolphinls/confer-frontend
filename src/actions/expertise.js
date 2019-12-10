@@ -8,10 +8,12 @@ export const setExpertises = refresh => async (dispatch, getState) => {
         const { expertise: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getExpertises();
+            const { data } = await getExpertises();
+            const options = data.map(({ name }) => ({ label: name, value: name }));
+                        
             dispatch({
                 type: ExpertiseConstants.SET_EXPERTISES,
-                payload: response.data
+                payload: {data, options}
             });
         }
     } catch (error) {
@@ -33,10 +35,10 @@ export const addEditExpertise = expertise => async (dispatch, getState) => {
             expertise
         ];
     }
-
+    const options = data.map(({ name }) => ({ label: name, value: name }));
     dispatch({
         type: ExpertiseConstants.SET_EXPERTISES,
-        payload: data
+        payload: {data, options}
     });
 }
 
@@ -48,8 +50,10 @@ export const removeExpertise = expertise => async (dispatch, getState) => {
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+
+    const options = data.map(({ name }) => ({ label: name, value: name }));
     dispatch({
         type: ExpertiseConstants.SET_EXPERTISES,
-        payload: data
+        payload: {data, options}
     });
 }

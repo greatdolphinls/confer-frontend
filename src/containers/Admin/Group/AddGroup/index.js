@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -35,7 +35,10 @@ const AdminAddGroup = ({ classes, panel, history }) => {
   const [editPanel, setEditPanel] = useState(panel);
   const [showDialog, setShowDialog] = useState(false);
   const [group, setGroup] = useState({});
-  const isEdit = panel === editPanel;
+  
+  const isEdit = useMemo(() => panel === editPanel
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [editPanel]);
 
   const expandHandler = panel => {
     setExpanded(panel);
@@ -71,14 +74,14 @@ const AdminAddGroup = ({ classes, panel, history }) => {
   }
 
   const saveHandler = async () => {
-    if (!group.name || !group.viewPassword) {
-      showErrorToast(notifications.FORM_VALODATION_ERROR);
+    if (!group.name || !group.viewPassword || !group.role) {
+      showErrorToast(notifications.FORM_VALIDATION_ERROR);
       return null;
     }
 
     try {
       const { data } = await GROUP_SERVICE.addGroup(group);
-      dispatch(addEditGroup(data));
+      await dispatch(addEditGroup(data));
       history.push(pageLinks.AdminGroupList.url);
     } catch (error) {
       if (error.response) {

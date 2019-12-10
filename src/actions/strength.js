@@ -8,10 +8,12 @@ export const setStrengths = refresh => async (dispatch, getState) => {
         const { strength: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getStrengths();
+            const { data } = await getStrengths();
+            const options = data.map(({ name }) => ({ label: name, value: name }));
+
             dispatch({
                 type: StrengthConstants.SET_STRENGTHS,
-                payload: response.data
+                payload: {data, options}
             });
         }
     } catch (error) {
@@ -33,10 +35,11 @@ export const addEditStrength = strength => async (dispatch, getState) => {
             strength
         ];
     }
+    const options = data.map(({ name }) => ({ label: name, value: name }));
 
     dispatch({
         type: StrengthConstants.SET_STRENGTHS,
-        payload: data
+        payload: {data, options}
     });
 }
 
@@ -48,8 +51,10 @@ export const removeStrength = strength => async (dispatch, getState) => {
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+    const options = data.map(({ name }) => ({ label: name, value: name }));
+
     dispatch({
         type: StrengthConstants.SET_STRENGTHS,
-        payload: data
+        payload: {data, options}
     });
 }

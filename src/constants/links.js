@@ -2,9 +2,13 @@
 const defaultAvatarLink = '//www.gravatar.com/avatar/51b444b6cac7ba2671011bf7616c5d59?s=200&r=pg&d=mm';
 const jwtTokenKey = 'jwtToken';
 const pageLinks = {
-  Home: {
+  StandardHome: {
     title: 'Home',
     url: '/'
+  },
+  RecommendHome: {
+    title: 'Recommend',
+    url: '/recommend'
   },
   ContactUs: {
     title: 'Contact us',
@@ -118,6 +122,22 @@ const pageLinks = {
     title: 'Admin Register',
     url: '/admin/register/list'
   },
+  AdminContactList: {
+    title: 'Admin Contact',
+    url: '/admin/contact/list'
+  },
+  CandidateOverview: {
+    title: 'Candidate Overview',
+    url: '/candidate/overview/:candidateId'
+  },
+  CandidateSignup: {
+    title: 'Candidate Signup',
+    url: '/candidate/signup/:candidateId'
+  },
+  CandidateGenerateProfile: {
+    title: 'Candidate Generate Profile',
+    url: '/candidate/generate-profile'
+  }
 };
 
 export {

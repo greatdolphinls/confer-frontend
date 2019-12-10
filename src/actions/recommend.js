@@ -17,7 +17,6 @@ export const setUserRecommends = () => async (dispatch, getState) => {
   }
 }
 
-
 export const setDiscoverRecommends = (refresh, filter) => async (dispatch, getState) => {
   try {
 
@@ -38,6 +37,31 @@ export const setDiscoverRecommends = (refresh, filter) => async (dispatch, getSt
   } catch (error) {
     console.log('great dolphin : [actions recommend setDiscoverRecommends] error => ', error);
   }
+}
+
+export const editDiscoverRecommend = (recommend, index) => async (dispatch, getState) => {
+  try {
+
+    let { recommend: { discover } } = getState();
+    discover[index] = recommend;
+
+    dispatch({
+      type: RecommendConstants.SET_DISCOVER_RECOMMENDS,
+      payload: discover
+    });
+  } catch (error) {
+    console.log('great dolphin : [actions recommend editDiscoverRecommend] error => ', error);
+  }
+}
+
+export const removeDiscoverRecommend = (index) => async (dispatch, getState) => {
+  let { recommend: { discover } } = getState();
+
+  discover = removeItemWithSlice(discover, index);
+  dispatch({
+    type: RecommendConstants.SET_DISCOVER_RECOMMENDS,
+    payload: discover
+  });
 }
 
 export const setRecommends = refresh => async (dispatch, getState) => {
@@ -89,4 +113,28 @@ export const removeRecommend = recommend => async (dispatch, getState) => {
     type: RecommendConstants.SET_RECOMMENDS,
     payload: data
   });
+}
+
+export const setCurrentRecommend = recommend => dispatch => {
+  dispatch({
+    type: RecommendConstants.SET_CURRENT_RECOMMEND,
+    payload: recommend
+  });
+}
+
+export const editCurrentRecommend = (recommend) => async (dispatch, getState) => {
+  try {
+    let { recommend: { current } } = getState();
+    current = {
+      ...current,
+      ...recommend
+    };
+
+    dispatch({
+      type: RecommendConstants.SET_CURRENT_RECOMMEND,
+      payload: current
+    });
+  } catch (error) {
+    console.log('great dolphin : [actions recommend editCurrentRecommend] error => ', error);
+  }
 }

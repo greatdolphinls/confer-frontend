@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { OutlineButton } from '../../../../../components';
@@ -20,7 +20,7 @@ const styles = theme => {
       }
     },
     mainDescription: {
-      fontSize: 18,
+      fontSize: 15,
       marginBottom: theme.spacing(2)
     },
     container: {
@@ -30,7 +30,7 @@ const styles = theme => {
       }
     },
     subDescription: {
-      fontSize: 14,
+      fontSize: 15,
       opacity: 0.6,
       marginBottom: theme.spacing(1)
     },
@@ -42,11 +42,21 @@ const styles = theme => {
   };
 };
 
-const RecommendMail = ({ classes, mail }) => {
+const RecommendMail = ({ classes, firstName, defaultMail }) => {
 
   const copyButtonHandler = () => {
     showInfoToast('copied');
   }
+
+  const mail = useMemo(() => {
+    let value = defaultMail;
+    if (!!firstName) {
+      value = defaultMail.replace('{Name}', firstName);
+    }
+    return value;
+  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [firstName]);
 
   return (
     <main className={classes.root}>
@@ -81,7 +91,7 @@ RecommendMail.propTypes = {
 };
 
 RecommendMail.defaultProps = {
-  mail: `“Hi {Name} - Just want to give you a heads up that 
+  defaultMail: `“Hi {Name} - Just want to give you a heads up that 
   I recommended you for Merit, indicating that you're among 
   the best people I've ever worked with! Merit is a platform 
   powered by professional recommendations so you can make 

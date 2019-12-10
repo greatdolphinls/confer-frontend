@@ -1,24 +1,22 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
-import { } from '../..';
-import { Typography } from '@material-ui/core';
 import { isEmpty } from '../../../utils/utility';
 
 const styles = theme => {
   return {
     root: {
       width: '100%',
+      height: 'fit-content',
       display: 'flex',
       [theme.breakpoints.down('xs')]: {
         flexDirection: 'column'
       },
     },
     container: {
-      maxWidth: 240,
       width: '100%',
-      height: 'fit-content',
-      minHeight: 240,
+      minHeight: 180,
       display: 'flex',
       flexDirection: 'column',
       borderRadius: 10,
@@ -37,33 +35,43 @@ const styles = theme => {
       },
       [theme.breakpoints.down('xs')]: {
         maxWidth: 'unset',
-        margin: `${theme.spacing(2)}px 0 !important`
+        margin: `${theme.spacing(1)}px 0 0 !important`
       },
     },
     title: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: 'bold',
       textTransform: 'uppercase',
-      color: theme.palette.buttonColor,
-      marginBottom: theme.spacing(1)
+      marginBottom: theme.spacing(0.5)
     },
     capDescription: {
-      fontSize: 14,
+      fontSize: 12,
       textTransform: 'uppercase',
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(1.5)
     },
     description: {
-      fontSize: 14,
-      marginBottom: theme.spacing(2)
+      fontSize: 12,
+      marginBottom: theme.spacing(1.5)
     },
     list: {
       paddingLeft: 0,
       margin: 0,
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1.5),
       '& li': {
-        fontSize: 14,
+        fontSize: 12,
+        lineHeight: '15px',
         textTransform: 'uppercase',
         marginBottom: theme.spacing(1)
+      },
+      '& li::before': {
+        content: '"•"',
+        color: theme.palette.buttonColor,
+        marginLeft: -theme.spacing(1.5),
+        fontWeight: 'bold',
+        display: 'inline-block',
+        width: theme.spacing(1.5),
+        fontSize: 20,
+        lineHeight: '10px'
       }
     }
   };
@@ -91,7 +99,7 @@ const RecommendInfo = ({ classes, recommend }) => {
           !isEmpty(skills) &&
           <>
             <Typography className={classes.title}>
-              {`PRIMARY ${skills.length} SKILLS`}
+              PRIMARY SKILLS
             </Typography>
             <ul className={classes.list}>
               {
@@ -108,7 +116,7 @@ const RecommendInfo = ({ classes, recommend }) => {
           !isEmpty(strengths) &&
           <>
             <Typography className={classes.title}>
-              {`PRIMARY ${skills.length} STRENGTHS`}
+              PRIMARY STRENGTHS
             </Typography>
             <ul className={classes.list}>
               {

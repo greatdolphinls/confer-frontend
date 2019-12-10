@@ -6,8 +6,11 @@ import { TextValidator } from 'react-material-ui-form-validator';
 const styles = theme => {
   return {
     root: {
-      width: 200,
+      width: 280,
       margin: `${theme.spacing(1)}px 0`,
+      [theme.breakpoints.down('xs')]: {
+        width: 200
+      },
       '& input': {
         textAlign: 'center',
         borderBottom: `2px solid ${theme.palette.buttonColor}`,

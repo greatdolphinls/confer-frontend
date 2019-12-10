@@ -1,16 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { ForgotPasswordLayout } from '../Shared';
 import { PrimaryButton } from '../../../components';
+import { pageLinks } from '../../../constants/links';
 
 const styles = theme => {
   return {
     root: {},
     button: {
+      width: 'fit-content',
       marginBottom: theme.spacing(2)
     },
     mainDescription: {
@@ -28,10 +29,7 @@ const styles = theme => {
 const Verification = ({ classes, match, history }) => {
 
   const buttonHandler = () => {
-    const token = match.params.token;
-    const url = '/reset-password/' + token;
-
-    history.push(url);
+    history.push(pageLinks.ResetPassword.url.replace(':token', match.params.token));
   };
 
   return (
@@ -54,13 +52,4 @@ Verification.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-});
-
-const mapActionToProps = {
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionToProps
-)(withStyles(styles)(Verification));
+export default withStyles(styles, { withTheme: true })(Verification);

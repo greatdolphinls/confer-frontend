@@ -1,14 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import VerifyIcon from '@material-ui/icons/Link';
 import UnVerifyIcon from '@material-ui/icons/LinkOff';
 
 import { AdminTabs } from '../../Shared';
-import { setUsers, removeUser, addEditUser } from '../../../../actions';
+import { setUsers, removeUser, addEditUser, setLoadingStatus } from '../../../../actions';
 import * as USER_SERVICE from '../../../../services/user';
 import {
   CustomMUIDataTable,
@@ -22,6 +22,7 @@ import {
 import { commonMUITableOptions } from '../../../../utils/styles';
 import { pageLinks } from '../../../../constants/links';
 import { showErrorToast, getMomentTime } from '../../../../utils/utility';
+import { ImportUserModal } from '../Shared';
 
 const styles = theme => {
   return {
@@ -33,14 +34,24 @@ const styles = theme => {
     paper: {
       margin: `${theme.spacing(2)}px 0`
     },
+    table: {
+      '& th': {
+        padding: `0 ${theme.spacing(0.5)}px`,
+      },
+      '& td': {
+        padding: `0 ${theme.spacing(0.5)}px`,
+        fontSize: 12
+      }
+    },
     actions: {
       display: 'flex'
     },
     addButton: {
+      marginLeft: theme.spacing(1),
       color: theme.palette.subButtonColor,
       backgroundColor: theme.palette.subBackColor4,
       boxShadow: `0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12)`,
-    }
+    },
   };
 };
 
@@ -48,7 +59,8 @@ const AdminUserList = ({ classes, tab, history }) => {
   const users = useSelector(state => state.user.data, []);
   const dispatch = useDispatch();
 
-  const [showDialog, setShowDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [importDialog, setImportDialog] = useState(false);
   const [userId, setUserId] = useState();
 
   useEffect(() => {
@@ -58,7 +70,7 @@ const AdminUserList = ({ classes, tab, history }) => {
 
   const createTableData = users => {
     const tableData = users.map(user => {
-      const { firstName, lastName, email, createdAt, verified, _id, recommends } = user;
+      const { firstName, lastName, email, createdAt, verified, _id, recommends, linkedInURL } = user;
       let approveRecommend = 0, unAprroveRecommend = 0;
       recommends.map((recommend) => (
         recommend.verified ? approveRecommend++ : unAprroveRecommend++
@@ -68,6 +80,7 @@ const AdminUserList = ({ classes, tab, history }) => {
         firstName,
         lastName,
         email,
+        linkedInURL,
         `${approveRecommend} / ${unAprroveRecommend}`,
         getMomentTime(createdAt),
         verified,
@@ -78,10 +91,11 @@ const AdminUserList = ({ classes, tab, history }) => {
     return tableData;
   };
 
-  const columns = () => [
+  const columns = useMemo(() => [
     { name: 'First Name' },
     { name: 'Last Name' },
     { name: 'Email' },
+    { name: 'LinkedIn URL' },
     { name: '#' },
     { name: 'Created' },
     {
@@ -112,26 +126,52 @@ const AdminUserList = ({ classes, tab, history }) => {
               <EditIconButton
                 onClick={editButtonHandler(value)} />
               <RemoveIconButton
-                onClick={openConfirmDialogHandler(true, value)} />
+                onClick={modalHandler('delete', true, value)} />
             </div>
           );
         }
       }
     }
-  ];
+  ]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [users]);
 
-  const options = {
-    ...commonMUITableOptions,
-    customToolbar: () => {
-      return (
-        <PrimaryButton
-          className={classes.addButton}
-          onClick={addButtonHandler}>
-          Add User
-        </PrimaryButton>
-      );
+  const options = useMemo(() =>
+    ({
+      ...commonMUITableOptions,
+      customToolbar: () => {
+        return (
+          <>
+            <PrimaryButton
+              className={classes.addButton}
+              onClick={addButtonHandler}>
+              Add User
+          </PrimaryButton>
+            <PrimaryButton
+              className={classes.addButton}
+              onClick={modalHandler('import', true)}>
+              Import CSV
+          </PrimaryButton>
+          </>
+        );
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , []);
+
+  const modalHandler = (modal, show, userId = null) => () => {
+    setUserId(userId);
+    switch (modal) {
+      case 'import':
+        setImportDialog(show);
+        break;
+      case 'delete':
+        setDeleteDialog(show);
+        break;
+      default:
+        break
     }
-  };
+  }
 
   const editButtonHandler = (userId) => () => {
     history.push(pageLinks.AdminEditUser.url.replace(':userId', userId));
@@ -141,17 +181,7 @@ const AdminUserList = ({ classes, tab, history }) => {
     history.push(pageLinks.AdminAddUser.url);
   }
 
-  const openConfirmDialogHandler = (opened, removeId) => () => {
-    setUserId(removeId);
-    setShowDialog(opened);
-  }
-
-  const closeDialogHandler = () => {
-    setUserId(null);
-    setShowDialog(false);
-  }
-
-  const confirmDialogHandler = async () => {
+  const deleteConfirmHandler = async () => {
     try {
       const { data } = await USER_SERVICE.removeUser(userId);
       dispatch(removeUser(data));
@@ -162,7 +192,25 @@ const AdminUserList = ({ classes, tab, history }) => {
       }
     }
     setUserId(null);
-    setShowDialog(false);
+    setDeleteDialog(false);
+  }
+
+  const importConfirmHandler = async (file) => {
+    dispatch(setLoadingStatus({
+      loading: true,
+      text: 'Importing CSV...'
+    }));
+    try {
+      const { data } = await USER_SERVICE.importUserCSV(file);
+      data.map((item) => (dispatch(addEditUser(item))));
+      setImportDialog(false);
+    } catch (error) {
+      if (error.response) {
+        const { message } = error.response.data;
+        showErrorToast(message);
+      }
+    }
+    dispatch(setLoadingStatus({ loading: false }));
   }
 
   const verifyUserHandler = (userId) => async () => {
@@ -183,14 +231,25 @@ const AdminUserList = ({ classes, tab, history }) => {
       <AdminTabs selectedValue={tab} history={history} />
       <Paper className={classes.paper}>
         <CustomMUIDataTable
+          classes={{ root: classes.table }}
           data={createTableData(users)}
-          columns={columns()}
+          columns={columns}
           options={options} />
       </Paper>
-      <ConfirmDialog
-        opened={showDialog}
-        onClose={closeDialogHandler}
-        onConfirm={confirmDialogHandler} />
+      {
+        deleteDialog &&
+        <ConfirmDialog
+          opened={deleteDialog}
+          onClose={modalHandler('delete', false)}
+          onConfirm={deleteConfirmHandler} />
+      }
+      {
+        importDialog &&
+        <ImportUserModal
+          opened={importDialog}
+          onClose={modalHandler('import', false)}
+          onConfirm={importConfirmHandler} />
+      }
     </main>
   );
 };

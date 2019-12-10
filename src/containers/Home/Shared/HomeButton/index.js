@@ -1,22 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
-import WaveArrowImage from '../../../../assets/img/icons/wave-arrow.svg';
+import SendEmailIcon from '../../../../assets/img/icons/send-email-icon.svg';
 
 const styles = theme => {
   return {
     root: {
-      fontSize: 14,
-      fontWeight: 'bold',
+      fontSize: 10,
       marginTop: theme.spacing(1),
       padding: theme.spacing(0.5),
-      '& span': {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end'
-      }
+    },
+    sendEmailIcon: {
+      marginLeft: theme.spacing(1)
     }
   };
 };
@@ -28,9 +25,9 @@ const HomeButton = ({ classes, name, ...props }) => {
       {...props}>
       {name}
       <img
-        src={WaveArrowImage}
-        className={classes.waveArrowImage}
-        alt='waveArrowImage' />
+        src={SendEmailIcon}
+        className={classes.sendEmailIcon}
+        alt='SendEmailIcon' />
     </Button>
   );
 };

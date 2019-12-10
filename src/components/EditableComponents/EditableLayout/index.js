@@ -1,8 +1,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { EditIconButton, CloseIconButton, AddIconButton } from '../..';
 
@@ -16,7 +16,8 @@ const styles = theme => {
       borderBottom: `1px solid ${theme.palette.darkGreyButtonColor}`
     },
     title: {
-      color: theme.palette.darkGreyButtonColor,
+      fontWeight: 'bold',
+      fontFamily: 'Ogg'
     },
     container: {
       position: 'relative',

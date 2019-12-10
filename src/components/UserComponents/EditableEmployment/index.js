@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography, Checkbox } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import {
@@ -23,7 +25,7 @@ const styles = theme => {
     },
     companyName: {
       fontSize: 14,
-      fontWeight: 500
+      fontWeight: 'bold'
     },
     title: {
       fontSize: 12
@@ -62,16 +64,16 @@ const styles = theme => {
       marginBottom: theme.spacing(3)
     },
     dateItem: {
-      width: 118,
+      width: 100,
       marginTop: 0,
       marginBottom: 0,
-      marginRight: theme.spacing(4)
+      marginRight: theme.spacing(2)
     },
     saveButton: {
-      width: 134
+      width: 95
     },
     deleteButton: {
-      width: 134,
+      width: 95,
       marginRight: theme.spacing(3),
       backgroundColor: theme.palette.darkGreyButtonColor
     }
@@ -82,14 +84,11 @@ const EditableEmployment = ({
   classes, employment, isNew, isEdit, panel, onEdit, onSave, onDelete
 }) => {
   const [tempEmployment, setTempEmployment] = useState(employment);
-  const [years, setYears] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
 
-  useEffect(() => {
-    const data = getYears();
-    setYears(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const years = useMemo(() => getYears()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , []);
 
   useEffect(() => {
     setTempEmployment(employment);

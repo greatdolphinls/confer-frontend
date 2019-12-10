@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -7,7 +7,8 @@ import {
   EditableInput,
   EditableImage,
   EditableTextarea,
-  EditableSelect
+  EditableSelect,
+  EditableAutocomplete
 } from '../../../../../components';
 import { getUserRole } from '../../../../../utils/utility';
 import { userRoles } from '../../../../../constants/roles';
@@ -18,12 +19,14 @@ const styles = theme => {
   };
 };
 
-const BasicProfilePanel = ({ classes, locations, user, editPanel, onEdit, onChange }) => {
-  const isEdit = 'basicProfilePanel' === editPanel;
+const BasicProfilePanel = ({ classes, locations, user, editPanel, onEdit, onChange, panel }) => {
+  const isEdit = useMemo(() => panel === editPanel
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [editPanel]);
 
   return (
     <EditableLayout
-      panel='basicProfilePanel'
+      panel={panel}
       isEdit={isEdit}
       onEdit={onEdit}>
       <EditableInput
@@ -55,13 +58,15 @@ const BasicProfilePanel = ({ classes, locations, user, editPanel, onEdit, onChan
         isEdit={isEdit}
         label='Photo'
         value={user.avatar}
+        firstName={user.firstName}
+        lastName={user.lastName}
         onChange={onChange('avatar')}
       />
-      <EditableSelect
+      <EditableAutocomplete
         isEdit={isEdit}
         label='Location'
         options={locations}
-        value={user.location}
+        value={user.location || ''}
         onChange={onChange('location')}
       />
       <EditableTextarea
@@ -94,6 +99,10 @@ const BasicProfilePanel = ({ classes, locations, user, editPanel, onEdit, onChan
 
 BasicProfilePanel.propTypes = {
   classes: PropTypes.object.isRequired
+};
+
+BasicProfilePanel.defaultProps = {
+  panel: 'basicProfilePanel'
 };
 
 export default withStyles(styles)(BasicProfilePanel);

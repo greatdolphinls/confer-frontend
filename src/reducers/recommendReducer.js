@@ -3,7 +3,8 @@ import RecommendConstants from '../constants/reducerConstants/RecommendConstants
 const initialState = {
     user: [],
     discover: [],
-    data: []
+    data: [],
+    current: {}
 };
 
 export default function (state = initialState, action) {
@@ -22,6 +23,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 data: action.payload
+            };
+        case RecommendConstants.SET_CURRENT_RECOMMEND:
+            return {
+                ...state,
+                current: action.payload
             };
         default:
             return state;

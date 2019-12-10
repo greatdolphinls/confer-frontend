@@ -1,10 +1,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import AliceCarousel from 'react-alice-carousel';
-import "react-alice-carousel/lib/alice-carousel.css";
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 import WeworkLogo from '../../assets/img/groupLogos/wework.svg';
 import BCGLogo from '../../assets/img/groupLogos/bcg.svg';

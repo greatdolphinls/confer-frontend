@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 import { PrimaryButton } from '../../../../../components';
 import { RuleLayout, ProductSnapshot } from '..';
@@ -19,6 +19,7 @@ const styles = theme => {
     },
     faqButton: {
       fontSize: 12,
+      opacity: 0.6,
       padding: `${theme.spacing(0.5)}px 0`,
       color: theme.palette.craneForeColor,
       cursor: 'pointer'
@@ -27,38 +28,32 @@ const styles = theme => {
 };
 
 const StepThree = ({
-  classes, defaultStep, isWeak, currentStep, onContinue, onSelect, onFAQHandler, weakContent, standardContent
+  classes, defaultStep, isWeak, currentStep, groupName, onContinue, onSelect, onFAQHandler, weakContent, standardContent
 }) => {
-  const isActive = defaultStep === currentStep;
-  const isSkip = defaultStep <= currentStep;
+  const isActive = useMemo(() => defaultStep === currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+  const isSkip = useMemo(() => defaultStep <= currentStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [currentStep]);
+  const content = useMemo(() =>
+    isWeak ? weakContent : standardContent
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [isWeak]);
 
-  const weakContentRender = () => {
-    if (isWeak) {
-      return (
-        <Typography className={classes.description}>
-          Once your recommendations are approved, you'll
-          receive your gift card.
-        </Typography>
-      )
-    }
-  }
-
-  const standardContentRender = () => {
-    if (!isWeak) {
-      return (
-        <>
-          <Typography className={classes.description}>
-            You will have access to all recommendations made by your group.
-            In the future, you will also have the opportunity to see
-            recommendations made by other groups.
-          </Typography>
-          <Typography className={classes.description}>
-            Here’s what you can expect:
-          </Typography>
-          <ProductSnapshot />
-        </>
-      )
-    }
+  const contentRender = () => {
+    const { descriptions } = content;
+    return (
+      <>
+        {
+          descriptions.map((description, index) => (
+            <Typography key={index} className={classes.description}>
+              {description.replace('[group name]', groupName)}
+            </Typography>
+          ))
+        }
+      </>
+    )
   }
 
   return (
@@ -67,9 +62,12 @@ const StepThree = ({
       step={defaultStep}
       isActive={isActive}
       isSkip={isSkip}
-      content={isWeak ? weakContent : standardContent}>
-      {weakContentRender()}
-      {standardContentRender()}
+      content={content}>
+      {contentRender()}
+      <Typography className={classes.description}>
+        Here’s what a recommendation looks like:
+      </Typography>
+      <ProductSnapshot />
       <PrimaryButton
         classes={{ root: classes.button }}
         onClick={onContinue}>
@@ -96,11 +94,26 @@ StepThree.defaultProps = {
     step: 'STEP THREE',
     title: 'Thank you',
     subTitle: 'RECEIVE YOUR REWARD',
+    descriptions: [
+      `Your recommendations will be seen by top companies seeking 
+      to fill full-time and advisory positions. To give you a sense, 
+      we have managers from Google, Amex, Greenhouse and other growth 
+      companies on our platform. We have a double opt-in email policy.`,
+      `As a token of appreciation for your time, we’ll email your reward!`
+    ]
   },
   standardContent: {
     step: 'STEP THREE',
     title: 'Discover',
-    subTitle: 'MAKE YOUR NEXT HIRE'
+    subTitle: 'MAKE YOUR NEXT HIRE',
+    descriptions: [
+      `You will have access to recommendations made by [group name] 
+      members and the option to subscribe to all top 3 recommendations 
+      in the future.`,
+      `Your recommendations will also be seen by top companies seeking 
+      to fill full-time and advisory positions. We have a double opt-in 
+      email policy.`
+    ]
   }
 };
 

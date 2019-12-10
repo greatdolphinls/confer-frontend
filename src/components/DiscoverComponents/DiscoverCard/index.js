@@ -7,6 +7,7 @@ import { CandidateProfile, CandidateRecommend } from '../..';
 const styles = theme => {
   return {
     root: {
+      maxWidth: 760,
       width: '100%'
     }
   };

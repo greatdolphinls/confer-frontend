@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import IconButton from '@material-ui/core/IconButton';
 
 import NextArrowImage from '../../../assets/img/icons/next-arrow.svg';

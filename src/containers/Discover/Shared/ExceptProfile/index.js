@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 import { PrimaryButton } from '../../../../components';
 
@@ -13,14 +13,14 @@ const styles = theme => {
       alignItems: 'center',
       flexDirection: 'column',
       margin: `${theme.spacing(3.5)}px 0`,
-      padding: `${theme.spacing(15)}px 0 ${theme.spacing(25)}px`,
       [theme.breakpoints.down('xs')]: {
         flexDirection: 'column',
         padding: theme.spacing(2)
       }
     },
     description: {
-      width: 300,
+      width: 330,
+      padding: `${theme.spacing(15)}px 0`,
       textAlign: 'center',
       marginBottom: theme.spacing(3)
     },
@@ -45,9 +45,11 @@ const ExceptProfile = ({ classes, isNotApproved, onInit }) => {
     return (
       <>
         <Typography className={classes.description}>
-          You’ve seen all of the relevant candidates.
-          Select “start over” to review them again or
-          enter a new search above.
+          You’ve seen all the candidates that fit your
+          search criteria. Encourage others in your group
+          to recommend great people! Select “start over”
+          to review the candidates again or enter a new
+          search above.
         </Typography>
         <PrimaryButton
           classes={{ root: classes.button }}

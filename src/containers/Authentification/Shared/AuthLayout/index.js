@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Link } from 'react-router-dom';
-import { Paper, Typography } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import { GroupCarousel } from '../../../../components';
 import { AuthDescription } from '../index';
@@ -26,7 +27,7 @@ const styles = theme => {
       alignItems: 'center'
     },
     imageContainer: {
-      height: theme.spacing(8),
+      height: theme.spacing(8)
     },
     groupImage: {
       width: 161,
@@ -36,8 +37,8 @@ const styles = theme => {
     },
     defaultLogo: {
       height: 46,
-      fontSize: 20,
-      fontFamily: 'Moret-Bold',
+      fontSize: 18,
+      fontWeight: 'bold',
       textTransform: 'uppercase',
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2)
@@ -94,8 +95,10 @@ const styles = theme => {
   };
 };
 
-const AuthLayout = ({ classes, isCashGroup, groupName, groupImage, selectedTab, tabs, children }) => {
-  const isSignIn = selectedTab === 'signin';
+const AuthLayout = ({ classes, isCashGroup, groupName, groupImage, selectedTab, signinTab, tabs, children }) => {
+  const isSignIn = useMemo(() => selectedTab === signinTab
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [selectedTab]);
 
   const groupLogoRender = () => {
     if (!isSignIn) {
@@ -111,7 +114,7 @@ const AuthLayout = ({ classes, isCashGroup, groupName, groupImage, selectedTab, 
   }
 
   return (
-    <Fragment>
+    <>
       <div className={classes.root}>
         <AuthDescription
           isCashGroup={isCashGroup}
@@ -155,7 +158,7 @@ const AuthLayout = ({ classes, isCashGroup, groupName, groupImage, selectedTab, 
         </div>
       </div>
       <GroupCarousel />
-    </Fragment>
+    </>
   );
 };
 
@@ -166,6 +169,7 @@ AuthLayout.propTypes = {
 
 AuthLayout.defaultProps = {
   selectedTab: 'signin',
+  signinTab: 'signin',
   isCashGroup: false,
   groupImage: '',
   groupName: '',

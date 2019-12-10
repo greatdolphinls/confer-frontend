@@ -14,23 +14,16 @@ const styles = theme => {
 };
 
 const EducationPanel = ({ classes, educationHistories, onChange }) => {
-  const degrees = useSelector(state => state.degree.data, []);
+  const degreeOptions = useSelector(state => state.degree.options, []);
   const dispatch = useDispatch();
 
   const [editPanel, setEditPanel] = useState(false);
   const [isNew, setIsNew] = useState(false);
-  const [degreeOptions, setDegreeOptions] = useState([]);
 
   useEffect(() => {
     dispatch(setDegrees());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const degreesData = degrees.map(({ name }) => ({ label: name, value: name }));
-    setDegreeOptions(degreesData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [degrees]);
 
   const onSaveHandler = (value) => {
     setIsNew(false);

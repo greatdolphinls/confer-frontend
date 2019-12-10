@@ -8,10 +8,12 @@ export const setRelationships = refresh => async (dispatch, getState) => {
         const { relationship: { data } } = getState();
 
         if (refresh || data.length === 0) {
-            const response = await getRelationships();
+            const { data } = await getRelationships();
+            const options = data.map(({ name }) => ({ label: name, value: name }));
+
             dispatch({
                 type: RelationshipConstants.SET_RELATIONSHIPS,
-                payload: response.data
+                payload: {data, options}
             });
         }
     } catch (error) {
@@ -33,10 +35,11 @@ export const addEditRelationship = relationship => async (dispatch, getState) =>
             relationship
         ];
     }
+    const options = data.map(({ name }) => ({ label: name, value: name }));
 
     dispatch({
         type: RelationshipConstants.SET_RELATIONSHIPS,
-        payload: data
+        payload: {data, options}
     });
 }
 
@@ -48,8 +51,10 @@ export const removeRelationship = relationship => async (dispatch, getState) => 
     ));
 
     data = removeItemWithSlice(data, targetIndex);
+    const options = data.map(({ name }) => ({ label: name, value: name }));
+
     dispatch({
         type: RelationshipConstants.SET_RELATIONSHIPS,
-        payload: data
+        payload: {data, options}
     });
 }

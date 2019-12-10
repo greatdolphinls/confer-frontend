@@ -1,8 +1,8 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => {
   return {
@@ -10,7 +10,7 @@ const styles = theme => {
       fontWeight: 'bold',
       borderRadius: 0,
       borderBottom: `2px solid ${theme.palette.buttonColor}`,
-      padding: `${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
+      padding: `${theme.spacing(0.5)}px 0 0`,
       color: theme.palette.mainForeColor,
       '&:hover': {
         backgroundColor: theme.palette.buttonColor,
@@ -18,7 +18,7 @@ const styles = theme => {
       }
     },
     disabled: {
-      backgroundColor: theme.palette.darkGreyButtonColor
+      opacity: 0.4
     }
   };
 };

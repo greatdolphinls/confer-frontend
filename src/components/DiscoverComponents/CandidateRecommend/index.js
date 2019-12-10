@@ -11,14 +11,12 @@ const styles = theme => {
       display: 'flex',
       justifyContent: 'space-between',
       marginTop: theme.spacing(1),
-      paddingBottom: theme.spacing(3),
+      paddingBottom: theme.spacing(1),
       [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column',
-        paddingBottom: theme.spacing(2),
+        flexDirection: 'column'
       }
     },
     recommendCard: {
-      padding: theme.spacing(1),
       marginLeft: theme.spacing(3),
       [theme.breakpoints.down('sm')]: {
         padding: 0,
@@ -32,7 +30,7 @@ const CandidateRecommend = ({ classes, recommend }) => {
   return (
     <main className={classes.root}>
       <CandidateSnapshot
-        recommend={recommend} />
+        candidate={recommend.candidate} />
       <RecommendInfo
         recommend={recommend}
         classes={{ root: classes.recommendCard }} />
